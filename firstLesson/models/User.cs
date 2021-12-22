@@ -2,22 +2,27 @@
 
 namespace firstLesson.models
 {
-    public class User
+    public abstract class User
     {
-        private string _login;
-        private string _password;
-        private Role _role;
+        protected string _login;
+        protected string _password;
+        protected Role _role;
 
         public User(string login, string password)
         {
             _login = login;
             _password = password;
-            _role = Role.User;
+            _role = Role.StandardUser;
         }
 
         public User(string login, string password, Role role):this(login, password)
         {
             _role = role;
+        }
+
+        public Role getRole()
+        {
+            return _role;
         }
 
         public override string ToString() => "Login: " + _login + "  Role:" + _role.ToString();

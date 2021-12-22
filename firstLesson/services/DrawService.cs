@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace firstLesson.services
 {
-    public class StringService
+    public class DrawService
     {
         public static void DrawHorizontal(char symbol, int length)
         {
@@ -32,10 +32,11 @@ namespace firstLesson.services
 
         public static void DrawBox(char horizontalSymbol, char verticalSymbol, int boxSizeX, int boxSizeY, int startY)
         {
-            StringService.DrawHorizontal(horizontalSymbol, boxSizeX);
-            StringService.DrawVertical(verticalSymbol, boxSizeY, boxSizeX - startY);
+            Console.Clear();
+            DrawService.DrawHorizontal(horizontalSymbol, boxSizeX);
+            DrawService.DrawVertical(verticalSymbol, boxSizeY, boxSizeX - startY);
             Console.WriteLine();
-            StringService.DrawHorizontal(horizontalSymbol, boxSizeX);
+            DrawService.DrawHorizontal(horizontalSymbol, boxSizeX);
         }
     }
 }

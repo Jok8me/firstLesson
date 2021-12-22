@@ -5,10 +5,14 @@ namespace firstLesson.services
     {
         public static bool LoginAuthentication(HashSet<User> users, User loginAttemptUser)
         {
-            if (users.Contains(loginAttemptUser))
-                return true;
+            foreach (var user in users)
+            {
+                if (loginAttemptUser.Equals(user) && user.getRole() == enums.Role.Admin)
+                {
+                    return true;
+                }
+            }
             return false;
-
         }
     }
 }

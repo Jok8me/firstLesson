@@ -17,8 +17,7 @@
 
             do
             {
-                Console.Clear();
-                StringService.DrawBox(horizontalSymbol, verticalSymbol, boxSizeX,boxSizeY,startY);
+                DrawService.DrawBox(horizontalSymbol, verticalSymbol, boxSizeX,boxSizeY,startY);
 
                 for (int i = 0; i < options.Length; i++)
                 {

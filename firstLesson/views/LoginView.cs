@@ -1,4 +1,5 @@
 ﻿using firstLesson.models;
+using firstLesson.resources;
 using firstLesson.services;
 
 namespace firstLesson.views
@@ -6,39 +7,28 @@ namespace firstLesson.views
     public class LoginView
     {
         public static void Run()
-        {
-            HashSet<User> users = new HashSet<User>();
-            users.Add(new Admin("admin", "admin", enums.Role.Admin));
-
-
-            string login, password;
+        {        
             User user;
-          
+            IDictionary<string, string> inputOptions = InputService.InputOptions();
 
-            DrawService.DrawBox('-', '|', 20, 5, 2);
-            Console.SetCursorPosition(3, 2);
 
-            Console.Write("Login: ");
-            login = Console.ReadLine();
-            Console.SetCursorPosition(3, 3);
-            Console.Write("Password:");
-            password = Console.ReadLine();
-            
-
-            if ( String.IsNullOrEmpty(login) || String.IsNullOrEmpty(password))
+            if (String.IsNullOrEmpty(inputOptions["Login"]) || String.IsNullOrEmpty(inputOptions["Password"]))
             {
-                throw new Exception("cannot find user with empty input");
+                throw new Exception(StringResources.CANNOT_FIND_USER);
             }
-            else user = new StandardUser(login, password);
+            else user = new StandardUser(inputOptions["Login"], inputOptions["Password"]);
 
-            Console.Clear();
-            if (LoginService.LoginAuthentication(users, user))
+
+            DrawService.DrawBox(3, 20);
+            Console.SetCursorPosition(2, 2);
+
+            if (LoginService.LoginAuthentication(User.users, user))
             {
-                Console.WriteLine("Logged");
+                AdminPanelVeiw adminPanelVeiw = new AdminPanelVeiw();
             }
             else
             {
-                Console.WriteLine("Wrong password");
+                Console.WriteLine("Wrong password or no permission");
             }
         }
     }

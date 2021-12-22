@@ -8,9 +8,12 @@ namespace firstLesson.services
 {
     public class DrawService
     {
+        public static char horizontalSymbol = '-';
+        public static char verticalSymbol = '|';
+
         public static void DrawHorizontal(char symbol, int length)
         {
-            for(int i = 0; i< length; i++)
+            for (int i = 0; i < length; i++)
             {
                 Console.Write(symbol);
             }
@@ -30,13 +33,14 @@ namespace firstLesson.services
             }
         }
 
-        public static void DrawBox(char horizontalSymbol, char verticalSymbol, int boxSizeX, int boxSizeY, int startY)
+        public static void DrawBox(int ammountItemInList, int maxItemSize)
         {
             Console.Clear();
-            DrawService.DrawHorizontal(horizontalSymbol, boxSizeX);
-            DrawService.DrawVertical(verticalSymbol, boxSizeY, boxSizeX - startY);
-            Console.WriteLine();
-            DrawService.DrawHorizontal(horizontalSymbol, boxSizeX);
+            Console.Write(" ");
+            DrawService.DrawHorizontal(horizontalSymbol, maxItemSize + 15);
+            DrawService.DrawVertical(verticalSymbol, ammountItemInList + 2, maxItemSize + 15);
+            Console.Write("\n ");
+            DrawService.DrawHorizontal(horizontalSymbol, maxItemSize + 15);
         }
     }
 }

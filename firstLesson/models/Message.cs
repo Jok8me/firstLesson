@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace firstLesson.views
+namespace firstLesson.models
 {
-    public abstract class View
+    public class Message
     {
-
+        public static string message = "";
     }
 }

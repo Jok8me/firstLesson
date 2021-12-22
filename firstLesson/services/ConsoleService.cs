@@ -4,24 +4,17 @@
     {
         public static int MultipleChoice(params string[] options)
         {
-
-
+            int startTextX = options.Max().Length;
+            int startTextY = 2;
             int currentSelected = 0;
-            const int startX = 2;
-            const int startY = 2;
-            const int boxSizeX = 10;
-            const int boxSizeY = 5;
-            const char horizontalSymbol = '-';
-            const char verticalSymbol = '|';
             ConsoleKey key;
 
             do
             {
-                DrawService.DrawBox(horizontalSymbol, verticalSymbol, boxSizeX,boxSizeY,startY);
-
+                DrawService.DrawBox(options.Count(), options.Max().Length*2);
                 for (int i = 0; i < options.Length; i++)
                 {
-                    Console.SetCursorPosition(startX + i, startY + i);
+                   Console.SetCursorPosition(startTextX + i, startTextY + i);
 
                     if (i == currentSelected)
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -49,8 +42,6 @@
                         }
                 }
             } while (key != ConsoleKey.Enter);
-
-            Console.SetCursorPosition(boxSizeY, boxSizeX);
             return currentSelected;
         }
     }

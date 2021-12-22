@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace firstLesson.views
 {
-    public class MessageView
+    public class MessageView : View
     {
         public MessageView(string message)
         {
+            DrawViewBox();
             int selectedMenuOption = ConsoleService.MultipleChoice(message, "OK");
             if (selectedMenuOption == 0 || selectedMenuOption == 1)
             {

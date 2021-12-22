@@ -33,14 +33,14 @@ namespace firstLesson.services
             }
         }
 
-        public static void DrawBox(int ammountItemInList, int maxItemSize)
+        public static void DrawBox(int sizeX, int sizeY)
         {
             Console.Clear();
             Console.Write(" ");
-            DrawService.DrawHorizontal(horizontalSymbol, maxItemSize + 15);
-            DrawService.DrawVertical(verticalSymbol, ammountItemInList + 2, maxItemSize + 15);
+            DrawService.DrawHorizontal(horizontalSymbol, sizeX);
+            DrawService.DrawVertical(verticalSymbol, sizeY, sizeX);
             Console.Write("\n ");
-            DrawService.DrawHorizontal(horizontalSymbol, maxItemSize + 15);
+            DrawService.DrawHorizontal(horizontalSymbol, sizeX);
         }
     }
 }

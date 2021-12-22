@@ -4,14 +4,13 @@
     {
         public static int MultipleChoice(params string[] options)
         {
-            int startTextX = options.Max().Length;
-            int startTextY = 2;
+            int startTextX = 2;
+            int startTextY = 3;
             int currentSelected = 0;
             ConsoleKey key;
 
             do
             {
-                DrawService.DrawBox(options.Count(), options.Max().Length*2);
                 for (int i = 0; i < options.Length; i++)
                 {
                    Console.SetCursorPosition(startTextX + i, startTextY + i);

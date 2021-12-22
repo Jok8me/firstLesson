@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace firstLesson.views
 {
-    internal class ManageUsersView : View
+    public class MainMenuView : View
     {
-        string [] manageUsersOptions = { "Add user", "Search user" };
-
-        public ManageUsersView()
+        public MainMenuView()
         {
             DrawViewBox();
-            int selectedMenuOption = ConsoleService.MultipleChoice("Add user", "Search user");
+
+            int selectedMenuOption = ConsoleService.MultipleChoice("Login", "Quit");
             if (selectedMenuOption == 0)
             {
-                AddUserView addUserView = new AddUserView();
+                LoginView loginView = new LoginView();
             }
             else if (selectedMenuOption == 1)
             {
-                SearchUserView searchUserView = new SearchUserView();
+                Environment.Exit(0);
             }
             else
             {
                 throw new Exception(StringResources.WRONG_OPTION_SELECTED);
             }
+
         }
 
     }

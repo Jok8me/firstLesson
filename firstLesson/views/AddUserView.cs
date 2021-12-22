@@ -9,10 +9,12 @@ using System.Threading.Tasks;
 
 namespace firstLesson.views
 {
-    public class AddUserView
+    public class AddUserView : View
     {
         public AddUserView()
         {
+            Console.CursorVisible = true;
+            DrawViewBox();
             IDictionary<string, string> inputOptions = InputService.InputOptions();
             
             if(!String.IsNullOrEmpty(inputOptions["Login"]) && !String.IsNullOrEmpty(inputOptions["Password"]))

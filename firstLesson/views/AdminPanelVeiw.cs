@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace firstLesson.views
 {
-    public class AdminPanelVeiw
+    public class AdminPanelVeiw : View
     {
         HashSet<string> adminPanelOptions = new HashSet<string> {"Manage Users", "Quit" };
 
         public AdminPanelVeiw()
         {
+            DrawViewBox();
             int selectedMenuOption = ConsoleService.MultipleChoice(adminPanelOptions.ToArray());
             if(selectedMenuOption == 0)
             {

@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace firstLesson.views
 {
-    public class SearchUserView
+    public class SearchUserView : View
     {
         public SearchUserView()
         {
+            DrawViewBox();
             IDictionary<string, string> inputOptions = InputService.InputOptions(1);
             User? user = null;
 

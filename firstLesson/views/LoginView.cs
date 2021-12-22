@@ -4,11 +4,13 @@ using firstLesson.services;
 
 namespace firstLesson.views
 {
-    public class LoginView
+    public class LoginView : View
     {
-        public static void Run()
+        public LoginView()
         {        
             User user;
+            DrawViewBox();
+            
             IDictionary<string, string> inputOptions = InputService.InputOptions();
 
 
@@ -18,9 +20,6 @@ namespace firstLesson.views
             }
             else user = new StandardUser(inputOptions["Login"], inputOptions["Password"]);
 
-
-            DrawService.DrawBox(3, 20);
-            Console.SetCursorPosition(2, 2);
 
             if (LoginService.LoginAuthentication(User.users, user))
             {

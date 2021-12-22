@@ -15,8 +15,6 @@ namespace firstLesson.services
 
         public static IDictionary<string, string> InputOptions()
         {
-            DrawService.DrawBox(inputOptions.Count, 5);
-
             for (int i = 0; i < inputOptions.Count; i++)
             {
                 Console.SetCursorPosition(2, 2 + i);
@@ -30,15 +28,12 @@ namespace firstLesson.services
 
         public static IDictionary<string, string> InputOptions(int ammoutOfData)
         {
-            DrawService.DrawBox(ammoutOfData, 5);
-
             for (int i = 0; i < ammoutOfData; i++)
             {
                 Console.SetCursorPosition(2, 2 + i);
                 Console.Write(inputOptions.ElementAt(i).Key + ": ");
                 inputOptions[inputOptions.ElementAt(i).Key] = Console.ReadLine();
             }
-
             return inputOptions;
         }
 

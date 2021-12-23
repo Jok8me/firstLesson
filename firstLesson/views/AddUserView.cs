@@ -15,11 +15,13 @@ namespace firstLesson.views
         {
             Console.CursorVisible = true;
             DrawViewBox();
+            Console.CursorVisible = true;
+
             IDictionary<string, string> inputOptions = InputService.InputOptions();
-            
             if(!String.IsNullOrEmpty(inputOptions["Login"]) && !String.IsNullOrEmpty(inputOptions["Password"]))
             {
                 User.users.Add(new StandardUser(inputOptions["Login"], inputOptions["Password"]));
+                ManageUsersView manageUsersView = new ManageUsersView();
             }
             else
             {

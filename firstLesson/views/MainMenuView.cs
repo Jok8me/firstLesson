@@ -21,6 +21,7 @@ namespace firstLesson.views
             }
             else if (selectedMenuOption == 1)
             {
+                Console.CursorTop = Console.WindowTop + Console.WindowHeight-10;
                 Environment.Exit(0);
             }
             else

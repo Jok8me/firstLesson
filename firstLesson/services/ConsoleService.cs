@@ -13,7 +13,7 @@
             {
                 for (int i = 0; i < options.Length; i++)
                 {
-                   Console.SetCursorPosition(startTextX + i, startTextY + i);
+                   Console.SetCursorPosition(startTextX, startTextY + i);
 
                     if (i == currentSelected)
                         Console.ForegroundColor = ConsoleColor.Red;

@@ -9,7 +9,7 @@ namespace firstLesson.views
 {
     public abstract class View
     {
-        int sizeX = 20;
+        int sizeX = 25;
         int sizeY = 8;
 
         public void DrawViewBox()

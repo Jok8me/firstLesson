@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace firstLesson.views
 {
     public class SearchUserView : View
@@ -15,26 +16,17 @@ namespace firstLesson.views
         {
             DrawViewBox();
             IDictionary<string, string> inputOptions = InputService.InputOptions(1);
-            User? user = null;
 
             if (!String.IsNullOrEmpty(inputOptions["Login"])){
-                for (int i = 0; i < User.users.Count; i++)
+                for (int z = 0; z < User.users.Count; z++)
                 {
-                    if (User.users.ElementAt(i).getLogin() == inputOptions["Login"])
+
+                    if (User.users.ElementAt(z).getLogin().Equals(inputOptions["Login"]))
                     {
-                        user = User.users.ElementAt(i);
+                        EditUserView editUserView = new EditUserView(User.users.ElementAt(z));
                     }
                 }
-
-                if (user != null)
-                {
-
-                }
-                else
-                {
-                    MessageView messageView = new MessageView("Can't find user '" + inputOptions["Login"] + "'.");
-                }
-
+                MessageView messageView = new MessageView("Can't find user '" + inputOptions["Login"] + "'.");
             } 
             else
             {

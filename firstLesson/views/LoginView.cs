@@ -10,9 +10,9 @@ namespace firstLesson.views
         {        
             User user;
             DrawViewBox();
-            
-            IDictionary<string, string> inputOptions = InputService.InputOptions();
 
+            Console.CursorVisible = true;
+            IDictionary<string, string> inputOptions = InputService.InputOptions();
 
             if (String.IsNullOrEmpty(inputOptions["Login"]) || String.IsNullOrEmpty(inputOptions["Password"]))
             {

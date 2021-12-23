@@ -17,7 +17,7 @@ namespace firstLesson.services
         {
             for (int i = 0; i < inputOptions.Count; i++)
             {
-                Console.SetCursorPosition(2, 2 + i);
+                Console.SetCursorPosition(2, 3 + i);
                 Console.Write(inputOptions.ElementAt(i).Key + ": ");
                 inputOptions[inputOptions.ElementAt(i).Key] = Console.ReadLine();
             }

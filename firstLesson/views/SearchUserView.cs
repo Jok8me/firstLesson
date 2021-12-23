@@ -23,7 +23,7 @@ namespace firstLesson.views
 
                     if (User.users.ElementAt(z).getLogin().Equals(inputOptions["Login"]))
                     {
-                        EditUserView editUserView = new EditUserView(User.users.ElementAt(z));
+                        ModifyUserView editUserView = new ModifyUserView(z);
                     }
                 }
                 MessageView messageView = new MessageView("Can't find user '" + inputOptions["Login"] + "'.");

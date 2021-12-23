@@ -1,4 +1,5 @@
 ﻿using firstLesson.models;
+using firstLesson.resources;
 using firstLesson.services;
 using System;
 using System.Collections.Generic;
@@ -8,14 +9,21 @@ using System.Threading.Tasks;
 
 namespace firstLesson.views
 {
-    public class EditUserView : View
+    internal class EditUserView : View
     {
-        public EditUserView(User user)
+        public EditUserView(int indexOfUser)
         {
             DrawViewBox();
-            Console.SetCursorPosition(1, 1);
-            Console.WriteLine("Znaleziono usera:" + user.getLogin());
-            int selectedMenuOption = ConsoleService.MultipleChoice("Edit", "Delete");
+            IDictionary<string, string> inputOptions = InputService.InputOptions();
+
+            if (!String.IsNullOrEmpty(inputOptions["Login"]) && !String.IsNullOrEmpty(inputOptions["Password"]))
+            {
+                User.users.ElementAt(indexOfUser).UpdateUser(inputOptions["Login"], inputOptions["Password"]);
+                MessageView message = new MessageView(inputOptions["Login"] + " correctly updated.");
+            } else
+            {
+                throw new Exception(StringResources.WRONG_INPUT);
+            }
         }
     }
 }

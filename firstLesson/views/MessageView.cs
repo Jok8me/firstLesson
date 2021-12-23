@@ -12,6 +12,7 @@ namespace firstLesson.views
     {
         public MessageView(string message)
         {
+            sizeX = 30;
             DrawViewBox();
             int selectedMenuOption = ConsoleService.MultipleChoice(message, "OK");
             if (selectedMenuOption == 0 || selectedMenuOption == 1)

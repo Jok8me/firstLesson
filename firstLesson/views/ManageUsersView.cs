@@ -10,12 +10,10 @@ namespace firstLesson.views
 {
     internal class ManageUsersView : View
     {
-        string [] manageUsersOptions = { "Add user", "Search user" };
-
         public ManageUsersView()
         {
             DrawViewBox();
-            int selectedMenuOption = ConsoleService.MultipleChoice("Add user", "Search user");
+            int selectedMenuOption = ConsoleService.MultipleChoice("Add user", "Search user", "Quit");
             if (selectedMenuOption == 0)
             {
                 AddUserView addUserView = new AddUserView();
@@ -23,6 +21,11 @@ namespace firstLesson.views
             else if (selectedMenuOption == 1)
             {
                 SearchUserView searchUserView = new SearchUserView();
+            }
+            else if (selectedMenuOption == 2)
+            {
+                Console.CursorTop = Console.WindowTop + Console.WindowHeight - 10;
+                Environment.Exit(0);
             }
             else
             {

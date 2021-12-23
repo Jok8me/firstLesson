@@ -21,6 +21,12 @@ namespace firstLesson.models
             _role = role;
         }
 
+        public void UpdateUser(string login, string password)
+        {
+            this._login = login;
+            this._password = password;
+        }
+
         public Role getRole()
         {
             return _role;

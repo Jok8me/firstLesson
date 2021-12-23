@@ -1,4 +1,4 @@
-﻿using firstLesson.models;
+﻿using firstLesson.models.Users;
 using firstLesson.resources;
 using firstLesson.services;
 

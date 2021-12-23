@@ -1,4 +1,4 @@
-﻿using firstLesson.models;
+﻿using firstLesson.models.Users;
 namespace firstLesson.services
 {
     public class LoginService

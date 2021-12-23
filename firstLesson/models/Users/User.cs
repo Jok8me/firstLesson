@@ -1,6 +1,6 @@
 ﻿using firstLesson.enums;
 
-namespace firstLesson.models
+namespace firstLesson.models.Users
 {
     public abstract class User
     {

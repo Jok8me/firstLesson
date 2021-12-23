@@ -1,4 +1,4 @@
-﻿using firstLesson.models;
+﻿using firstLesson.models.Users;
 using firstLesson.enums;
 using firstLesson.views;
 

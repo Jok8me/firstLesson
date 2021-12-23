@@ -1,6 +1,7 @@
 ﻿using firstLesson.enums;
+using firstLesson.models.Users;
 
-namespace firstLesson.models
+namespace firstLesson.models.Users
 {
     public class Admin : User
     {

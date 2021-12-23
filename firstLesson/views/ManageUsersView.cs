@@ -13,7 +13,7 @@ namespace firstLesson.views
         public ManageUsersView()
         {
             DrawViewBox();
-            int selectedMenuOption = ConsoleService.MultipleChoice("Add user", "Search user", "Quit");
+            int selectedMenuOption = ConsoleService.MultipleChoice("Add user", "Search user", "Back");
             if (selectedMenuOption == 0)
             {
                 AddUserView addUserView = new AddUserView();
@@ -24,8 +24,7 @@ namespace firstLesson.views
             }
             else if (selectedMenuOption == 2)
             {
-                Console.CursorTop = Console.WindowTop + Console.WindowHeight - 10;
-                Environment.Exit(0);
+                AdminPanelVeiw adminPanelVeiw = new AdminPanelVeiw();
             }
             else
             {

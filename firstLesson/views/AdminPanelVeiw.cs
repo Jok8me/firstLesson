@@ -9,7 +9,7 @@ namespace firstLesson.views
 {
     public class AdminPanelVeiw : View
     {
-        HashSet<string> adminPanelOptions = new HashSet<string> {"Manage Users", "Quit" };
+        HashSet<string> adminPanelOptions = new HashSet<string> {"Manage Users", "Logout" };
 
         public AdminPanelVeiw()
         {
@@ -21,8 +21,9 @@ namespace firstLesson.views
 
             } else if(selectedMenuOption == 1)
             {
-
-            }else
+                LoginView loginView = new LoginView();   
+            }
+            else
             {
 
             }

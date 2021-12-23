@@ -39,6 +39,12 @@
                                 currentSelected += 1;
                             break;
                         }
+                    case ConsoleKey.Escape:
+                        {
+                            Console.CursorTop = Console.WindowTop + Console.WindowHeight - 10;
+                            Environment.Exit(0);
+                            break;
+                        }
                 }
             } while (key != ConsoleKey.Enter);
             return currentSelected;

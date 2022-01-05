@@ -1,35 +1,42 @@
-﻿using firstLesson.resources;
-using firstLesson.services;
+﻿using firstLesson.services.ConsoleServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.ConsoleColor;
 
-namespace firstLesson.views
+namespace firstLesson.Views
 {
     public class MainMenuView : View
     {
-        public MainMenuView()
+        string _prompt = "Library aplication";
+        string[] _options = {"Login", "Quit"}; 
+        int choosenOption = 0;
+
+        public MainMenuView(MainWindow mainWindow) : base(mainWindow)
         {
-            DrawViewBox();
-
-            int selectedMenuOption = ConsoleService.MultipleChoice("Login", "Quit");
-            if (selectedMenuOption == 0)
-            {
-                LoginView loginView = new LoginView();
-            }
-            else if (selectedMenuOption == 1)
-            {
-                Console.CursorTop = Console.WindowTop + Console.WindowHeight-10;
-                Environment.Exit(0);
-            }
-            else
-            {
-                throw new Exception(StringResources.WRONG_OPTION_SELECTED);
-            }
-
         }
 
+
+
+        public override void Run()
+        {
+            ChooseOptionServices chooseOptionServices = new ChooseOptionServices(_prompt, _options);
+            choosenOption = chooseOptionServices.Run();
+
+            switch (choosenOption)
+            {
+                case 0:
+                    _mainWindow._loginView.Run();
+                    break;  
+                case 1:
+                    ConsoleUtils.QuitConsole();
+                    break;
+
+            }
+
+            ConsoleUtils.WaitForKeyPress();
+        }
     }
 }

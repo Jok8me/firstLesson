@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@using LibraryWebApp.Properties
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+
+<html lang="en">
+   <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <title>@ViewData["Title"] @Resources.aplicationName </title>
+      <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+      <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+      <script src="https://kit.fontawesome.com/7b0ee23d01.js" crossorigin="anonymous"></script>
+   </head>
+   <body>
+      <header>
+      </header>
+      <div class = d-flex>
+         <div class = "sidebar" data-v = @HttpContextAccessor.HttpContext.Session.GetString("Login")>
+            <div class="d-flex flex-column vh-100 flex-shrink-0 p-3 text-white bg-dark" style="width: 250px;">
+               <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <svg class="bi me-2" width="30" height="32"> </svg>
+                    <span class="fas fa-book fa-lg"> @Resources.aplicationName</span> 
+               </a>
+               <hr>
+               <ul class="nav nav-pills flex-column mb-auto">
+                  <li class="nav-item">
+                  <li><a asp-controller="UserPanel" asp-action="Index" class="btn btn-primary btn-block btn-large">@Resources.naviProfile</a></li>
+                  <li><a asp-controller="CurrentBorrowed" asp-action="Index" class="btn btn-primary btn-block btn-large">@Resources.naviBorrowedList</a></li>
+                  <li><a asp-controller="BooksSearching" asp-action="Index" class="btn btn-primary btn-block btn-large">@Resources.naviSearchBook</a></li>
+                  <li><a asp-controller="Login" asp-action="Index" class="btn btn-primary btn-block btn-large">@Resources.naviLogout</a></li>
+               </ul>
+               <hr>
+            </div>
+         </div>
+         <script>
+             const sideBar = document.querySelector(".sidebar")
+             if(!sideBar.dataset.v){
+                 sideBar.remove()
+             }
+         </script>
+         <div class="container">
+            <main role="main" class="pb-3">
+               @RenderBody()
+            </main>
+         </div>
+      </div>
+      <script src="~/lib/jquery/dist/jquery.min.js"></script>
+      <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+      <script src="~/js/site.js" asp-append-version="true"></script>
+      @await RenderSectionAsync("Scripts", required: false)
+   </body>
+</html>

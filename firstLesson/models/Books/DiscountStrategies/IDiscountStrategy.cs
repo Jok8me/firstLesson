@@ -8,6 +8,6 @@ namespace firstLesson.models.Books.DiscountStrategies
 {
     public interface IDiscountStrategy
     {
-        double calculate(double price, double discount);
+        public double calculate(double price);
     }
 }

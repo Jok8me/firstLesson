@@ -1,5 +1,7 @@
 ﻿using firstLesson.resources;
 using firstLesson.services;
+using firstLesson.services.ConsoleServices;
+using firstLesson.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +11,17 @@ using System.Threading.Tasks;
 namespace firstLesson.views
 {
     public class MessageView : View
-    {
-        public MessageView(string message)
+    {        public MessageView(MainWindow mainWindow) : base(mainWindow)
         {
-            sizeX = 30;
-            DrawViewBox();
-            int selectedMenuOption = ConsoleService.MultipleChoice(message, "OK");
+        }
+
+        public void Run(string _message, string[] _prompt)
+        {
+            int selectedMenuOption = new ChooseOptionServices(_message, _prompt).Run();
+
             if (selectedMenuOption == 0 || selectedMenuOption == 1)
             {
-                ManageUsersView manageUsersView = new ManageUsersView();
+                _mainWindow._manageUsersView.Run();
             }
             else throw new Exception(StringResources.WRONG_OPTION_SELECTED);
         }

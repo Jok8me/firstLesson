@@ -1,8 +1,19 @@
 ﻿using firstLesson.models.Users;
 using firstLesson.enums;
 using firstLesson.views;
+using firstLesson.models.Books;
+using firstLesson.models.Books.DiscountStrategies;
+using firstLesson.services.DiscountServices;
+using firstLesson.services.BookServices;
+using firstLesson.Views;
+using firstLesson.services.ConsoleServices;
+using DatabaseConnection;
+using DatabaseConnection.UsersTableServices;
 
-User.users.Add(new Admin("admin", "admin", Role.Admin));
-User.users.Add(new StandardUser("user", "user"));
+UserDBService userDBService = new UserDBService();
 
-MainMenuView mainMenuView = new MainMenuView();
+string Title = "Library";
+Console.CursorVisible = false;
+MainWindow mainWindow = new MainWindow();
+
+mainWindow.Start();

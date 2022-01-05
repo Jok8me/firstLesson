@@ -10,7 +10,32 @@
       "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
       "DisplayName": "Różne pliki",
       "ColorIndex": -1
+    },
+    "e6fbc84b-1eb5-4d83-95f4-b946937cda50": {
+      "ProjectGuid": "e6fbc84b-1eb5-4d83-95f4-b946937cda50",
+      "DisplayName": "DatabaseConnection",
+      "ColorIndex": 1
+    },
+    "6c36c5ea-7f20-40a8-86c2-cf81f8daa9a9": {
+      "ProjectGuid": "6c36c5ea-7f20-40a8-86c2-cf81f8daa9a9",
+      "DisplayName": "WebLibraryApp",
+      "ColorIndex": 2
+    },
+    "61a4e217-e20b-4397-9ce9-39eb3f073fbd": {
+      "ProjectGuid": "61a4e217-e20b-4397-9ce9-39eb3f073fbd",
+      "DisplayName": "LibraryWebApp",
+      "ColorIndex": 3
+    },
+    "ccd159c3-1d96-41b0-b35d-fbfe75c29e76": {
+      "ProjectGuid": "ccd159c3-1d96-41b0-b35d-fbfe75c29e76",
+      "DisplayName": "LibraryWebApp",
+      "ColorIndex": 4
+    },
+    "7f5aab3a-a117-4823-8e93-8d1153ca741e": {
+      "ProjectGuid": "7f5aab3a-a117-4823-8e93-8d1153ca741e",
+      "DisplayName": "LibraryWebApp",
+      "ColorIndex": 5
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 6
 }

@@ -1,0 +1,48 @@
+﻿@page
+@using LibraryWebApp.Properties
+@{
+}
+<div class="container">
+  <div class="row">
+    <div class="col-md-2 ">
+    </div>
+    <div class="col-md-9">
+      <div class="card text-white bg-dark">
+        <div class="card-body">
+          <div class="col-md-12">
+            <i class="fas fa-book-open fa-2x"> @Resources.pageTitleBorrowedBookList </i>
+            <hr>
+          </div>
+          <table class="borrowedTable table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">@Resources.borrowTableTitle</th>
+                <th scope="col">@Resources.borrowTableAuthor</th>
+                <th scope="col">@Resources.borrowTablePublicationDate</th>
+                <th scope="col">@Resources.borrowTableBookType</th>
+                <th scope="col">@Resources.borrowTableDiscountApplied</th>
+                <th scope="col">@Resources.borrowTablePrice</th>
+                <th scope="col">@Resources.borrowTableDetails</th>
+              </tr>
+                @foreach (var book in ViewBag.Books)
+                {
+                    <tr>
+                        <th>@book.title</th>
+                        <th>author</th>
+                        <th>@book.publicationDate</th>
+                        <th>@book.typeId</th>
+                        <th>@book.discountOnItemId</th>
+                        <th>@book.price</th>
+                        <th class="text-center"><a class="btn btn-primary" href="route.html?id=${value.ID}" role="button"> @Resources.borrowTableDetails </a></th>
+                    </tr>
+                }
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\bin\Debug\net6.0\DatabaseConnection.deps.json
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\bin\Debug\net6.0\DatabaseConnection.dll
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\bin\Debug\net6.0\ref\DatabaseConnection.dll
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\bin\Debug\net6.0\DatabaseConnection.pdb
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.csproj.AssemblyReference.cache
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.AssemblyInfoInputs.cache
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.AssemblyInfo.cs
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.csproj.CoreCompileInputs.cache
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.dll
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\ref\DatabaseConnection.dll
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.pdb

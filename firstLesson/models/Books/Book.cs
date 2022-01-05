@@ -10,36 +10,31 @@ namespace firstLesson.models.Books
 {
     public class Book
     {
-        private string title;
-        private string author;
-        private double price;
-        private string publicationDate;
+        public string title { get; private set; }
+        public string author { get; private set; }
+        public string publicationDate { get; private set; }
         private BookStatus bookStatus;
-        IDiscountStrategy iDiscountStrategy;
+        private IDiscountStrategy _iDiscountStrategy;
+        public double price { get; private set; }
 
-        public Book(string title, string author ,double price ,string publicationDate, BookStatus bookStatus)
+        public Book(string title, string author,string publicationDate, BookStatus bookStatus, double price)
         {
             this.title = title;
             this.author = author;   
             this.price = price; 
             this.publicationDate = publicationDate;
             this.bookStatus = bookStatus;
+            _iDiscountStrategy = new PriceDiscountStrategy(0);
+            this.price = price;
         }
-        public Book(string title, string author, double price, string publicationDate, BookStatus bookStatus, IDiscountStrategy iDiscountStrategy) : this(title, author, price, publicationDate, bookStatus)
+
+        public void SetDiscountStrategy(IDiscountStrategy iDiscountStrategy)
         {
-            this.iDiscountStrategy = iDiscountStrategy;
+            _iDiscountStrategy = iDiscountStrategy;
         }
-
-        public void SetStrategy(IDiscountStrategy iDiscountStrategy)
+        public IDiscountStrategy GetDiscountStrategy()
         {
-            this.iDiscountStrategy = iDiscountStrategy;
+            return _iDiscountStrategy;
         }
-
-        public double GetPriceAfterDiscount(double price, double discount)
-        {
-            return iDiscountStrategy.calculate(price, discount);
-        }
-
-
     }
 }

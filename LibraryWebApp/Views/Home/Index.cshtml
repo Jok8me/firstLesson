@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Home Page</title>
+</head>
+<body>
+
+<div class="text-center" >
+    <h3>
+           Welcome @HttpContextAccessor.HttpContext.Session.GetString("Login") 
+    </h3>
+    <p>This is home page of LibraryApp</p>
+</div>
+
+</body>
+</html>

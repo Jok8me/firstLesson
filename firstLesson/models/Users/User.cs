@@ -4,7 +4,6 @@ namespace firstLesson.models.Users
 {
     public abstract class User
     {
-        internal static HashSet<User> users = new HashSet<User>();
         protected string _login;
         protected string _password;
         protected Role _role;
@@ -35,6 +34,11 @@ namespace firstLesson.models.Users
         public string getLogin()
         {
             return _login;
+        }
+
+        public string getPassword()
+        {
+            return _password;
         }
 
         public override string ToString() => "Login: " + _login + "  Role:" + _role.ToString();

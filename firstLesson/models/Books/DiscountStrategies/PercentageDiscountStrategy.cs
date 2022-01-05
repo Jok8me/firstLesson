@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace firstLesson.models.Books.DiscountStrategies
 {
-    internal class PercentageDiscountStrategy : IDiscountStrategy
-    {
-        public double calculate(double price, double discount)
+    public class PercentageDiscountStrategy : IDiscountStrategy
+    { 
+        private double _discount;
+        public PercentageDiscountStrategy(double discount)
         {
-            return price * discount / 100;
+            _discount = discount;
+        }
+        public double calculate(double price)
+        {
+            return (price - price * _discount / 100);
         }
     }
 }

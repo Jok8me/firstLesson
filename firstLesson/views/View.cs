@@ -1,21 +1,28 @@
-﻿using firstLesson.services;
+﻿using DatabaseConnection.TableService;
+using DatabaseConnection.UsersTableServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace firstLesson.views
+namespace firstLesson.Views
 {
-    public abstract class View
+    public class View
     {
-        protected int sizeX = 25;
-        int sizeY = 8;
+        protected MainWindow _mainWindow;
+        protected UserDBService userDBService;
+        protected BookDBService itemDBService;
 
-        public void DrawViewBox()
+        public View(MainWindow mainWindow)
         {
-            Console.CursorVisible = false;
-            DrawService.DrawBox(sizeX, sizeY);
+            _mainWindow = mainWindow;
+            userDBService = new UserDBService();
+            itemDBService = new BookDBService();
+        }
+        virtual public void Run()
+        {
+
         }
     }
 }

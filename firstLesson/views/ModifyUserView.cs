@@ -8,34 +8,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using firstLesson.models.Users;
+using firstLesson.Views;
+using firstLesson.services.ConsoleServices;
+using DatabaseConnection;
 
 namespace firstLesson.views
 {
     public class ModifyUserView : View
     {
-        public ModifyUserView(int indexOfUser)
+        public ModifyUserView(MainWindow mainWindow) : base(mainWindow)
         {
-            DrawViewBox();
-            Console.SetCursorPosition(1, 1);
-            Console.WriteLine("Znaleziono usera:" + User.users.ElementAt(indexOfUser).getLogin());
-            int selectedMenuOption = ConsoleService.MultipleChoice("Edit", "Delete", "Back");
+        }
 
-            if (selectedMenuOption == 0)
+
+        public void Run(DatabaseConnection.Models.User user)
+        {
+
+            string prompt = "Znaleziono usera:" + user.login;
+            string[] options = { "Edit", "Delete", "Back" };
+            int selectedMenuOption = new ChooseOptionServices(prompt, options).Run();
+
+            switch (selectedMenuOption)
             {
-                EditUserView editUserView = new EditUserView(indexOfUser);
-            }
-            else if (selectedMenuOption == 1)
-            {
-                string loginUserToRemove = User.users.ElementAt(indexOfUser).getLogin();
-                User.users.Remove(User.users.ElementAt(indexOfUser));
-                MessageView messageView = new MessageView("User " + loginUserToRemove + " sucesfully removed.");
-            }
-            else if (selectedMenuOption == 2)
-            {
-                AdminPanelVeiw adminPanelVeiw = new AdminPanelVeiw();
-            }
-            else
-            {
+                case 0:
+                    _mainWindow._editUserView.Run(user.Id);
+                    break;
+                case 1:
+                    string[] _options = { "Ok" };
+                    string message;
+
+                    userDBService.deleteUserById(user.Id);
+                    message = "User " + user.login + " sucesfully removed.";
+                    _mainWindow._messageView.Run(message, _options);
+
+                    break;
+                case 2:
+                    _mainWindow._adminPanelView.Run();
+                    break;
+                default:
+                    _mainWindow._modifyUserView.Run();
+                    break;
 
             }
         }

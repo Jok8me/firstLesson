@@ -1,0 +1,62 @@
+﻿@page
+@using LibraryWebApp.Properties
+@model LibraryWebApp.Views.Login.IndexModel
+@{
+ViewBag.Title = "Login";
+}  
+<!DOCTYPE html>
+<head>
+	<meta charset='UTF-8'>
+	<meta name="robots" content="noindex">
+</head>
+<body>
+	<i class="fas fa-book fa-5x"> @Resources.aplicationName </i>
+	<div class="login">
+		<h1>@Resources.pageTitleLogin</h1>
+		@ViewBag.error
+		<form method="post" action="@Url.Action("Login")">
+		<input type="text" class="loginInput" name="login" placeholder=@Resources.loginPlaceholder />
+		<input type="password" class="passwordInput" name="password" placeholder=@Resources.passwordPlaceholder />
+		<button type="submit" class="btn btn-primary btn-block btn-large">@Resources.loginButton</button>
+		</form>
+	</div>
+	<script>
+		document.querySelector("form").addEventListener("submit", event =>{
+		event.preventDefault();
+		const loginInput = document.querySelector(".loginInput");
+		const passwordInput = document.querySelector(".passwordInput");
+		let loginInputCorrect = true;
+		let passwordInputCorrect = true;
+		
+		if(!loginInput.value)
+		    loginInputCorrect = false;
+		else if(loginInput.value.length < 4)
+		    loginInputCorrect = false;
+		else if(loginInput.value.length > 20)
+		    loginInputCorrect = false;
+		
+		if(!passwordInput.value)
+		    passwordInputCorrect = false;
+		else if(passwordInput.value.length < 4)
+		    passwordInputCorrect = false;
+		else if(passwordInput.value.length > 20)
+		    passwordInputCorrect = false;
+		
+		if(!loginInputCorrect)
+		    loginInput.classList.add("incorrectInput");
+		else{
+		    loginInput.classList.remove("incorrectInput");
+		}
+		
+		if(!passwordInputCorrect)
+		    passwordInput.classList.add("incorrectInput");
+		else{
+		    passwordInput.classList.remove("incorrectInput");
+		}
+		if(passwordInputCorrect && loginInputCorrect)
+		document.querySelector("form").submit();
+		    })
+		    
+	</script>
+</body>
+</html>

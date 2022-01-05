@@ -1,0 +1,80 @@
+﻿@model LibraryWebApp.Models.User
+<div class="container">
+	<div class="row">
+		<div class="col-md-2 ">
+		</div>
+		<div class="col-md-9">
+			<div class="card text-white bg-dark">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-12">
+							<i class="fas fa-user fa-2x"> Your profile</i>
+							<hr>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 text-white bg-dark">
+							<form method="post" action="@Url.Action("UpdateProfil")">
+							<div class="form-group row">
+								<label for="username" class="fas fa-user-edit fa-lg col-4 col-form-label">Login*</label> 
+								<div class="col-8">
+									<input id="login" class="loginInput" name="login" value=@ViewBag.Login type="text" />
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="newpass" class="fas fa-key fa-lg col-4 col-form-label">Password*</label> 
+								<div class="col-8">
+									<input id="password" class="passwordInput" name="password" value=@ViewBag.Password type="text"/>
+								</div>
+							</div>
+							<div class="form-group row">
+								<div class="offset-4 col-8">
+									<td><input type="submit" onclick="return confirm('Are you sure to update your profil data?')" class="btn btn-primary btn-block btn-large" value="Update profil"></td>
+								</div>
+							</div>
+							</form>
+						</div>
+					</div>
+					<script>
+						document.querySelector("form").addEventListener("submit", event =>{
+						event.preventDefault();
+						const loginInput = document.querySelector(".loginInput");
+						const passwordInput = document.querySelector(".passwordInput");
+						let loginInputCorrect = true;
+						let passwordInputCorrect = true;
+						
+						if(!loginInput.value)
+						    loginInputCorrect = false;
+						else if(loginInput.value.length < 4)
+						    loginInputCorrect = false;
+						else if(loginInput.value.length > 20)
+						    loginInputCorrect = false;
+						
+						if(!passwordInput.value)
+						    passwordInputCorrect = false;
+						else if(passwordInput.value.length < 4)
+						    passwordInputCorrect = false;
+						else if(passwordInput.value.length > 20)
+						    passwordInputCorrect = false;
+						
+						if(!loginInputCorrect)
+						    loginInput.classList.add("incorrectInput");
+						else{
+						    loginInput.classList.remove("incorrectInput");
+						}
+						
+						if(!passwordInputCorrect)
+						    passwordInput.classList.add("incorrectInput");
+						else{
+						    passwordInput.classList.remove("incorrectInput");
+						}
+						if(passwordInputCorrect && loginInputCorrect)
+						document.querySelector("form").submit();
+						    })
+						    
+					</script>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

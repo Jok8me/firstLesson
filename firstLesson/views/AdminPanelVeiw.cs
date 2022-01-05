@@ -1,4 +1,6 @@
 ﻿using firstLesson.services;
+using firstLesson.services.ConsoleServices;
+using firstLesson.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +11,36 @@ namespace firstLesson.views
 {
     public class AdminPanelVeiw : View
     {
-        HashSet<string> adminPanelOptions = new HashSet<string> {"Manage Users", "Logout" };
+        HashSet<string> adminPanelOptions = new HashSet<string> {"Manage Users" , "Manage Books", "Logout" };
+        private string prompt = "Admin panel";
 
-        public AdminPanelVeiw()
+        public AdminPanelVeiw(MainWindow mainWindow) : base(mainWindow)
         {
-            DrawViewBox();
-            int selectedMenuOption = ConsoleService.MultipleChoice(adminPanelOptions.ToArray());
-            if(selectedMenuOption == 0)
-            {
-                ManageUsersView manageUsersView = new ManageUsersView();
+        }
 
-            } else if(selectedMenuOption == 1)
+        public override void Run()
+        {
+            ChooseOptionServices chooseOptionServices = new ChooseOptionServices(prompt, adminPanelOptions.ToArray());
+            int selectedMenuOption = chooseOptionServices.Run();
+
+            if (selectedMenuOption == 0)
             {
-                LoginView loginView = new LoginView();   
+                _mainWindow._manageUsersView.Run();
+
+            }
+            else if (selectedMenuOption == 1)
+            {
+                _mainWindow._manageBooksView.Run();
+            }
+            else if (selectedMenuOption == 2)
+            {
+                _mainWindow._loginView.Run();
             }
             else
             {
 
             }
         }
-
     }
+    
 }

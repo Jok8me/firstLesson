@@ -22,8 +22,8 @@ namespace DatabaseConnection.TableService
             {
                 cmd.Parameters.Add("@bookId", SqlDbType.TinyInt).Value = bookId;
                 cmd.Parameters.Add("@userId", SqlDbType.TinyInt).Value = userId;
-                cmd.Parameters.Add("@currentDate", SqlDbType.Date).Value = DateTime.Now.ToString("yyyy-MM-dd");
-                cmd.Parameters.Add("@returnDate", SqlDbType.Date).Value = new DateTime().AddMonths(1).ToString("yyyy-MM-dd");
+                cmd.Parameters.Add("@currentDate", SqlDbType.Date).Value = DateTime.Now;
+                cmd.Parameters.Add("@returnDate", SqlDbType.Date).Value = DateTime.Now.AddMonths(1);
                 cmd.ExecuteNonQuery();
             }
             closeDBConnection();

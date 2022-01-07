@@ -3,7 +3,7 @@
 @{
 }
 
-<div class="container">
+<div class="mainBox">
   <div class="row">
     <div class="col-md-2 ">
     </div>
@@ -18,23 +18,23 @@
               <tr>
                 <th scope="col">@Resources.borrowTableTitle</th>
                 <th scope="col">@Resources.borrowTableAuthor</th>
-                <th scope="col">@Resources.borrowTablePublicationDate</th>
-                <th scope="col">@Resources.borrowTableBookType</th>
-                <th scope="col">@Resources.borrowTableDiscountApplied</th>
+                <th scope="col">Borrow Start Date</th>
+                <th scope="col">Borrow End Date</th>
+                <th scope="col">Book Type</th>
+                <th scope="col">Discount</th>
                 <th scope="col">@Resources.borrowTablePrice</th>
-                <th scope="col">@Resources.borrowTableDetails</th>
               </tr>
                 @foreach (var book in ViewBag.Books)
                 {
                     <tr>
                         <th>@book.title</th>
                         <th>@book.author</th>
-                        <th>@book.publicationDate.ToString("MM/dd/yyyy")</th>
+                        <th>@book.borrowStartDate.ToString("MM/dd/yyyy")</th>
+                        <th>@book.borrowEndDate.ToString("MM/dd/yyyy")</th>
                         <th>@book.bookType</th>
                         <th>@book.discountOnItemId</th>
                         <th>@book.price</th>
-                       <th class="text-center"><button type="button" class="customButton" data-toggle="modal" data-target="#exampleModalCenter"> @Resources.borrowTableDetails </button></th>
-                   </tr>
+                    </tr>
                 }
             </thead>
             <tbody id="tableBody">

@@ -24,10 +24,10 @@
 		<button type="button" class="customButton" data-bs-toggle="modal" data-bs-target="#Modal@(book.id)">Details</button>
 		<input type="hidden" value=@book.id name="bookId">
 		@if(book.status == "Available"){
-		<button type="submit" class="customButton greenButton" data-bs-toggle="modal">Lend</button>
+		<button type="submit" class="customButton greenButton" onclick="return confirm('Are you sure to borrow @book.title?')" data-bs-toggle="modal">Borrow</button>
 		} else
 		{
-		<button type="submit" class="customButton yellowButton" data-bs-toggle="modal">Book</button>
+		<button type="return false;" class="customButton yellowButton" onclick="return confirm('You cant book @book.title for now. We have to add this option :)')" data-bs-toggle="modal">Book</button>
 		}
 		</form>
 		<div class="modal fade" id="Modal@(book.id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

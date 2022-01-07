@@ -153,32 +153,32 @@ color: white;
     justify-content: center;
 }
 
-    .customButton:hover {
-        background-color: #0F84A8;
-        color: #EEE;
-        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
-        transition: background-color .1s linear;
-    }
+.customButton:hover {
+    background-color: #0F84A8;
+    color: #EEE;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    transition: background-color .1s linear;
+}
 
-    .customButton.yellowButton {
-        background-color: #EAED16;
-        border-color: #FAFD26;
-        color: #000;
-    }
+.customButton.yellowButton {
+    background-color: #EAED16;
+    border-color: #FAFD26;
+    color: #000;
+}
 
-        .customButton.yellowButton:hover {
-            background-color: #DADD06;
-        }
+.customButton.yellowButton:hover {
+    background-color: #DADD06;
+}
 
-    .customButton.greenButton {
-        background-color: #46B80F;
-        border-color: #56C81F;
+.customButton.greenButton {
+    background-color: #46B80F;
+    border-color: #56C81F;
 
-    }
+}
 
-        .customButton.greenButton:hover {
-            background-color: #36A80F;
-        }
+.customButton.greenButton:hover {
+    background-color: #36A80F;
+}
 
 nav {
     display: flex;
@@ -199,6 +199,11 @@ nav {
     margin: 0 auto;
 }
 
-    .zoom:hover {
-        transform: scale(1.2);
-    }
+.zoom:hover {
+    transform: scale(1.2);
+}
+
+.logo {
+    color: white;
+    padding-left: 35px;
+}

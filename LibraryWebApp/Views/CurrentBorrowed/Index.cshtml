@@ -18,11 +18,12 @@
               <tr>
                 <th scope="col">@Resources.borrowTableTitle</th>
                 <th scope="col">@Resources.borrowTableAuthor</th>
-                <th scope="col">Borrow Start Date</th>
-                <th scope="col">Borrow End Date</th>
+                <th scope="col">Borrow date</th>
+                <th scope="col">Return date</th>
                 <th scope="col">Book Type</th>
                 <th scope="col">Discount</th>
                 <th scope="col">@Resources.borrowTablePrice</th>
+                <th scope="col">Return</th>
               </tr>
                 @foreach (var book in ViewBag.Books)
                 {
@@ -34,6 +35,11 @@
                         <th>@book.bookType</th>
                         <th>@book.discountOnItemId</th>
                         <th>@book.price</th>
+                        <th>
+                            <form method="post" action="@Url.Action("ReturnBook")">
+		                        <button type="submit" class="customButton greenButton">Return</button>
+		                    </form>
+                        </th>
                     </tr>
                 }
             </thead>

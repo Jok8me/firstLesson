@@ -7,10 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Covers\**" />
     <Compile Remove="Views\NewFolder1\**" />
+    <Content Remove="Covers\**" />
     <Content Remove="Views\NewFolder1\**" />
+    <EmbeddedResource Remove="Covers\**" />
     <EmbeddedResource Remove="Views\NewFolder1\**" />
+    <None Remove="Covers\**" />
     <None Remove="Views\NewFolder1\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Resources\cover_0.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +42,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
   </ItemGroup>
 
 </Project>

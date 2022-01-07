@@ -120,6 +120,12 @@
   <data name="aplicationName" xml:space="preserve">
     <value>LibraryWeb</value>
   </data>
+  <data name="bookButton" xml:space="preserve">
+    <value>Book</value>
+  </data>
+  <data name="bookTableBookStatus" xml:space="preserve">
+    <value>Book status</value>
+  </data>
   <data name="borrowTableAuthor" xml:space="preserve">
     <value>Author</value>
   </data>
@@ -170,5 +176,8 @@
   </data>
   <data name="passwordPlaceholder" xml:space="preserve">
     <value>password</value>
+  </data>
+  <data name="rentButton" xml:space="preserve">
+    <value>Rent</value>
   </data>
 </root>

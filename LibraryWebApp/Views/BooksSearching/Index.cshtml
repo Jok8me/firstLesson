@@ -3,21 +3,55 @@
 @model LibraryWebApp.Views.Login.IndexModel
 @{
 }
-
-<div class="container">
-  <div class="row">
-    <div class="col-md-2 ">
-    </div>
-    <div class="col-md-9">
-      <div class="card text-white bg-dark">
-        <div class="card-body">
-          <div class="col-md-12">
-            <i class="fas fa-book-open fa-2x"> @Resources.pageTitleBookSearching </i>
-            <hr>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="top text-white bg-dark">
+	<div>
+		<i class="fas fa-book-open fa-2x"> @Resources.pageTitleBookSearching </i>
+	</div>
+	@Html.ActionLink("Home", "Index", "Home")
+	@if(ViewContext.RouteData.Values["controller"].ToString() != "Home") {
+	@:> @Html.ActionLink(ViewContext.RouteData.Values["controller"].ToString(), "Index", ViewContext.RouteData.Values["controller"].ToString()) 
+	}
+	@if(ViewContext.RouteData.Values["action"].ToString() != "Index"){
+	@:> @Html.ActionLink(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString()) 
+	}
+</div>
+<div class="mainBox">
+	@foreach (var book in ViewBag.Books)
+	{
+	<div class = "boxElement">
+		<figure><img class = "boxImage zoom" src = "/Resources/cover_@(book.id).jpg">></figure>
+		<form class="boxButtons" method="post" action="@Url.Action("BookOrLendBook")">
+		<button type="button" class="customButton" data-bs-toggle="modal" data-bs-target="#Modal@(book.id)">Details</button>
+		<input type="hidden" value=@book.id name="bookId">
+		@if(book.status == "Available"){
+		<button type="submit" class="customButton greenButton" data-bs-toggle="modal">Lend</button>
+		} else
+		{
+		<button type="submit" class="customButton yellowButton" data-bs-toggle="modal">Book</button>
+		}
+		</form>
+		<div class="modal fade" id="Modal@(book.id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Book details</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<p>Title: @book.title</p>
+						<p>Author: @book.name @book.surname</p>
+						<p>Publication date: @book.publicationDate.ToString("MM/dd/yyyy")</p>
+						<p>Category: @book.type</p>
+						<p>Status: @book.status</p>
+						<p>Price: @book.price</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="customButton" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	}
+</div>
 </div>

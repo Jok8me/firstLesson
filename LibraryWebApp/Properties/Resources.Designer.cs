@@ -70,6 +70,24 @@ namespace LibraryWebApp.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Book.
+        /// </summary>
+        public static string bookButton {
+            get {
+                return ResourceManager.GetString("bookButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Book status.
+        /// </summary>
+        public static string bookTableBookStatus {
+            get {
+                return ResourceManager.GetString("bookTableBookStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Author.
         /// </summary>
         public static string borrowTableAuthor {
@@ -219,6 +237,15 @@ namespace LibraryWebApp.Properties {
         public static string passwordPlaceholder {
             get {
                 return ResourceManager.GetString("passwordPlaceholder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rent.
+        /// </summary>
+        public static string rentButton {
+            get {
+                return ResourceManager.GetString("rentButton", resourceCulture);
             }
         }
     }

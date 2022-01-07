@@ -9,7 +9,7 @@ namespace LibraryWebApp.Controllers
         {
             BookDBController bookDBController = new BookDBController();
             int userId = HttpContext.Session.GetInt32("userId") ?? 0;
-            List<DatabaseConnection.Models.Book> bookList = bookDBController.GetBooksBorrowedByUserId(userId);
+            List<DatabaseConnection.Models.BorrowedBook> bookList = bookDBController.GetBooksBorrowedByUserId(userId);
             ViewBag.Books = bookList;
             return View();
         }

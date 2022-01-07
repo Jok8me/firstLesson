@@ -5,12 +5,32 @@ namespace LibraryWebApp.Services
     public class BookDBController
     {
         BookDBService bookDBService;
-        public BookDBController() { bookDBService = new BookDBService(); }
+        BorrowDBService borrowDBService;
+        public BookDBController() { 
+            bookDBService = new BookDBService(); 
+            borrowDBService = new BorrowDBService();
+        }
 
-        public List<DatabaseConnection.Models.Book> GetBooksBorrowedByUserId(int userId)
+        public List<DatabaseConnection.Models.BorrowedBook> GetBooksBorrowedByUserId(int userId)
         {
-            List<DatabaseConnection.Models.Book> itemDBList = bookDBService.GetBooksBorrowedByUserId(userId);
+            List<DatabaseConnection.Models.BorrowedBook> itemDBList = bookDBService.GetBooksBorrowedByUserId(userId);
             return itemDBList;
         }
+
+        public DatabaseConnection.Models.BookDetails GetBookByBookId(int bookId)
+        {
+            return bookDBService.GetBookByBookId(bookId);
+        }
+
+        public List<DatabaseConnection.Models.BookDetails> GetBooks()
+        {
+            return bookDBService.GetBooks();
+        }
+
+        public void BorrowBookByUser(int bookId, int userId)
+        {
+            borrowDBService.borrowBook(bookId, userId);
+        }
+
     }
 }

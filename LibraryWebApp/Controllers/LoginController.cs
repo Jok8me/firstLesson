@@ -42,7 +42,8 @@ namespace LibraryWebApp.Controllers
         [HttpGet]
         public ActionResult Logout()
         {
-            //HttpContext.Session.Clear();
+            ViewBag.login = "";
+            HttpContext.Session.Clear();
             return RedirectToAction("Index");
         }
 

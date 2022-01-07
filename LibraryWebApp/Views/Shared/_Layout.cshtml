@@ -27,13 +27,12 @@
                     <span class="fas fa-book fa-lg"> @Resources.aplicationName</span> 
                </a>
                <hr>
-               <ul class="nav nav-pills flex-column mb-auto">
-                  <li class="nav-item">
-                  <li><a asp-controller="UserPanel" asp-action="Index" class="btn btn-primary btn-block btn-large">@Resources.naviProfile</a></li>
-                  <li><a asp-controller="CurrentBorrowed" asp-action="Index" class="btn btn-primary btn-block btn-large">@Resources.naviBorrowedList</a></li>
-                  <li><a asp-controller="BooksSearching" asp-action="Index" class="btn btn-primary btn-block btn-large">@Resources.naviSearchBook</a></li>
-                  <li><a asp-controller="Login" asp-action="Index" class="btn btn-primary btn-block btn-large">@Resources.naviLogout</a></li>
-               </ul>
+               <nav>
+                   <div class="navItem"><a asp-controller="UserPanel" asp-action="Index" class="customButton">@Resources.naviProfile</a></div>
+                   <div class="navItem"><a asp-controller="CurrentBorrowed" asp-action="Index" class="customButton">@Resources.naviBorrowedList</a></div>
+                   <div class="navItem"><a asp-controller="BooksSearching" asp-action="Index" class="customButton">@Resources.naviSearchBook</a></div>
+                   <div class="navItem"><a asp-controller="Login" asp-action="Index" class="customButton">@Resources.naviLogout</a></div>
+               </nav>
                <hr>
             </div>
          </div>

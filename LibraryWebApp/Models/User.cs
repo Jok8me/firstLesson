@@ -8,6 +8,7 @@
         public string name { get; set; }
         public string surname { get; set; }
         public string email { get; set; }
+        public string phoneNumber { get; set; }
         public int role { get; set; }
 
         public User(int id, string login, int role)
@@ -24,7 +25,7 @@
             this.id=id;
             this.role=role;
         }
-        public User(int id, string login, string password, string name, string surname, string email, int role)
+        public User(int id, string login, string password, string name, string surname, string email, string phoneNumber, int role)
         {
             this.id =id;
             this.login = login;
@@ -32,6 +33,7 @@
             this.name = name;
             this.surname = surname;
             this.email = email;
+            this.phoneNumber = phoneNumber;
             this.role = role;
         }
     }

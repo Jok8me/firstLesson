@@ -16,8 +16,8 @@ namespace DatabaseConnection.TableService
         {
             openDBConnectionIfNotOpen();
             string insStmt = "INSERT INTO Books ([title], [publication_date]," +
-                " [book_status_id], [book_type_id], [discount_on_book_id], [price]) " +
-                " values (@title,@author,@publication_date,@status_book,@discount_type,@discount_amount,@price)";
+                " [book_status_id], [book_type_id], [discount_on_book_id], [price], [description]) " +
+                " values (@title,@author,@publication_date,@status_book,@discount_type,@discount_amount,@price,@description)";
 
             using (SqlCommand cmd = new SqlCommand(insStmt, conn))
             {
@@ -26,9 +26,125 @@ namespace DatabaseConnection.TableService
                 cmd.Parameters.Add("@status_book", SqlDbType.TinyInt).Value = book.statusId;
                 cmd.Parameters.Add("@discount_type", SqlDbType.TinyInt).Value = book.discountOnItemId;
                 cmd.Parameters.Add("@price", SqlDbType.Decimal).Value = book.price;
+                cmd.Parameters.Add("@description", SqlDbType.Decimal).Value = book.description;
                 cmd.ExecuteNonQuery();
             }
             closeDBConnection();
+        }
+
+        public void ReturnBookById(int bookId)
+        {
+            //New
+                openDBConnectionIfNotOpen();
+
+                string insStmt = "DELETE FROM Users WHERE id=@id";
+                using (SqlCommand cmd = new SqlCommand(insStmt, conn))
+                {
+                    //cmd.Parameters.Add("@id", SqlDbType.Int).Value = userId;
+                    cmd.ExecuteNonQuery();
+                }
+                closeDBConnection();
+
+        }
+
+        public List<Models.BookDetails> GetBooksByTypeAndCategory(int bookType, List<int> bookCategory)
+        {
+            openDBConnectionIfNotOpen();
+
+            List<Models.BookDetails> bookDetailsList = new List<Models.BookDetails>();
+
+            //string oString = "SELECT * FROM Books WHERE id=@userId";
+            StringBuilder stringBuilder = new StringBuilder("SELECT Books.id, Books.title, Authors.name, Authors.surname, Books.publication_date, BookType.book_type_name,Category.category_name ,BookStatus.book_status_name, Books.price, Books.description " +
+                "FROM((((((Books INNER JOIN Authors_Of_Publications ON Books.id = Authors_Of_Publications.item_id) " +
+                "INNER JOIN Authors ON Authors.id = Authors_Of_Publications.author_id) " +
+                "INNER JOIN BookType ON BookType.id = Books.book_type_id) " +
+                "INNER JOIN BookStatus ON Books.book_status_id = BookStatus.id) " +
+                "INNER JOIN CategoryOfBook ON CategoryOfBook.book_id = Books.id) " +
+                "INNER JOIN Category ON Category.id = CategoryOfBook.category_id) ");
+
+            if (!(bookType == 0 && bookCategory.ElementAt(0) == 0))
+            {
+                stringBuilder.Append(" WHERE ");
+                if(bookType != 0)
+                {
+                    stringBuilder.Append("Books.book_type_id = ");
+                    stringBuilder.Append((bookType-1).ToString());
+                    stringBuilder.Append(" ");
+                }
+
+                if (bookType > 0 && bookCategory.Count > 0 && bookCategory.ElementAt(0) > 0)
+                    stringBuilder.Append("AND ");
+
+                if (!(bookCategory.Count == 1 && bookCategory.ElementAt(0) == 0))
+                {
+                    stringBuilder.Append("(");
+                    foreach(int category in bookCategory)
+                    {
+                        stringBuilder.Append(" CategoryOfBook.category_id = ");
+                        stringBuilder.Append(category.ToString());
+                        stringBuilder.Append(" OR");
+                    }
+                    stringBuilder.Remove(stringBuilder.Length-2, 2);
+                    if(bookCategory.Count > 0)
+                        stringBuilder.Append(")");
+                }
+
+            }
+
+            SqlCommand command = new SqlCommand(stringBuilder.ToString(), conn);
+
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    bookDetailsList.Add(new Models.BookDetails(
+                        reader.GetInt32(0),
+                        reader.GetString(1),
+                        reader.GetString(2),
+                        reader.GetString(3),
+                        reader.GetDateTime(4),
+                        reader.GetString(5),
+                        reader.GetString(6),
+                        reader.GetString(7),
+                        (double)reader.GetDecimal(8),
+                        reader.GetString(9)));
+                }
+            }
+            closeDBConnection();
+            return bookDetailsList;
+        }
+
+        public List<BookInCard> getBookByBookIdInIntList(List<int> booksId)
+        {
+            openDBConnectionIfNotOpen();
+
+            List<BookInCard> booksInCartList = new List<BookInCard>();
+
+            System.Text.StringBuilder oStringBuilder = new System.Text.StringBuilder($"SELECT Books.id, Books.title, Authors.name, Authors.surname, Books.book_status_id, Books.discount_on_book_id, Books.price" +
+                $" FROM(Books INNER JOIN Authors_Of_Publications ON Authors_Of_Publications.item_id = Books.id)" +
+                $" INNER JOIN Authors ON Authors_Of_Publications.author_id = Authors.id WHERE Books.id = { booksId.ElementAt(0).ToString()}");
+            foreach(int id in booksId)
+            {
+                oStringBuilder.Append($" OR Books.id = {id}");
+            }
+            oStringBuilder.Append(";");
+            string oString = oStringBuilder.ToString();
+            SqlCommand command = new SqlCommand(oString, conn);
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    booksInCartList.Add(new BookInCard(
+                        reader.GetInt32(0),
+                        reader.GetString(1),
+                        reader.GetString(2) + " " + reader.GetString(3),
+                        reader.GetInt32(4),
+                        reader.GetInt32(5),
+                        (double)reader.GetDecimal(6)));
+                }
+            }
+            closeDBConnection();
+            return booksInCartList;
         }
 
         public List<Models.BookDetails> GetBooks()
@@ -38,11 +154,13 @@ namespace DatabaseConnection.TableService
             List<Models.BookDetails> bookDetailsList = new List<Models.BookDetails>();
 
             //string oString = "SELECT * FROM Books WHERE id=@userId";
-            string oString = "SELECT Books.id, Books.title, Authors.name, Authors.surname, Books.publication_date, BookType.book_type_name, BookStatus.book_status_name, Books.price" +
-                " FROM((((Books INNER JOIN Authors_Of_Publications ON Books.id = Authors_Of_Publications.item_id)" +
-                " INNER JOIN Authors ON Authors.id = Authors_Of_Publications.author_id) " +
-                " INNER JOIN BookType ON BookType.id = Books.book_type_id)" +
-                " INNER JOIN BookStatus ON Books.book_status_id = BookStatus.id)";
+            string oString = "SELECT Books.id, Books.title, Authors.name, Authors.surname, Books.publication_date, BookType.book_type_name,Category.category_name ,BookStatus.book_status_name, Books.price, Books.description " +
+                "FROM((((((Books INNER JOIN Authors_Of_Publications ON Books.id = Authors_Of_Publications.item_id) " +
+                "INNER JOIN Authors ON Authors.id = Authors_Of_Publications.author_id) " +
+                "INNER JOIN BookType ON BookType.id = Books.book_type_id) " +
+                "INNER JOIN BookStatus ON Books.book_status_id = BookStatus.id) " +
+                "INNER JOIN CategoryOfBook ON CategoryOfBook.book_id = Books.id) " +
+                "INNER JOIN Category ON Category.id = CategoryOfBook.category_id)";
 
             SqlCommand command = new SqlCommand(oString, conn);
 
@@ -58,14 +176,16 @@ namespace DatabaseConnection.TableService
                         reader.GetDateTime(4),
                         reader.GetString(5),
                         reader.GetString(6),
-                        (double)reader.GetDecimal(7)));
+                        reader.GetString(7),
+                        (double)reader.GetDecimal(8),
+                        reader.GetString(9)));
                 }
             }
             closeDBConnection();
             return bookDetailsList;
         }
 
-        public List<Models.BorrowedBook> GetBooksBorrowedByUserId(int userId)
+        public List<Models.BorrowedBook> GetBooksCurrentBorrowedByUserId(int userId)
         {
             openDBConnectionIfNotOpen();
 
@@ -77,7 +197,7 @@ namespace DatabaseConnection.TableService
                 " INNER JOIN Users ON Users.id = Borrows.user_id) INNER JOIN Books ON BorrowBook.book_id = Books.id)" +
                 " INNER JOIN Authors_Of_Publications ON Authors_Of_Publications.item_id = Books.id)" +
                 " INNER JOIN Authors ON Authors.id = Authors_Of_Publications.author_id)" +
-                " INNER JOIN BookType ON BookType.id = Books.book_type_id)WHERE Borrows.user_id = @userId; ";
+                " INNER JOIN BookType ON BookType.id = Books.book_type_id)WHERE Borrows.user_id = @userId AND BorrowBook.returned = 'FALSE'; ";
 
             SqlCommand command = new SqlCommand(oString, conn);
             command.Parameters.AddWithValue("@userId", userId);
@@ -105,12 +225,14 @@ namespace DatabaseConnection.TableService
         {
             openDBConnectionIfNotOpen();
 
-            BookDetails bookDetails = new BookDetails(1, "", "", "", new DateTime(), "", "", 0);
+            BookDetails bookDetails = new BookDetails(1, "", "", "",new DateTime(), "", "","" , 0, "");
 
-            string oString = "SELECT Books.title, Authors.name, Authors.surname, Books.publication_date, BookType.book_type_name, Books.price" +
-                " FROM(((Books INNER JOIN Authors_Of_Publications ON Books.id = Authors_Of_Publications.item_id)" +
-                " INNER JOIN Authors ON Authors.id = Authors_Of_Publications.author_id)" +
-                " INNER JOIN BookType ON BookType.id = Books.book_type_id) WHERE books.id = @bookId";
+            string oString = "SELECT Books.title, Authors.name, Authors.surname, Books.publication_date, BookType.book_type_name, Category.category_name ,Books.price, Books.description " +
+                "FROM(((((Books INNER JOIN Authors_Of_Publications ON Books.id = Authors_Of_Publications.item_id) " +
+                "INNER JOIN Authors ON Authors.id = Authors_Of_Publications.author_id) " +
+                "INNER JOIN BookType ON BookType.id = Books.book_type_id) " +
+                "INNER JOIN CategoryOfBook ON CategoryOfBook.book_id = Books.id) " +
+                "INNER JOIN Category ON Category.id = CategoryOfBook.category_id) WHERE books.id = @bookId";
 
             SqlCommand command = new SqlCommand(oString, conn);
             command.Parameters.AddWithValue("@bookId", bookId);
@@ -124,7 +246,9 @@ namespace DatabaseConnection.TableService
                     bookDetails.surname = reader.GetString(2);
                     bookDetails.publicationDate = reader.GetDateTime(3);
                     bookDetails.type = reader.GetString(4);
-                    bookDetails.price = (double)reader.GetDecimal(5);
+                    bookDetails.category = reader.GetString(5);
+                    bookDetails.price = (double)reader.GetDecimal(6);
+                    bookDetails.description = reader.GetString(7);
                 }
             }
             closeDBConnection();

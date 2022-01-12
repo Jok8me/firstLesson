@@ -2,52 +2,72 @@
 @using LibraryWebApp.Properties
 @{
 }
+<!DOCTYPE html>
+<html>
 
-<div class="mainBox">
-  <div class="row">
-    <div class="col-md-2 ">
-    </div>
-    <div class="col-md-9 bookBox">
-      <div class="card text-white bg-dark">
-        <div class="card-body">
-          <div class="col-md-12">
-            <i class="fas fa-book-open fa-2x"> @Resources.pageTitleBorrowedBookList </i>
-          </div>
-          <table class="borrowedTable table-hover">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">@Resources.borrowTableTitle</th>
-                <th scope="col">@Resources.borrowTableAuthor</th>
-                <th scope="col">Borrow date</th>
-                <th scope="col">Return date</th>
-                <th scope="col">Book Type</th>
-                <th scope="col">Discount</th>
-                <th scope="col">@Resources.borrowTablePrice</th>
-                <th scope="col">Return</th>
-              </tr>
-                @foreach (var book in ViewBag.Books)
-                {
-                    <tr>
-                        <th>@book.title</th>
-                        <th>@book.author</th>
-                        <th>@book.borrowStartDate.ToString("MM/dd/yyyy")</th>
-                        <th>@book.borrowEndDate.ToString("MM/dd/yyyy")</th>
-                        <th>@book.bookType</th>
-                        <th>@book.discountOnItemId</th>
-                        <th>@book.price</th>
-                        <th>
-                            <form method="post" action="@Url.Action("ReturnBook")">
-		                        <button type="submit" class="customButton greenButton">Return</button>
-		                    </form>
-                        </th>
-                    </tr>
-                }
-            </thead>
-            <tbody id="tableBody">
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<main class="page">
+			<section class="shopping-cart dark">
+				<div class="container">
+					<div class="block-heading">
+						<h2>Borrowed list</h2>
+						<p>This is a book borrowing list. All the books you have are available here.</p>
+					</div>
+					<div class="content">
+						<div class="row">
+								    @{ var counter = 1; }
+									@if(Enumerable.Any(ViewBag.Books)){
+									@foreach (var book in ViewBag.Books)
+									{
+										<div class = "boxElement col-sm-12 col-md-6 col-xl-4">
+											<div class="container py-5">
+												<div class="row justify-content-center">
+													<div class="">
+														<div class="card text-black">
+															<div class = " text-center pt-3">
+																<img class = "card-img-top img-thumbnail img" src = "/Resources/cover_@(book.id).jpg">
+															</div>
+																<div class="card-body">
+																	<div class="text-center">
+																		<h5 class="card-title">@book.title</h5>
+																		<p class="text-muted mb-4">@book.author</p>
+																	</div>
+																	<div>
+																		<div class="d-flex justify-content-between">
+																			<span>Borrow start date</span><span>@book.borrowStartDate.ToString("MM/dd/yyyy")</span>
+																		</div>
+																		<div class="d-flex justify-content-between">
+																			<span>Return date</span><span>@book.borrowEndDate.ToString("MM/dd/yyyy")</span>
+																		</div>
+																	</div>
+																	<div class="col text-center">
+																		<form class="boxButtons" method="post" action="@Url.Action("returnBookByBookIdAndUserId")">
+																		<input type="submit" class="btn btn-dark" value="Return">
+																		<input type="hidden" value=@book.id name="bookId">
+																		</form>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											@if(counter % 3 == 0)
+											{
+												@:</div><div class="row">
+												counter = 0;
+											}
+												counter++;
+										}
+									} 
+									else
+									{
+										<div class="block-heading pt-5">
+										<h2>Your borrow list is empty.</h2>
+										</div>
+									}
+							</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		</html>

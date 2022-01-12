@@ -1,0 +1,111 @@
+﻿@*
+*@
+@{
+}
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Shopping Cart</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="assets/css/style.css">
+	</head>
+	<body>
+	<form class="boxButtons" method="post" action="@Url.Action("Checkout")">
+		<main class="page">
+			<section class="shopping-cart dark">
+				<div class="container">
+					<div class="block-heading">
+						<h2>Library Cart</h2>
+						<p>It is a library basket. You can choose the period to borrow the book. If the book is unavailable, you can reserve it for the available date.</p>
+					</div>
+					<div class="content">
+						<div class="row">
+							<div class="col-md-12 col-lg-8">
+								<div class="items">
+									@if(ViewBag.BooksInCart != null){
+									@foreach (var book in ViewBag.BooksInCart)
+									{
+									<div class="product pl-3">
+										<div class="row">
+											<div class="col-md-3">
+												<img class="img-fluid mx-auto d-block image" src = "/Resources/cover_@(book._Id).jpg">
+											</div>
+											<div class="col-md-8">
+												<div class="info">
+													<div class="row">
+														<div class="col-md-5 product-name">
+															<div class="product-name">
+																<a>@book._Title</a>
+																<div class="product-info">
+																	<div>Author: <span class="value">@book._Author</span></div>
+																	<div>Original price: <span class="value">@book._Price zł</span></div>
+																</div>
+															</div>
+														</div>
+														<div class = "col-md-4">
+															<div>
+																<div>
+																	<a for="date">Start date</a>
+																	<input type="text" class="form-control datepicker" id="startDatapicker_@(book._Id)" placeholder="Date" name="date">
+																</div>
+																<div>
+																	<a for="date">End date</a>
+																	<input type="text" class="form-control datepicker" id="endDatapicker_@(book._Id)" placeholder="Date" name="date">
+																</div>
+															</div>
+														</div>
+														<div class="col-md-3 price">
+															<span>@book._Price zł</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									}
+									} else
+									{
+									<div class="block-heading pt-5">
+										<h2>Your cart is empty!</h2>
+									</div>
+									}
+								</div>
+							</div>
+							<div class="col-md-12 col-lg-4">
+								<div class="summary">
+									<h3>Summary</h3>
+									<div class="summary-item"><span class="text">Subtotal</span><span class="price">@ViewBag.Subtotal zł</span></div>
+									<div class="summary-item"><span class="text">Discount</span><span class="price">@ViewBag.Discount zł</span></div>
+									<div class="summary-item"><span class="text">Cash penalty</span><span class="price">@ViewBag.CashPenalty zł</span></div>
+									<div class="summary-item"><span class="text">Total</span><span class="price">@ViewBag.Total zł</span></div>
+									<button type="submit" class="btn btn-dark btn-lg btn-block">Checkout</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		</form>
+	</body>
+	<!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Bootstrap 4 JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Bootstrap Datepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script type="text/javascript">
+		var datesForDisable = ["08-5-2021", "08-10-2021", "08-15-2021", "08-20-2021"]
+		
+		$('.datepicker').datepicker({
+		    format: 'mm-dd-yyyy',
+		    autoclose: true,
+		    todayHighlight: true,
+		    datesDisabled: datesForDisable
+		});
+	</script>
+</html>

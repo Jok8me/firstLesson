@@ -14,10 +14,12 @@ namespace DatabaseConnection.Models
         public string surname;
         public DateTime publicationDate;
         public string type;
+        public string category;
         public string status;
         public double price;
+        public string description;
 
-        public BookDetails(int id, string title, string name, string surname, DateTime publicationDate, string type, string status, double price)
+        public BookDetails(int id, string title, string name, string surname, DateTime publicationDate, string type, string category, string status, double price, string description)
         {
             this.id = id;
             this.title = title;
@@ -25,8 +27,10 @@ namespace DatabaseConnection.Models
             this.surname = surname;
             this.publicationDate = publicationDate;
             this.type = type;
+            this.category = category;
             this.status = status;
             this.price = price;
+            this.description = description;
         }
 
     }

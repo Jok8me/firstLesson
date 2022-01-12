@@ -20,14 +20,14 @@ namespace firstLesson.Views.BookViews
 
             BookDBService itemDBService = new BookDBService();
 
-            IDictionary<string, string> itemDictionary = InputService.InputItemOptions(message);
-            Book bookToAdd = new Book(
-                itemDictionary.ElementAt(0).Value,
-                DateTime.Parse(itemDictionary.ElementAt(2).Value),
-                Convert.ToInt32(itemDictionary.ElementAt(4).Value),
-                Convert.ToInt32(itemDictionary.ElementAt(5).Value),
-                Convert.ToDouble(itemDictionary.ElementAt(1).Value));
-            itemDBService.inserBook(bookToAdd);
+        //    IDictionary<string, string> itemDictionary = InputService.InputItemOptions(message);
+        //    Book bookToAdd = new Book(
+        //        itemDictionary.ElementAt(0).Value,
+        //        DateTime.Parse(itemDictionary.ElementAt(2).Value),
+        //        Convert.ToInt32(itemDictionary.ElementAt(4).Value),
+        //        Convert.ToInt32(itemDictionary.ElementAt(5).Value),
+        //        Convert.ToDouble(itemDictionary.ElementAt(1).Value));
+        //    itemDBService.inserBook(bookToAdd);
         }
     }
   

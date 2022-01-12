@@ -21,6 +21,7 @@ namespace LibraryWebApp.Controllers
         {
             UserDBController userDBController = new UserDBController();
             User user = userDBController.GetUserByLoginAndPassword(login, password);
+            HttpContext.Session.SetInt32("CartCount", 0);
 
 
             if (!(user.login.Equals("")))

@@ -49,6 +49,7 @@ namespace DatabaseConnection.UsersTableServices
                     matchingUser.name = reader["name"].ToString();
                     matchingUser.surname = reader["surname"].ToString();
                     matchingUser.email = reader["email"].ToString();
+                    matchingUser.phoneNumber = reader["phone_number"].ToString();
                     matchingUser.role = Convert.ToInt32(reader["role"]);
                 }
             }
@@ -71,6 +72,10 @@ namespace DatabaseConnection.UsersTableServices
                     matchingUser.Id = Convert.ToInt32(reader["id"]);
                     matchingUser.login = reader["login"].ToString();
                     matchingUser.password = reader["password"].ToString();
+                    matchingUser.name = reader["name"].ToString();
+                    matchingUser.surname = reader["surname"].ToString();
+                    matchingUser.email = reader["email"].ToString();
+                    matchingUser.phoneNumber = reader["phone_number"].ToString();
                     matchingUser.role = Convert.ToInt32(reader["role"]);
                 }
             }
@@ -91,10 +96,10 @@ namespace DatabaseConnection.UsersTableServices
             closeDBConnection();
         }
 
-        public void updateUserById(int id, string login, string password, string name, string surname, string email)
+        public void updateUserById(int id, string login, string password, string name, string surname, string email, string phoneNumber)
         {
             openDBConnectionIfNotOpen();
-            string insStmt = "UPDATE Users SET login = @login, password = @password, name = @name, surname = @surname, email = @email " +
+            string insStmt = "UPDATE Users SET login = @login, password = @password, name = @name, surname = @surname, email = @email, phone_number = @phone_number " +
                 "WHERE id = @id;";
 
             using (SqlCommand cmd = new SqlCommand(insStmt, conn))
@@ -105,6 +110,7 @@ namespace DatabaseConnection.UsersTableServices
                 cmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = name;
                 cmd.Parameters.Add("@surname", SqlDbType.NVarChar).Value = surname;
                 cmd.Parameters.Add("@email", SqlDbType.NVarChar).Value = email;
+                cmd.Parameters.Add("@phone_number", SqlDbType.NVarChar).Value = phoneNumber;
                 cmd.ExecuteNonQuery();
             }
             closeDBConnection();

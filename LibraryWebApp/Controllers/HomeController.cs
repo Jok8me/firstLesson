@@ -1,4 +1,5 @@
 ﻿using LibraryWebApp.Models;
+using LibraryWebApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -15,6 +16,9 @@ namespace LibraryWebApp.Controllers
 
         public IActionResult Index()
         {
+            BookDBController bookDBController = new BookDBController();
+            List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
+            ViewBag.Books = bookList;
             return View();
         }
 

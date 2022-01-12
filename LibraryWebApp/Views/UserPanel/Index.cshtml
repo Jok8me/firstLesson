@@ -1,98 +1,110 @@
 ﻿@model LibraryWebApp.Models.User
+
+
 <div class="container">
-	<div class="row">
-		<div class="col-md-2 ">
+<div class="row gutters">
+<div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	<div class="card-body">
+		<div class="account-settings">
+			<div class="user-profile">
+				<div class="user-avatar">
+					<img src="https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg" alt="Maxwell Admin">
+				</div>
+				<h5 class="user-name">@ViewBag.name @ViewBag.surname</h5>
+				<h6 class="user-email">@ViewBag.email</h6>
+			</div>
+			<div class="about">
+				<h5>About</h5>
+				<p>You can enter information about yourself here to let other Library App users know something about you.</p>
+			</div>
 		</div>
-		<div class="col-md-9">
-			<div class="card text-white bg-dark">
-				<div class="card-body">
-					<div class="row">
-						<div class="col-md-12">
-							<i class="fas fa-user fa-2x"> Your profile</i>
-							<hr>
-						</div>
+	</div>
+</div>
+</div>
+<div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+<div class="card h-100">
+	  <form method="post" class="needs-validation" action="@Url.Action("UpdateProfil")" novalidate>
+	<div class="card-body">
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pt-2">
+				<h6 class="mb-2 text-primary">Login data</h6>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="login">Login</label>
+					<input type="text" class="form-control" id="login" name ="login" placeholder="Enter login" value=@ViewBag.Login required>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pt-2">
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" value=@ViewBag.Password required>
+					<div class="input-group-addon">
 					</div>
-					<div class="row">
-						<div class="col-md-12 text-white bg-dark">
-							<form method="post" action="@Url.Action("UpdateProfil")">
-							<div class="form-group row">
-								<label for="username" class="fas fa-user-edit fa-lg col-4 col-form-label">Login*</label> 
-								<div class="col-8">
-									<input id="login" class="loginInput" name="login" value=@ViewBag.Login type="text" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="newpass" class="fas fa-key fa-lg col-4 col-form-label">Password*</label> 
-								<div class="col-8">
-									<input id="password" class="passwordInput" name="password" value=@ViewBag.Password type="text"/>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="name" class="fas fa-user-edit fa-lg col-4 col-form-label">Name</label> 
-								<div class="col-8">
-									<input id="name" class="nameInput" name="name" value=@ViewBag.Name type="text" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="surname" class="fas fa-user-edit fa-lg col-4 col-form-label">Surname</label> 
-								<div class="col-8">
-									<input id="surname" class="surnameInput" name="surname" value=@ViewBag.Surname type="text" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<label for="email" class="far fa-envelope fa-lg col-4 col-form-label">Email</label> 
-								<div class="col-8">
-									<input id="email" class="emailInput" name="email" value=@ViewBag.Email type="text" />
-								</div>
-							</div>
-							<div class="form-group row">
-								<div class="offset-4 col-8">
-									<td><input type="submit" onclick="return confirm('Are you sure to update your profil data?')" class="customButton" value="Update profil"></td>
-								</div>
-							</div>
-							</form>
-						</div>
-					</div>
-					<script>
-						document.querySelector("form").addEventListener("submit", event =>{
-						event.preventDefault();
-						const loginInput = document.querySelector(".loginInput");
-						const passwordInput = document.querySelector(".passwordInput");
-						let loginInputCorrect = true;
-						let passwordInputCorrect = true;
-						
-						if(!loginInput.value)
-						    loginInputCorrect = false;
-						else if(loginInput.value.length < 4)
-						    loginInputCorrect = false;
-						else if(loginInput.value.length > 20)
-						    loginInputCorrect = false;
-						
-						if(!passwordInput.value)
-						    passwordInputCorrect = false;
-						else if(passwordInput.value.length < 4)
-						    passwordInputCorrect = false;
-						else if(passwordInput.value.length > 20)
-						    passwordInputCorrect = false;
-						
-						if(!loginInputCorrect)
-						    loginInput.classList.add("incorrectInput");
-						else{
-						    loginInput.classList.remove("incorrectInput");
-						}
-						
-						if(!passwordInputCorrect)
-						    passwordInput.classList.add("incorrectInput");
-						else{
-						    passwordInput.classList.remove("incorrectInput");
-						}
-						if(passwordInputCorrect && loginInputCorrect)
-						document.querySelector("form").submit();
-						    })
-						    
-					</script>
+				</div>
+			</div>
+		</div>
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+				<h6 class="mt-3 mb-2 text-primary">Personal Details</h6>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="Name">Name</label>
+					<input type="name" class="form-control" id="name" name="name" placeholder="Enter Name" value=@ViewBag.Name>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+				<div class="form-group">
+					<label for="Surname">Surname</label>
+					<input type="surname" class="form-control" id="surname" name="surname" placeholder="Enter Surname" value=@ViewBag.Surname>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pt-2">
+				<div class="form-group">
+					<label for="eMail">Email</label>
+					<input type="email" class="form-control" id="eMail" name="email" placeholder="Enter email ID" value=@ViewBag.Email>
+				</div>
+			</div>
+			<div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 pt-2">
+				<div class="form-group">
+					<label for="phone">Phone</label>
+					<input type="text" class="form-control" id="phoneNumber" name="phoneNumber" placeholder="Enter phone number" value=@ViewBag.phoneNumber>
+				</div>
+		</div>
+		<div class="row gutters">
+			<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 pt-4">
+				<div class="text-right">
+					<input type="submit" class="btn btn-secondary" value="Update profil">
 				</div>
 			</div>
 		</div>
 	</div>
+	</form>
+	<script>
+		(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+	</script>
+
+</div>
+</div>
+</div>
 </div>

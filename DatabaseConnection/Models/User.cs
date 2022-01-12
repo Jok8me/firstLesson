@@ -14,6 +14,7 @@ namespace DatabaseConnection.Models
         public string name { get; set; }
         public string surname { get; set; }
         public string email { get; set; }
+        public string phoneNumber { get; set; }
         public int role { get; set; }
 
         public User(string login, string password, int role)
@@ -30,7 +31,7 @@ namespace DatabaseConnection.Models
             role = 1;
         }
 
-        public User(string login, string password, string name, string surname, string email)
+        public User(string login, string password, string name, string surname, string email, string phoneNumber)
         {
             this.login=login;
             this.password=password;

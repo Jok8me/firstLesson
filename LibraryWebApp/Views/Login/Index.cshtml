@@ -4,59 +4,50 @@
 @{
 ViewBag.Title = "Login";
 }  
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
 <head>
-	<meta charset='UTF-8'>
-	<meta name="robots" content="noindex">
+	<title>Shopping Cart</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
-	<i class="fas fa-book fa-5x"> @Resources.aplicationName </i>
-	<div class="login">
-		<h1>@Resources.pageTitleLogin</h1>
-		@ViewBag.error
-		<form method="post" action="@Url.Action("Login")">
-		<input type="text" class="loginInput" name="login" placeholder=@Resources.loginPlaceholder />
-		<input type="password" class="passwordInput" name="password" placeholder=@Resources.passwordPlaceholder />
-		<button type="submit" class="customButton">@Resources.loginButton</button>
-		</form>
-	</div>
-	<script>
-		document.querySelector("form").addEventListener("submit", event =>{
-		event.preventDefault();
-		const loginInput = document.querySelector(".loginInput");
-		const passwordInput = document.querySelector(".passwordInput");
-		let loginInputCorrect = true;
-		let passwordInputCorrect = true;
-		
-		if(!loginInput.value)
-		    loginInputCorrect = false;
-		else if(loginInput.value.length < 4)
-		    loginInputCorrect = false;
-		else if(loginInput.value.length > 20)
-		    loginInputCorrect = false;
-		
-		if(!passwordInput.value)
-		    passwordInputCorrect = false;
-		else if(passwordInput.value.length < 4)
-		    passwordInputCorrect = false;
-		else if(passwordInput.value.length > 20)
-		    passwordInputCorrect = false;
-		
-		if(!loginInputCorrect)
-		    loginInput.classList.add("incorrectInput");
-		else{
-		    loginInput.classList.remove("incorrectInput");
-		}
-		
-		if(!passwordInputCorrect)
-		    passwordInput.classList.add("incorrectInput");
-		else{
-		    passwordInput.classList.remove("incorrectInput");
-		}
-		if(passwordInputCorrect && loginInputCorrect)
-		document.querySelector("form").submit();
-		    })
-		    
-	</script>
-</body>
+  <body class="text-center pt-5">
+          <i class="fas fa-book fa-5x"> LibraryWeb</i>
+<main class="form-signin">
+  <form method="post" class="needs-validation" action="@Url.Action("Login")" novalidate>
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+    <div class="form-floating">
+      <input type="login" class="form-control" id="floatingInput" name="login" placeholder="@Resources.loginPlaceholder" required>
+      <label for="floatingInput">Login</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="@Resources.passwordPlaceholder" required>
+      <label for="floatingPassword">Password</label>
+    </div>
+    <button class="w-100 btn btn-lg btn-dark" type="submit">Sign in</button>
+  </form>
+</main>
+
+<script>
+    (function () {
+  'use strict'
+  var forms = document.querySelectorAll('.needs-validation')
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+
+    
+  </body>
 </html>

@@ -29,7 +29,7 @@ namespace firstLesson.views
 
             if (!String.IsNullOrEmpty(inputOptions["Login"]) && !String.IsNullOrEmpty(inputOptions["Password"]))
             {
-                userDBService.updateUserById(userId, inputOptions["Login"], inputOptions["Password"]);
+               // userDBService.updateUserById(userId, inputOptions["Login"], inputOptions["Password"]);
 
                 string _message = inputOptions["Login"] + " correctly updated";
                 string[] options = { "Ok" };

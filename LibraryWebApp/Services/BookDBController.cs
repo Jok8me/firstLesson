@@ -11,10 +11,20 @@ namespace LibraryWebApp.Services
             borrowDBService = new BorrowDBService();
         }
 
-        public List<DatabaseConnection.Models.BorrowedBook> GetBooksBorrowedByUserId(int userId)
+        public List<DatabaseConnection.Models.BookDetails> GetBooksByTypeAndCategory(int bookType, List<int> bookCategory)
         {
-            List<DatabaseConnection.Models.BorrowedBook> itemDBList = bookDBService.GetBooksBorrowedByUserId(userId);
+            return bookDBService.GetBooksByTypeAndCategory(bookType, bookCategory);
+        }
+
+        public List<DatabaseConnection.Models.BorrowedBook> GetBooksCurrentBorrowedByUserId(int userId)
+        {
+            List<DatabaseConnection.Models.BorrowedBook> itemDBList = bookDBService.GetBooksCurrentBorrowedByUserId(userId);
             return itemDBList;
+        }
+
+        internal void ReturnBookById(int bookId)
+        {
+            bookDBService.ReturnBookById(bookId);
         }
 
         public DatabaseConnection.Models.BookDetails GetBookByBookId(int bookId)
@@ -32,5 +42,10 @@ namespace LibraryWebApp.Services
             borrowDBService.borrowBook(bookId, userId);
         }
 
+
+        public void returnBookByBookIdAndUserId(int bookId, int userId)
+        {
+            borrowDBService.returnBookByBookIdAndUserId(bookId, userId);
+        }
     }
 }

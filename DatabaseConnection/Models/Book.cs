@@ -15,8 +15,9 @@ namespace DatabaseConnection.Models
         public int typeId { get; set; }
         public int discountOnItemId { get; set; }
         public double price { get; set; }
+        public string description { get; set; }
 
-        public Book(int id, string title, DateTime publicationDate, int statusId, int typeId, int discountOnItemId, double price)
+        public Book(int id, string title, DateTime publicationDate, int statusId, int typeId, int discountOnItemId, double price, string description)
         {
             this.id = id;
             this.title = title;
@@ -25,9 +26,10 @@ namespace DatabaseConnection.Models
             this.typeId = typeId;
             this.discountOnItemId = discountOnItemId;
             this.price = price;
+            this.description = description;
         }
 
-        public Book(string title, DateTime publicationDate, int statusId, int typeId, double price)
+        public Book(string title, DateTime publicationDate, int statusId, int typeId, double price, string description)
         {
             this.id = id;
             this.title = title;
@@ -36,6 +38,7 @@ namespace DatabaseConnection.Models
             this.typeId = typeId;
             this.discountOnItemId = discountOnItemId;
             this.price = price;
+            this.description = description;
         }
 
         public Book(string title, double price)
@@ -45,6 +48,7 @@ namespace DatabaseConnection.Models
             this.statusId = 0;
             this.typeId = 0;
             this.price = price;
+            this.description = "";
         }
     }
 }

@@ -23,20 +23,23 @@ ViewData["Title"] = "Home Page";
 		<header class="headerNavi p-3 mb-3 border-bottom bg-dark" data-v = @HttpContextAccessor.HttpContext.Session.GetString("Login")>
 			<div class="container">
 				<div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-					<a href="/Home" class="d-flex align-items-center pr-2 mb-2 mb-lg-0 text-white text-decoration-none fas fa-book fa-2x">
-					</a>
+					<a href="/BooksSearching" class="d-flex align-items-center pr-2 mb-2 mb-lg-0 text-white text-decoration-none fas fa-book fa-2x"> LibraryWeb</a>
 					<ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-						<li><a asp-controller="CurrentBorrowed" asp-action="Index" class="nav-link px-2 text-secondary">@Resources.naviBorrowedList</a></li>
-						<li><a asp-controller="BooksSearching" asp-action="Index" class="nav-link px-2 text-white">@Resources.naviSearchBook</a></li>
+
 					</ul>
 					<div class="dropdown text-end">
-						<a href="#" class="d-block link-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+						<a href="Views/BooksSearching/Index.cshtml" class="d-block link-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
 						<img src="https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg" alt="mdo" width="32" height="32" class="rounded-circle">
 						</a>
 						<ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-							<li><a asp-controller="Cart" asp-action="Index" class="dropdown-item">Cart <span class="badge bg-primary">@HttpContextAccessor.HttpContext.Session.GetInt32("CartCount")</span></a></li>
-							<li><a asp-controller="BorrowHistory" asp-action="Index" class="dropdown-item">Borrow history</a></li>
 							<li><a asp-controller="UserPanel" asp-action="Index" class="dropdown-item">@Resources.naviProfile</a></li>
+							<li>
+								<hr class="dropdown-divider">
+							</li>
+							<li><a asp-controller="Cart" asp-action="Index" class="dropdown-item">Cart <span class="badge bg-primary">@HttpContextAccessor.HttpContext.Session.GetInt32("CartCount")</span></a></li>
+							<li><a asp-controller="CurrentBorrowed" asp-action="Index" class="dropdown-item">@Resources.naviBorrowedList</a></li>
+							<li><a asp-controller="BooksSearching" asp-action="Index" class="dropdown-item">@Resources.naviSearchBook</a></li>
+							<li><a asp-controller="BorrowHistory" asp-action="Index" class="dropdown-item">Borrow history</a></li>
 							<li>
 								<hr class="dropdown-divider">
 							</li>

@@ -19,7 +19,7 @@ namespace LibraryWebApp.Controllers
         {
             BookDBController bookDBController = new BookDBController();
             int userId = HttpContext.Session.GetInt32("userId") ?? 0;
-            bookDBController.returnBookByBookIdAndUserId(bookId, userId);
+            bookDBController.ReturnBookByBookIdAndUserId(bookId, userId);
             List<DatabaseConnection.Models.BorrowedBook> bookList = bookDBController.GetBooksCurrentBorrowedByUserId(userId);
             ViewBag.Books = bookList;
             return View("Index");

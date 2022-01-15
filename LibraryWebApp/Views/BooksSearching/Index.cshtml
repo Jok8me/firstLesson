@@ -12,25 +12,88 @@
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<div class="mainBox" style="background-color: #eee;>
-<div class="top text-white bg-dark pt-3">
-	<div class = ml-3 pt-3>
-		<i class="fas fa-book-open fa-2x">Search book in library</i>
+<div class = "card pl-3">
+			<h3>Most often borrowed</h3>
+			<div class="rounded">
+			<div class="container">
+				<div class="row">
+					<div id="carouselExampleControls" class="carousel slide py-3" data-ride="carousel">
+						<div class="carousel-inner" role="listbox">
+							<div class="carousel-item active">
+								<div class="row m-0 p-0">
+									<div class="col-2 col-md-2">
+										<div>
+											<img class="img-carousel" src = "/Resources/cover_0.jpg" alt="Biggest Stem Cells Conference">
+										</div>
+									</div>
+									<div class="col-10 col-md-10">
+										<h4 class="g-color-black mb-3">Lalka</h4>
+										<h5 class="g-color-black mb-3">Boleslaw Prus</h5>
+										<p>Warsaw under Russian rule in the late 1870s is the setting for Prus’s grand panorama of social conflict, political tension, and personal suffering. The middle-aged hero, Wokulski, successful in business, is being destroyed by his obsessive love for a frigid society doll, Izabela. Embattled aristocrats, the new men of finance, Dickensian tradesmen, and the urban poor all come vividly to life on the vast, superbly detailed canvas against which Wokulski’s personal tragedy is played out. Unlike his Western European counterparts, Prus had to work under official censorship. In this edition, most of the smaller cuts made by the Tsarist censor have been restored, and one longer fragment is included as an appendix.</p>
+									</div>
+								</div>
+							</div>
+							<div class="carousel-item">
+								<div class="row m-0 p-0">
+									<div class="col-2 col-md-2">
+										<div>
+											<img class="img-carousel" src = "/Resources/cover_1.jpg" alt="Biggest Stem Cells Conference">
+										</div>
+									</div>
+									<div class="col-10 col-md-10">
+										<h4 class="g-color-black mb-3">Nad Niemnem</h4>
+										<h3 class="g-color-black mb-3">Eliza Orzeszkowa</h3>
+										<p>In the early 1900s, Eliza Orzeszkowa was repeatedly a top contender, with Leo Tolstoy, for the Nobel Prize in literature. Neither won. Nevertheless, her novels have remained classics of Polish literature, and her most famous, On the Niemen, is not only an unusual love story, but is strikingly relevant today. Unhappy after being abandoned by her fiancé, Justyna, an impoverished young woman who lives in a manor house belonging to relatives, desires a life of greater usefulness. While being pursued by a wealthy aristocrat and by her former love – now married – she meets Jan, a man of lower social standing, who introduces her to a different world: one of closeness to nature, manual labor, and communal enjoyments.</p>
+									</div>
+								</div>
+							</div>
+							<div class="carousel-item">
+								<div class="row m-0 p-0">
+									<div class="col-2 col-md-2">
+										<div>
+										<img class="img-carousel" src = "/Resources/cover_2.jpg" alt="Biggest Stem Cells Conference">
+										</div>
+									</div>
+									<div class="col-10 col-md-10">
+										<h4 class="g-color-black mb-3">Nad Niemnem</h4>
+										<h3 class="g-color-black mb-3">Eliza Orzeszkowa</h3>
+										<p>In the early 1900s, Eliza Orzeszkowa was repeatedly a top contender, with Leo Tolstoy, for the Nobel Prize in literature. Neither won. Nevertheless, her novels have remained classics of Polish literature, and her most famous, On the Niemen, is not only an unusual love story, but is strikingly relevant today. Unhappy after being abandoned by her fiancé, Justyna, an impoverished young woman who lives in a manor house belonging to relatives, desires a life of greater usefulness. While being pursued by a wealthy aristocrat and by her former love – now married – she meets Jan, a man of lower social standing, who introduces her to a different world: one of closeness to nature, manual labor, and communal enjoyments.</p>
+									</div>
+								</div>
+							</div>
+						</div>
+						<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+						</a>
+						<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+
+
+<div class="card py-3">
+	<div class="pl-4">
+		<i class="fas fa-book-open fa-2x"> Search book in library</i>
 	</div>
-	<div class = "ml-3 py-3">
-		<form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-		<input type="search" id ="search" class="form-control" placeholder="Search..." aria-label="Search">
-		</form>
-		<form class="boxButtons" method="post" action="@Url.Action("SearchBookByCategories")">
-		<select class="selectpicker" title="-- Select an event" id="bookType" name = "bookType">
-			<option value="0">All</option>
+	<div class = "card-body">
+		<form class="boxButtons row g-4" method="post" action="@Url.Action("SearchBookByCategories")">
+		 <div class="col-auto">
+		<select class="selectpicker" title="--Select a type" id="bookType" name = "bookType">
+			<option value="0" selected>All</option>
 			<option value="1">Books</option>
 			<option value="2">Comic books</option>
 			<option value="3">Magazine</option>
 		</select>
-    
-		<select class="selectpicker" title="-- Select a user" id="bookCategory" name = "bookCategory" multiple>
-			<option value="0">All</option>
+		 </div>
+		 <div class="col-auto">
+		<select class="selectpicker" title="-- Select a category" id="bookCategory" name = "bookCategory" multiple>
+			<option value="0" selected>All</option>
 			<option value="1">Romance</option>
 			<option value="2">Thriller</option>
 			<option value="3">Fantasy</option>
@@ -39,7 +102,13 @@
 			<option value="6">Novel</option>
 			<option value="7">Fiction</option>
 		</select>
-		    <button class="btn btn-dark" type="submit">Search</button>
+		</div>
+		<div class="col-auto">
+			<input type="text" class="form-control fa fa-search" id="searchInput" name="searchInput" placeholder="Type title or author"> 
+		</div>
+		<div class="col-auto">
+			<button class="btn btn-secondary" type="submit">Search</button>
+		</div>
 		</form>
 	</div>
 </div>
@@ -48,18 +117,17 @@
     @{ var counter = 1; }
 	@foreach (var book in ViewBag.Books)
 	{
-	<div class = "boxElement col-sm-12 col-md-6 col-xl-4">
-		<div class="container py-5">
+	<div class = "boxElement">
+		<div class="container">
 			<div class="row justify-content-center">
-				<div class="">
 					<div class="card text-black">
-						<div class = " text-center pt-3">
-							<img class = "card-img-top img-thumbnail img" src = "/Resources/cover_@(book.id).jpg">
+						<div class = "text-center pt-1">
+							<img class = "img-card" src = "/Resources/cover_@(book.id).jpg">
 						</div>
 						<div class="card-body">
 							<div class="text-center">
 								<h5 class="card-title">@book.title</h5>
-								<p class="text-muted mb-4">@book.name @book.surname</p>
+								<p class="text-muted">@book.name @book.surname</p>
 							</div>
 							<div>
 								<div class="d-flex justify-content-between">
@@ -68,17 +136,19 @@
 								<div class="d-flex justify-content-between">
 									<span>Price</span><span>@book.price zł</span>
 								</div>
+								<div class = "d-flex justify-content-between disable">
+									<span>New price</span><span>0 zł</span>
+								</div>
 							</div>
-							<div class="col text-center">
-								<form class="boxButtons" method="post" action="@Url.Action("AddToCart")">
-								<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#Modal@(book.id)">Details</button>
+							<div class="">
+								<form class="boxButtons d-flex" method="post" action="@Url.Action("AddToCart")">
+								<button type="button" class="btn btn-secondary btn-sm mr-1" data-bs-toggle="modal" data-bs-target="#Modal@(book.id)">Details</button>
 								<input type="hidden" value=@book.id name="bookId">
-								<input type="submit" class="btn btn-dark" value="Add to cart">
+								<input type="submit" class="btn btn-secondary btn-sm" value="Add to cart">
 								</form>
 							</div>
 						</div>
 					</div>
-				</div>
 			</div>
 		</div>
 		<div class="modal fade" id="Modal@(book.id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -95,9 +165,9 @@
 						<p>@book.description</p>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-								<form class="boxButtons" method="post" action="@Url.Action("AddToCart")">
-								<input type="submit" class="btn btn-dark" value="Add to cart">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+								<form class="boxButtons" method="post" action="@Url.Action("BorrowNow")">
+								<input type="submit" class="btn btn-secondary" value="Borrow now">
 								<input type="hidden" value=@book.id name="bookId">
 								</form>
 					</div>
@@ -105,7 +175,12 @@
 			</div>
 		</div>
 	</div>
-	            if (counter % 3 == 0)
+	<script>
+		document.getElementsByClassName('.selectpicker').selectpicker('val', '0');
+	</script>
+
+
+	            if (counter % 5 == 0)
             {
                 @:</div><div class="row">
             counter = 0;

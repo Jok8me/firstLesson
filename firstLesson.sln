@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "firstLesson", "firstLesson\firstLesson.csproj", "{77AEC744-0533-4BAE-A8C1-66BF7C686215}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7F5AAB3A-A117-4823-8E93-8D1153CA741E} = {7F5AAB3A-A117-4823-8E93-8D1153CA741E}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabaseConnection", "DatabaseConnection\DatabaseConnection.csproj", "{E6FBC84B-1EB5-4D83-95F4-B946937CDA50}"
 EndProject

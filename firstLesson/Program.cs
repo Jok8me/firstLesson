@@ -12,7 +12,7 @@ using DatabaseConnection.UsersTableServices;
 
 UserDBService userDBService = new UserDBService();
 
-string Title = "Library";
+
 Console.CursorVisible = false;
 MainWindow mainWindow = new MainWindow();
 

@@ -47,7 +47,7 @@ namespace DatabaseConnection.TableService
 
         }
 
-        public List<Models.BookDetails> GetBooksByTypeAndCategory(int bookType, List<int> bookCategory)
+        public List<Models.BookDetails> GetBooksByTypeAndCategoryAndSearchInput(int bookType, List<int> bookCategory, string searchInput)
         {
             openDBConnectionIfNotOpen();
 
@@ -65,10 +65,20 @@ namespace DatabaseConnection.TableService
             if (!(bookType == 0 && bookCategory.ElementAt(0) == 0))
             {
                 stringBuilder.Append(" WHERE ");
-                if(bookType != 0)
+
+                //Books.title LIKE '%%' OR Authors.name LIKE '%%' OR Authors.surname LIKE '%%'
+                stringBuilder.Append("(Books.title LIKE '%");
+                stringBuilder.Append(searchInput);
+                stringBuilder.Append("%' OR Authors.name LIKE '%");
+                stringBuilder.Append(searchInput);
+                stringBuilder.Append("%' OR Authors.surname LIKE '%");
+                stringBuilder.Append(searchInput);
+                stringBuilder.Append("%') AND ");
+
+                if (bookType != 0)
                 {
                     stringBuilder.Append("Books.book_type_id = ");
-                    stringBuilder.Append((bookType-1).ToString());
+                    stringBuilder.Append((bookType - 1).ToString());
                     stringBuilder.Append(" ");
                 }
 
@@ -78,14 +88,14 @@ namespace DatabaseConnection.TableService
                 if (!(bookCategory.Count == 1 && bookCategory.ElementAt(0) == 0))
                 {
                     stringBuilder.Append("(");
-                    foreach(int category in bookCategory)
+                    foreach (int category in bookCategory)
                     {
                         stringBuilder.Append(" CategoryOfBook.category_id = ");
                         stringBuilder.Append(category.ToString());
                         stringBuilder.Append(" OR");
                     }
-                    stringBuilder.Remove(stringBuilder.Length-2, 2);
-                    if(bookCategory.Count > 0)
+                    stringBuilder.Remove(stringBuilder.Length - 2, 2);
+                    if (bookCategory.Count > 0)
                         stringBuilder.Append(")");
                 }
 
@@ -112,6 +122,27 @@ namespace DatabaseConnection.TableService
             }
             closeDBConnection();
             return bookDetailsList;
+        }
+
+
+
+        public void BookBookByUser(int bookId, int userId, DateTime fromDate, DateTime toDate)
+        {
+            openDBConnectionIfNotOpen();
+
+            string insStmt = "INSERT INTO BorrowBookQueue ([book_id], [user_id], [borrow_from_date], [borrow_to_date]) " +
+                " values (@bookId,@userId,@fromDate,@toDate)";
+
+            using (SqlCommand cmd = new SqlCommand(insStmt, conn))
+            {
+                cmd.Parameters.Add("@bookId", SqlDbType.Int).Value = bookId;
+                cmd.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+                cmd.Parameters.Add("@fromDate", SqlDbType.Date).Value = fromDate;
+                cmd.Parameters.Add("@toDate", SqlDbType.Date).Value = toDate;
+                cmd.ExecuteNonQuery();
+            }
+            closeDBConnection();
+
         }
 
         public List<BookInCard> getBookByBookIdInIntList(List<int> booksId)
@@ -254,5 +285,6 @@ namespace DatabaseConnection.TableService
             closeDBConnection();
             return bookDetails;
         }
+
     }
 }

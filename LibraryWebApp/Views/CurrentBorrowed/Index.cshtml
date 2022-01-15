@@ -18,8 +18,8 @@
 									@if(Enumerable.Any(ViewBag.Books)){
 									@foreach (var book in ViewBag.Books)
 									{
-										<div class = "boxElement col-sm-12 col-md-6 col-xl-4">
-											<div class="container py-5">
+										<div class = "col-sm-6 col-md-4 col-xl-3">
+											<div class="container py-3">
 												<div class="row justify-content-center">
 													<div class="">
 														<div class="card text-black">
@@ -33,7 +33,7 @@
 																	</div>
 																	<div>
 																		<div class="d-flex justify-content-between">
-																			<span>Borrow start date</span><span>@book.borrowStartDate.ToString("MM/dd/yyyy")</span>
+																			<span>Borrow date</span><span>@book.borrowStartDate.ToString("MM/dd/yyyy")</span>
 																		</div>
 																		<div class="d-flex justify-content-between">
 																			<span>Return date</span><span>@book.borrowEndDate.ToString("MM/dd/yyyy")</span>
@@ -41,7 +41,7 @@
 																	</div>
 																	<div class="col text-center">
 																		<form class="boxButtons" method="post" action="@Url.Action("returnBookByBookIdAndUserId")">
-																		<input type="submit" class="btn btn-dark" value="Return">
+																		<input type="submit" class="btn btn-secondary" value="Return">
 																		<input type="hidden" value=@book.id name="bookId">
 																		</form>
 																	</div>
@@ -51,7 +51,7 @@
 													</div>
 												</div>
 											</div>
-											@if(counter % 3 == 0)
+											@if(counter % 4 == 0)
 											{
 												@:</div><div class="row">
 												counter = 0;

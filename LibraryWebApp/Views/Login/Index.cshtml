@@ -1,53 +1,56 @@
 ﻿@page
 @using LibraryWebApp.Properties
 @model LibraryWebApp.Views.Login.IndexModel
+@using LibraryWebApp.Properties
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @{
-ViewBag.Title = "Login";
+	ViewBag.Title = "Login";
 }  
 <!doctype html>
 <html lang="en">
 <head>
-	<title>Shopping Cart</title>
+	<title>Login</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
   <body class="text-center pt-5">
-          <i class="fas fa-book fa-5x"> LibraryWeb</i>
-<main class="form-signin">
+		  <i class="fas fa-book fa-5x"> LibraryWeb</i>
+<main class="login-checker form-signin">
   <form method="post" class="needs-validation" action="@Url.Action("Login")" novalidate>
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+	<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    <div class="form-floating">
-      <input type="login" class="form-control" id="floatingInput" name="login" placeholder="@Resources.loginPlaceholder" required>
-      <label for="floatingInput">Login</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="@Resources.passwordPlaceholder" required>
-      <label for="floatingPassword">Password</label>
-    </div>
-    <button class="w-100 btn btn-lg btn-dark" type="submit">Sign in</button>
+	<div class="form-floating">
+	  <input type="login" class="form-control" id="floatingInput" name="login" placeholder="@Resources.loginPlaceholder" required>
+	  <label for="floatingInput">Login</label>
+	</div>
+	<div class="form-floating">
+	  <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="@Resources.passwordPlaceholder" required>
+	  <label for="floatingPassword">Password</label>
+	</div>
+	<button class="w-100 btn btn-lg btn-secondary" type="submit">Sign in</button>
   </form>
 </main>
 
 <script>
-    (function () {
+	(function () {
   'use strict'
   var forms = document.querySelectorAll('.needs-validation')
   Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
+	.forEach(function (form) {
+	  form.addEventListener('submit', function (event) {
+		if (!form.checkValidity()) {
+		  event.preventDefault()
+		  event.stopPropagation()
+		}
 
-        form.classList.add('was-validated')
-      }, false)
-    })
+		form.classList.add('was-validated')
+	  }, false)
+	})
 })()
 </script>
 
-    
+
   </body>
 </html>

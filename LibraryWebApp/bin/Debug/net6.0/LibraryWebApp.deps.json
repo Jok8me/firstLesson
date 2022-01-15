@@ -9,6 +9,7 @@
       "LibraryWebApp/1.0.0": {
         "dependencies": {
           "DatabaseConnection": "1.0.0",
+          "Rick.Docs.Samples.RouteInfo": "1.0.0.6",
           "bootstrap": "5.1.3"
         },
         "runtime": {
@@ -21,6 +22,14 @@
         "dependencies": {
           "System.Security.AccessControl": "4.7.0",
           "System.Security.Principal.Windows": "4.7.0"
+        }
+      },
+      "Rick.Docs.Samples.RouteInfo/1.0.0.6": {
+        "runtime": {
+          "lib/net6.0/Microsoft.Docs.Samples.RouteInfo.dll": {
+            "assemblyVersion": "1.0.0.4",
+            "fileVersion": "1.0.0.4"
+          }
         }
       },
       "runtime.native.System.Data.SqlClient.sni/4.7.0": {
@@ -127,6 +136,13 @@
       "sha512": "sha512-KSrRMb5vNi0CWSGG1++id2ZOs/1QhRqROt+qgbEAdQuGjGrFcl4AOl4/exGPUYz2wUnU42nvJqon1T3U0kPXLA==",
       "path": "microsoft.win32.registry/4.7.0",
       "hashPath": "microsoft.win32.registry.4.7.0.nupkg.sha512"
+    },
+    "Rick.Docs.Samples.RouteInfo/1.0.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Y89CD+rY5d+Svz4OqGwHgGAcuSZ08ktlvW86n26jQhZCm2ZaJzr4+tqSzdpRJNH+z0/t4F5Bh6ScmVXAePQMug==",
+      "path": "rick.docs.samples.routeinfo/1.0.0.6",
+      "hashPath": "rick.docs.samples.routeinfo.1.0.0.6.nupkg.sha512"
     },
     "runtime.native.System.Data.SqlClient.sni/4.7.0": {
       "type": "package",

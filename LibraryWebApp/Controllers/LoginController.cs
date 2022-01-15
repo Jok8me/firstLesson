@@ -21,7 +21,6 @@ namespace LibraryWebApp.Controllers
         {
             UserDBController userDBController = new UserDBController();
             User user = userDBController.GetUserByLoginAndPassword(login, password);
-            HttpContext.Session.SetInt32("CartCount", 0);
 
 
             if (!(user.login.Equals("")))
@@ -29,8 +28,13 @@ namespace LibraryWebApp.Controllers
                 HttpContext.Session.SetInt32("userId", user.id);
                 HttpContext.Session.SetString("Login", user.login);
                 HttpContext.Session.SetString("Password", user.password);
+                HttpContext.Session.SetInt32("CartCount", 0);
 
-                return View("Views/Home/Index.cshtml");
+                BookDBController bookDBController = new BookDBController();
+                List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
+                ViewBag.Books = bookList;
+
+                return View("/Views/BooksSearching/Index.cshtml");
             }
             else
             {
@@ -43,6 +47,7 @@ namespace LibraryWebApp.Controllers
         [HttpGet]
         public ActionResult Logout()
         {
+            HttpContext.Session.SetInt32("CartCount", 0);
             ViewBag.login = "";
             HttpContext.Session.Clear();
             return RedirectToAction("Index");

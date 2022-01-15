@@ -23,6 +23,9 @@ namespace firstLesson.Views
         public AddItemView _addBookView;
         public SearchBookView _searchBookView;
 
+        //Configuration
+        public AppConfigurationView _appConfigurationView;
+
         //Drawing
         public ConsoleRectangle _consoleRectangle;
 
@@ -41,6 +44,7 @@ namespace firstLesson.Views
             _manageBooksView = new ManageBooksView(this);
             _addBookView = new AddItemView(this);
             _searchBookView = new SearchBookView(this);
+            _appConfigurationView = new AppConfigurationView(this);
 
             //Drawing
             _consoleRectangle = new ConsoleRectangle(35, 10, new System.Drawing.Point(0,0), ConsoleColor.White);

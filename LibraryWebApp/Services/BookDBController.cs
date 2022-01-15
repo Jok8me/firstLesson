@@ -1,4 +1,5 @@
-﻿using DatabaseConnection.TableService;
+﻿using DatabaseConnection.Models;
+using DatabaseConnection.TableService;
 
 namespace LibraryWebApp.Services
 {
@@ -11,9 +12,9 @@ namespace LibraryWebApp.Services
             borrowDBService = new BorrowDBService();
         }
 
-        public List<DatabaseConnection.Models.BookDetails> GetBooksByTypeAndCategory(int bookType, List<int> bookCategory)
+        public List<DatabaseConnection.Models.BookDetails> GetBooksByTypeAndCategoryAndSearchInput(int bookType, List<int> bookCategory, string searchInput)
         {
-            return bookDBService.GetBooksByTypeAndCategory(bookType, bookCategory);
+            return bookDBService.GetBooksByTypeAndCategoryAndSearchInput(bookType, bookCategory, searchInput);
         }
 
         public List<DatabaseConnection.Models.BorrowedBook> GetBooksCurrentBorrowedByUserId(int userId)
@@ -43,9 +44,19 @@ namespace LibraryWebApp.Services
         }
 
 
-        public void returnBookByBookIdAndUserId(int bookId, int userId)
+        public void ReturnBookByBookIdAndUserId(int bookId, int userId)
         {
-            borrowDBService.returnBookByBookIdAndUserId(bookId, userId);
+            borrowDBService.ReturnBookByBookIdAndUserId(bookId, userId);
+        }
+
+        public HashSet<BorrowedBook> GetBorrowedBookByBooksID(List<int> booksID)
+        {
+            return borrowDBService.GetBorrowedBookByBooksID(booksID);
+        }
+
+        public void BookBookByUser(int bookId, int userId, DateTime bookFrom, DateTime bookTo)
+        {
+            bookDBService.BookBookByUser(bookId, userId, bookFrom, bookTo);
         }
     }
 }

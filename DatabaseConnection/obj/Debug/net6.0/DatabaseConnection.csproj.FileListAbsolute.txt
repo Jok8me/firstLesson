@@ -9,4 +9,3 @@ C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\De
 C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.dll
 C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\ref\DatabaseConnection.dll
 C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.pdb
-C:\Users\sebastian.ziolkowski\source\repos\firstLesson\DatabaseConnection\obj\Debug\net6.0\DatabaseConnection.csproj.AssemblyReference.cache

@@ -23,6 +23,25 @@ namespace firstLesson.services
             {"Type", "0" }
             };
 
+        private static IDictionary<string, string> inputConfigurationOptions = new Dictionary<string, string>(){
+                {"Max borrow time(Months)", "unknow"}
+                };
+
+
+
+        public static IDictionary<string, string> InputConfigurationOptions(string message)
+        {
+            Console.WriteLine(message);
+            for (int i = 0; i < inputConfigurationOptions.Count; i++)
+            {
+                Console.SetCursorPosition(2, 3 + i);
+                Console.Write(inputConfigurationOptions.ElementAt(i).Key + ": ");
+                inputConfigurationOptions[inputConfigurationOptions.ElementAt(i).Key] = Console.ReadLine();
+            }
+
+            return inputConfigurationOptions;
+        }
+
         public static IDictionary<string, string> InputOptions(string message)
         {
                 Console.WriteLine(message);

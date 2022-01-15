@@ -11,7 +11,7 @@ namespace firstLesson.views
 {
     public class AdminPanelVeiw : View
     {
-        HashSet<string> adminPanelOptions = new HashSet<string> {"Manage Users" , "Manage Books", "Logout" };
+        HashSet<string> adminPanelOptions = new HashSet<string> {"Manage Users" , "Manage Books", "App configuration","Logout" };
         private string prompt = "Admin panel";
 
         public AdminPanelVeiw(MainWindow mainWindow) : base(mainWindow)
@@ -33,6 +33,10 @@ namespace firstLesson.views
                 _mainWindow._manageBooksView.Run();
             }
             else if (selectedMenuOption == 2)
+            {
+                _mainWindow._appConfigurationView.Run();
+            }
+            else if (selectedMenuOption == 3)
             {
                 _mainWindow._loginView.Run();
             }

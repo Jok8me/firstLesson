@@ -7,9 +7,11 @@ namespace LibraryWebApp.Services
     {
         BookDBService bookDBService;
         BorrowDBService borrowDBService;
+        QueueDBService queueDBService;
         public BookDBController() { 
             bookDBService = new BookDBService(); 
             borrowDBService = new BorrowDBService();
+            queueDBService = new QueueDBService();
         }
 
         public List<DatabaseConnection.Models.BookDetails> GetBooksByTypeAndCategoryAndSearchInput(int bookType, List<int> bookCategory, string searchInput)
@@ -38,9 +40,9 @@ namespace LibraryWebApp.Services
             return bookDBService.GetBooks();
         }
 
-        public void BorrowBookByUser(int bookId, int userId)
+        public void BorrowBookByUser(BookInCard book, int userId)
         {
-            borrowDBService.borrowBook(bookId, userId);
+            borrowDBService.borrowBook(book, userId);
         }
 
 
@@ -49,7 +51,7 @@ namespace LibraryWebApp.Services
             borrowDBService.ReturnBookByBookIdAndUserId(bookId, userId);
         }
 
-        public HashSet<BorrowedBook> GetBorrowedBookByBooksID(List<int> booksID)
+        public HashSet<BorrowedBook> GetBorrowedBooksByBooksID(List<int> booksID)
         {
             return borrowDBService.GetBorrowedBookByBooksID(booksID);
         }
@@ -57,6 +59,21 @@ namespace LibraryWebApp.Services
         public void BookBookByUser(int bookId, int userId, DateTime bookFrom, DateTime bookTo)
         {
             bookDBService.BookBookByUser(bookId, userId, bookFrom, bookTo);
+        }
+
+        public HashSet<BookQueue> GetBookQueueByBooksID(List<int> booksId)
+        {
+            return borrowDBService.GetBookQueueByBooksID(booksId);
+        }
+
+        public Dictionary<int,int> CountBookQueueByBookIDs()
+        {
+            return borrowDBService.CountBookQueueByBookIDs();
+        }
+
+        public  void AddToQueue(BookInCard book, int userId)
+        {
+            queueDBService.AddBookToQueue(book, userId);
         }
     }
 }

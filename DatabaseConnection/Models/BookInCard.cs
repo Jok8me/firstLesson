@@ -13,6 +13,8 @@
         public DateTime _BorrowStartDate { get; set; }
         public DateTime _BorrowEndDate { get; set; }
 
+        public string _Info { get; set; }
+
         public BookInCard(int Id, string Title, string Author,int StatusId, int DiscountId, double Price)
         {
             _Id = Id;
@@ -21,6 +23,7 @@
             _StatusId = StatusId;
             _DiscountId = DiscountId;
             _Price = Price;
+            _Info = "";
         }
     }
 }

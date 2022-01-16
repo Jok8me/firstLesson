@@ -352,3 +352,22 @@ body {
     height: 48px !important;
     margin-left: 140px !important;
 }
+
+.card-details{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.best-height{
+    height: 456px !important;
+}
+
+.breadcrumb-font {
+    font-weight: bolder;
+}

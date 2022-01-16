@@ -38,7 +38,7 @@ ViewData["Title"] = "Home Page";
 							</li>
 							<li><a asp-controller="Cart" asp-action="Index" class="dropdown-item">Cart <span class="badge bg-primary">@HttpContextAccessor.HttpContext.Session.GetInt32("CartCount")</span></a></li>
 							<li><a asp-controller="CurrentBorrowed" asp-action="Index" class="dropdown-item">@Resources.naviBorrowedList</a></li>
-							<li><a asp-controller="BooksSearching" asp-action="Index" class="dropdown-item">@Resources.naviSearchBook</a></li>
+							<li><a asp-controller="BookQueue" asp-action="Index" class="dropdown-item">Queue list</a></li>
 							<li><a asp-controller="BorrowHistory" asp-action="Index" class="dropdown-item">Borrow history</a></li>
 							<li>
 								<hr class="dropdown-divider">

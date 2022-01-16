@@ -11,7 +11,7 @@ namespace DatabaseConnection.TableService
 {
     public class BorrowDBService : DBConnection
     {
-        public void borrowBook(int bookId, int userId)
+        public void borrowBook(BookInCard book, int userId)
         {
             //Borrow if book.status == 0
             //Book if book.status == 1
@@ -21,10 +21,10 @@ namespace DatabaseConnection.TableService
 
             using (SqlCommand cmd = new SqlCommand(insStmt, conn))
             {
-                cmd.Parameters.Add("@bookId", SqlDbType.TinyInt).Value = bookId;
+                cmd.Parameters.Add("@bookId", SqlDbType.TinyInt).Value = book._Id;
                 cmd.Parameters.Add("@userId", SqlDbType.TinyInt).Value = userId;
-                cmd.Parameters.Add("@currentDate", SqlDbType.Date).Value = DateTime.Now;
-                cmd.Parameters.Add("@returnDate", SqlDbType.Date).Value = DateTime.Now.AddMonths(1);
+                cmd.Parameters.Add("@currentDate", SqlDbType.Date).Value = book._BorrowStartDate;
+                cmd.Parameters.Add("@returnDate", SqlDbType.Date).Value = book._BorrowEndDate;
                 cmd.ExecuteNonQuery();
             }
             closeDBConnection();
@@ -95,6 +95,63 @@ namespace DatabaseConnection.TableService
             return borrowedBooks;
         }
 
+        public Dictionary<int, int> CountBookQueueByBookIDs()
+        {
+            Dictionary<int,int> countBooksInQueue = new Dictionary<int, int>();
+            StringBuilder oString = new StringBuilder("SELECT BorrowBookQueue.book_id, COUNT(BorrowBookQueue.book_id) AS count FROM BorrowBookQueue GROUP BY BorrowBookQueue.book_id");
+            
+            openDBConnectionIfNotOpen();
 
+            SqlCommand command = new SqlCommand(oString.ToString(), conn);
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    countBooksInQueue.Add(reader.GetInt32(0), reader.GetInt32(1));
+                }
+            }
+
+            closeDBConnection();
+            return countBooksInQueue;
+        }
+    
+
+        public HashSet<BookQueue> GetBookQueueByBooksID(List<int> booksId)
+        {
+            HashSet<BookQueue> borrowedBooks = new HashSet<BookQueue>();
+            StringBuilder oString = new StringBuilder("SELECT BorrowBookQueue.book_id, BorrowBookQueue.user_id, BorrowBookQueue.borrow_from_date, " +
+                "BorrowBookQueue.borrow_to_date FROM BorrowBookQueue ");
+
+            if (booksId != null)
+            {
+                openDBConnectionIfNotOpen();
+
+                oString.Append(" WHERE (");
+                foreach (int bookID in booksId)
+                {
+                    oString.Append(" BorrowBookQueue.book_id = ");
+                    oString.Append(bookID);
+                    oString.Append(" OR");
+                }
+                oString.Remove(oString.Length - 2, 2);
+                oString.Append(");");
+
+                SqlCommand command = new SqlCommand(oString.ToString(), conn);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        borrowedBooks.Add(new Models.BookQueue(
+                            reader.GetInt32(0),
+                            reader.GetInt32(1),
+                            reader.GetDateTime(2),
+                            reader.GetDateTime(3)));
+                    }
+                }
+
+                closeDBConnection();
+            }
+            return borrowedBooks;
+        }
     }
 }

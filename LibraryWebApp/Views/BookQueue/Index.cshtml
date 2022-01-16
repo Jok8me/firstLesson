@@ -1,0 +1,55 @@
+﻿@page
+@using LibraryWebApp.Properties
+@{
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Queue list</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<div class="card mb-3">
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-font">
+	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item pl-2">> Home </a></li>
+	  <li><a asp-controller="BookQueue" asp-action="Index" class="breadcrumb-item active pl-2">> Queue list </a></li>
+  </ol>
+</nav>
+</div>
+
+<div class = "card pl-3">
+	<table class="table">
+	  <thead>
+	    <tr>
+	      <th scope="col">#</th>
+	      <th scope="col">bookId</th>
+	      <th scope="col">From</th>
+	      <th scope="col">To</th>
+		  <th scope="col">Borrow</th>
+	    </tr>
+	  </thead>
+	    <tbody>
+	  	@foreach (var book in ViewBag.BookInQueue)
+		{
+			<tr>
+			<th scope="row">1</th>
+			<td>@book._bookId</td>
+			<td>@book._borrowFrom.ToString("dd/MM/yyyy")</td>
+			<td>@book._borrowFrom.ToString("dd/MM/yyyy")</td>
+			<td>
+				<form class="boxButtons d-flex" method="post" action="@Url.Action("Borrow")">
+				<input type="hidden" value=@book._bookId name="bookId">
+				<input type="submit" class="btn btn-secondary btn-sm" value="Borrow">
+				</form>
+			</td>
+			</tr>
+		}
+	  </tbody>
+	</table>
+</div>
+
+</html>

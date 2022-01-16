@@ -17,7 +17,7 @@ namespace LibraryWebApp.Controllers
             return View();
         }
 
-        public IActionResult SearchBookByCategories(int bookType, List<int> bookCategory, string searchInput)
+        public IActionResult SearchBookByCategoriesAndInput(int bookType, List<int> bookCategory, string searchInput)
         {
             BookDBController bookDBController = new BookDBController();
             List<DatabaseConnection.Models.BookDetails> bookList;

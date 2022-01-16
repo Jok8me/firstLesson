@@ -99,6 +99,16 @@ namespace DatabaseConnection.TableService
                         stringBuilder.Append(")");
                 }
 
+            } else if (!String.IsNullOrEmpty(searchInput))
+            {
+                stringBuilder.Append(" WHERE ");
+                stringBuilder.Append("(Books.title LIKE '%");
+                stringBuilder.Append(searchInput);
+                stringBuilder.Append("%' OR Authors.name LIKE '%");
+                stringBuilder.Append(searchInput);
+                stringBuilder.Append("%' OR Authors.surname LIKE '%");
+                stringBuilder.Append(searchInput);
+                stringBuilder.Append("%')");
             }
 
             SqlCommand command = new SqlCommand(stringBuilder.ToString(), conn);

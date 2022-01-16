@@ -8,15 +8,15 @@ namespace DatabaseConnection.Models
 {
     public  class BookQueue
     {
-        public int _id { get; set; }
         public int _bookId { get; set; }
+        public int _userId { get; set; }
         public DateTime _borrowFrom { get; set; }
         public DateTime _borrowTo { get; set; }
 
-        public BookQueue(int id, int bookId, DateTime borrowFrom, DateTime borrowTo)
+        public BookQueue(int bookId, int userId, DateTime borrowFrom, DateTime borrowTo)
         {
-            _id = id;
             _bookId = bookId;
+            _userId = userId;
             _borrowFrom = borrowFrom;
             _borrowTo = borrowTo;
         }

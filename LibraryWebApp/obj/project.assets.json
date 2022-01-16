@@ -380,6 +380,19 @@
         "runtime": {
           "bin/placeholder/DatabaseConnection.dll": {}
         }
+      },
+      "firstLesson/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "DatabaseConnection": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/firstLesson.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/firstLesson.dll": {}
+        }
       }
     }
   },
@@ -814,13 +827,19 @@
       "type": "project",
       "path": "../DatabaseConnection/DatabaseConnection.csproj",
       "msbuildProject": "../DatabaseConnection/DatabaseConnection.csproj"
+    },
+    "firstLesson/1.0.0": {
+      "type": "project",
+      "path": "../firstLesson/firstLesson.csproj",
+      "msbuildProject": "../firstLesson/firstLesson.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
       "DatabaseConnection >= 1.0.0",
       "Rick.Docs.Samples.RouteInfo >= 1.0.0.6",
-      "bootstrap >= 5.1.3"
+      "bootstrap >= 5.1.3",
+      "firstLesson >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -852,6 +871,9 @@
           "projectReferences": {
             "C:\\Users\\sebastian.ziolkowski\\source\\repos\\firstLesson\\DatabaseConnection\\DatabaseConnection.csproj": {
               "projectPath": "C:\\Users\\sebastian.ziolkowski\\source\\repos\\firstLesson\\DatabaseConnection\\DatabaseConnection.csproj"
+            },
+            "C:\\Users\\sebastian.ziolkowski\\source\\repos\\firstLesson\\firstLesson\\firstLesson.csproj": {
+              "projectPath": "C:\\Users\\sebastian.ziolkowski\\source\\repos\\firstLesson\\firstLesson\\firstLesson.csproj"
             }
           }
         }

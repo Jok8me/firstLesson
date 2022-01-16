@@ -127,6 +127,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DatabaseConnection\DatabaseConnection.csproj" />
+    <ProjectReference Include="..\firstLesson\firstLesson.csproj" />
   </ItemGroup>
 
   <ItemGroup>

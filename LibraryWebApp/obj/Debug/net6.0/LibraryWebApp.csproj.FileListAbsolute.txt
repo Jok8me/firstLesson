@@ -39,3 +39,8 @@ C:\Users\sebastian.ziolkowski\source\repos\firstLesson\LibraryWebApp\obj\Debug\n
 C:\Users\sebastian.ziolkowski\source\repos\firstLesson\LibraryWebApp\obj\Debug\net6.0\LibraryWebApp.genruntimeconfig.cache
 C:\Users\sebastian.ziolkowski\source\repos\firstLesson\LibraryWebApp\bin\Debug\net6.0\Microsoft.Docs.Samples.RouteInfo.dll
 C:\Users\sebastian.ziolkowski\source\repos\firstLesson\LibraryWebApp\obj\Debug\net6.0\LibraryWebApp.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\LibraryWebApp\bin\Debug\net6.0\firstLesson.deps.json
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\LibraryWebApp\bin\Debug\net6.0\firstLesson.runtimeconfig.json
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\LibraryWebApp\bin\Debug\net6.0\firstLesson.exe
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\LibraryWebApp\bin\Debug\net6.0\firstLesson.dll
+C:\Users\sebastian.ziolkowski\source\repos\firstLesson\LibraryWebApp\bin\Debug\net6.0\firstLesson.pdb

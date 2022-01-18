@@ -1,5 +1,5 @@
-﻿using firstLesson.models.Books;
-using firstLesson.models.Books.DiscountStrategies;
+﻿using DatabaseConnection.Models.DiscountStrategies;
+using firstLesson.models.Books;
 using System;
 using System.Collections.Generic;
 using System.Linq;

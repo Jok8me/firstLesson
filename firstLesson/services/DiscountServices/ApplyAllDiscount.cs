@@ -1,4 +1,4 @@
-﻿using firstLesson.models.Books.DiscountStrategies;
+﻿using DatabaseConnection.Models.DiscountStrategies;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,7 @@
-﻿namespace LibraryWebApp.Services
+﻿using DatabaseConnection.Models;
+using DatabaseConnection.Models.DiscountStrategies;
+
+namespace LibraryWebApp.Services
 {
     public class BookService
     {

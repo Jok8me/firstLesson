@@ -11,6 +11,7 @@ namespace LibraryWebApp.Controllers
             int userId = HttpContext.Session.GetInt32("userId") ?? 0;
             List<DatabaseConnection.Models.BorrowedBook> bookList = bookDBController.GetBooksCurrentBorrowedByUserId(userId);
             ViewBag.Books = bookList;
+            ViewBag.CurrentDate = DateTime.Now;
             return View();
         }
 

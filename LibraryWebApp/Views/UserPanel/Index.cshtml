@@ -3,11 +3,12 @@
 <div class="card mb-3">
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb breadcrumb-font">
-	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item">> Home </a></li>
-	  <li><a asp-controller="UserPanel" asp-action="Index" class="breadcrumb-item active pl-2">> User_panel</a></li>
+	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item pl-2 fas fa-book fa-lg pt-2"> Home </a></li>
+	  <li><a asp-controller="UserPanel" asp-action="Index" class="breadcrumb-item active pl-2 h5 pt-1">> User panel </a></li>
   </ol>
 </nav>
 </div>
+
 
 <div class="container">
 <div class="row gutters">
@@ -17,7 +18,7 @@
 		<div class="account-settings">
 			<div class="user-profile">
 				<div class="user-avatar">
-					<img src="https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg" alt="Maxwell Admin">
+					<img src="https://thumbs.dreamstime.com/b/default-avatar-profile-image-vector-social-media-user-icon-potrait-182347582.jpg" alt="@ViewBag.name">
 				</div>
 				<h5 class="user-name">@ViewBag.name @ViewBag.surname</h5>
 				<h6 class="user-email">@ViewBag.email</h6>

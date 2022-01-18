@@ -7,18 +7,21 @@ namespace LibraryWebApp.Controllers
 {
     public class BooksSearchingController : Controller
     {
-        [Route("BooksSearching")]
-        [Route("BooksSearching/Index")]
         public IActionResult Index()
         {
+
             BookDBController bookDBController = new BookDBController();
+            BorrowDBService borrowDBService = new BorrowDBService();
             List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
+            ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             ViewBag.Books = bookList;
-            return View();
+            return View("/Views/BooksSearching/Index.cshtml");
         }
 
         public IActionResult SearchBookByCategoriesAndInput(int bookType, List<int> bookCategory, string searchInput)
         {
+            BorrowDBService borrowDBService = new BorrowDBService();
+            ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             BookDBController bookDBController = new BookDBController();
             List<DatabaseConnection.Models.BookDetails> bookList;
             if (searchInput == null)
@@ -26,13 +29,14 @@ namespace LibraryWebApp.Controllers
 
             bookList = bookDBController.GetBooksByTypeAndCategoryAndSearchInput(bookType, bookCategory, searchInput);
             ViewBag.Books = bookList;
-            return View("Index");
+            return View("/Views/BooksSearching/Index.html");
         }
 
         public IActionResult AddToCart(int bookId)
         {
+            BorrowDBService borrowDBService = new BorrowDBService();
+            ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             BookDBController bookDBController = new BookDBController();
-
             int cartCount = (int)HttpContext.Session.GetInt32("CartCount");
             cartCount = cartCount + 1;
             HttpContext.Session.SetInt32("CartCount", cartCount);
@@ -51,12 +55,13 @@ namespace LibraryWebApp.Controllers
             string cart = HttpContext.Session.GetString("Cart");
             List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
             ViewBag.Books = bookList;
-            return View("Index");
+            return View("/Views/BooksSearching/Index.cshtml");
         }
-
 
         public IActionResult BorrowNow(int bookId)
         {
+            BorrowDBService borrowDBService = new BorrowDBService();
+            ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             BookDBController bookDBController = new BookDBController();
             BookDBService bookDBService = new BookDBService();
 

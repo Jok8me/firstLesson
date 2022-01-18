@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace firstLesson.models.Books.DiscountStrategies
+namespace DatabaseConnection.Models.DiscountStrategies
 {
     public class PriceDiscountStrategy : IDiscountStrategy
     {

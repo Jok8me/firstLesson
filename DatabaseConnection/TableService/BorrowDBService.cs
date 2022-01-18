@@ -61,7 +61,7 @@ namespace DatabaseConnection.TableService
                 " INNER JOIN Authors ON Authors.id = Authors_Of_Publications.author_id)" +
                 " INNER JOIN BookType ON BookType.id = Books.book_type_id) WHERE BorrowBook.returned = 'FALSE' ");
 
-            if(booksID != null)
+            if(booksID != null && booksID.Count > 0)
             {
                 oString.Append(" AND (");
                 foreach (int bookID in booksID)
@@ -122,7 +122,7 @@ namespace DatabaseConnection.TableService
             StringBuilder oString = new StringBuilder("SELECT BorrowBookQueue.book_id, BorrowBookQueue.user_id, BorrowBookQueue.borrow_from_date, " +
                 "BorrowBookQueue.borrow_to_date FROM BorrowBookQueue ");
 
-            if (booksId != null)
+            if (booksId != null && booksId.Count > 0)
             {
                 openDBConnectionIfNotOpen();
 
@@ -153,5 +153,30 @@ namespace DatabaseConnection.TableService
             }
             return borrowedBooks;
         }
+
+
+        public int GetNumberOfNotReturnedBooks(int userId)
+        {
+            openDBConnectionIfNotOpen();
+            int result = 0;
+            StringBuilder oString = new StringBuilder("SELECT COUNT(book_id) FROM BorrowBook bb " +
+                "JOIN Borrows b ON b.id = bb.borrows_id " +
+                "WHERE borrow_end_date < CAST(GETDATE() AS Date) AND returned = 0 AND b.user_id = @userID; ");
+
+            SqlCommand command = new SqlCommand(oString.ToString(), conn);
+            command.Parameters.Add("@userID", SqlDbType.TinyInt).Value = userId;
+
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    result = reader.GetInt32(0);
+                }
+            }
+
+            closeDBConnection();
+            return result;
+        }
+
     }
 }

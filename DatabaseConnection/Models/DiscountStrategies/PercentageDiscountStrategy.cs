@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace firstLesson.models.Books.DiscountStrategies
+namespace DatabaseConnection.Models.DiscountStrategies
 {
     public class PercentageDiscountStrategy : IDiscountStrategy
-    { 
+    {
         private double _discount;
         public PercentageDiscountStrategy(double discount)
         {
@@ -15,7 +15,7 @@ namespace firstLesson.models.Books.DiscountStrategies
         }
         public double calculate(double price)
         {
-            return (price - price * _discount / 100);
+            return price - price * _discount / 100;
         }
     }
 }

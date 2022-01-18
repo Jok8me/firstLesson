@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using LibraryWebApp.Services;
 using LibraryWebApp.Models;
 using Microsoft.AspNetCore.Session;
+using DatabaseConnection.TableService;
 
 namespace LibraryWebApp.Controllers
 {
@@ -17,8 +18,10 @@ namespace LibraryWebApp.Controllers
         }
 
         [HttpPost]
+        [Route("BooksSearching/Index")]
         public ActionResult Login(string login, string password)
         {
+            BorrowDBService borrowDBService = new BorrowDBService();
             UserDBController userDBController = new UserDBController();
             User user = userDBController.GetUserByLoginAndPassword(login, password);
 
@@ -33,7 +36,7 @@ namespace LibraryWebApp.Controllers
                 BookDBController bookDBController = new BookDBController();
                 List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
                 ViewBag.Books = bookList;
-
+                ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
                 return View("/Views/BooksSearching/Index.cshtml");
             }
             else

@@ -1,5 +1,5 @@
-﻿using firstLesson.models.Books;
-using firstLesson.models.Books.DiscountStrategies;
+﻿using DatabaseConnection.Models.DiscountStrategies;
+using firstLesson.models.Books;
 using firstLesson.models.Users;
 using firstLesson.services.DiscountServices;
 using System;

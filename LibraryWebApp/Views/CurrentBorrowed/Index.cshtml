@@ -8,11 +8,12 @@
 <div class="card mb-3">
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb breadcrumb-font">
-	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item">> Home </a></li>
-	  <li><a asp-controller="CurrentBorrowed" asp-action="Index" class="breadcrumb-item active pl-2">> Current_borrowed</a></li>
+	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item pl-2 fas fa-book fa-lg pt-2"> Home </a></li>
+	  <li><a asp-controller="CurrentBorrowed" asp-action="Index" class="breadcrumb-item active pl-2 h5 pt-1">> Current borrowed </a></li>
   </ol>
 </nav>
 </div>
+
 
 <main class="page">
 			<section class="shopping-cart dark">
@@ -42,16 +43,20 @@
 																	</div>
 																	<div>
 																		<div class="d-flex justify-content-between">
-																			<span>Borrow date</span><span>@book.borrowStartDate.ToString("MM/dd/yyyy")</span>
+																			<span>Borrow date</span><span>@book.borrowStartDate.ToString("dd/MM/yyyy")</span>
 																		</div>
 																		<div class="d-flex justify-content-between">
-																			<span>Return date</span><span>@book.borrowEndDate.ToString("MM/dd/yyyy")</span>
+																			<span>Return date</span><span>@book.borrowEndDate.ToString("dd/MM/yyyy")</span>
 																		</div>
 																	</div>
-																	<div class="col text-center">
+																	<div class="col text-center pt-1">
 																		<form class="boxButtons" method="post" action="@Url.Action("returnBookByBookIdAndUserId")">
 																		<input type="submit" class="btn btn-secondary" value="Return">
 																		<input type="hidden" value=@book.id name="bookId">
+																		@if(@ViewBag.CurrentDate > @book.borrowEndDate)
+																		{
+																			<i class="fas fa-exclamation-triangle pt-1" style="font-size: 1.5em; color: red;" data-bs-toggle="tooltip" data-bs-placement="top" title="You have been holding the book too long."></i>
+																		}
 																		</form>
 																	</div>
 																</div>
@@ -79,4 +84,8 @@
 				</div>
 			</section>
 		</main>
+
+		<script>
+
+		</script>
 		</html>

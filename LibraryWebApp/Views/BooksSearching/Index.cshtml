@@ -15,10 +15,12 @@
 <div class="card mb-3">
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb breadcrumb-font">
-	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item active pl-2">> Home </a></li>
+	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item active pl-2 fas fa-book fa-lg pt-2"> Home </a></li>
+
   </ol>
 </nav>
 </div>
+
 
 <div class = "card pl-3">
 			<h3>Most often borrowed</h3>
@@ -140,18 +142,31 @@
 								<div class="d-flex justify-content-between">
 									<span>Status</span><span>@book.status</span>
 								</div>
+
+								@if(book.priceAfterDiscount > 0)
+								{
+								<div class="d-flex justify-content-between">
+									<span>Price</span><span><s>@book.price zł</s></span>
+								</div>
+								 <div class = "d-flex justify-content-between h6">
+									<span>New price</span><span>@book.priceAfterDiscount zł</span>
+								</div>
+								}
+								else 
+								{
 								<div class="d-flex justify-content-between">
 									<span>Price</span><span>@book.price zł</span>
 								</div>
-								<div class = "d-flex justify-content-between disable">
-									<span>New price</span><span>0 zł</span>
+								 <div class = "d-flex justify-content-between">
+									<span></span><span></span>
 								</div>
+								}
 							</div>
 							<div class="">
-								<form class="boxButtons d-flex" method="post" action="@Url.Action("AddToCart")">
+								<form class="boxButtons d-flex" method="post" action="@Url.Action("AddToCart", "BooksSearching")">
 								<button type="button" class="btn btn-secondary btn-sm mr-1" data-bs-toggle="modal" data-bs-target="#Modal@(book.id)">Details</button>
 								<input type="hidden" value=@book.id name="bookId">
-								<input type="submit" class="btn btn-secondary btn-sm" value="Add to cart">
+								<input @(@ViewBag.KeepedCount < 3 ? null : "disabled") type="submit" class="btn btn-secondary btn-sm" value="Add to cart">
 								</form>
 							</div>
 						</div>
@@ -166,7 +181,7 @@
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 					<div class="modal-body">
-						<p>Publication date: @book.publicationDate.ToString("MM/dd/yyyy")</p>
+						<p>Publication date: @book.publicationDate.ToString("dd/MM/yyyy")</p>
 						<p>Category: @book.type (@book.category)</p>
 						<p>Status: @book.status</p>
 						<p>@book.description</p>
@@ -174,7 +189,7 @@
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 								<form class="boxButtons" method="post" action="@Url.Action("BorrowNow")">
-								<input type="submit" class="btn btn-secondary" value="Borrow now">
+								<input @(@ViewBag.KeepedCount < 3 ? null : "disabled") type="submit" class="btn btn-secondary" value="Borrow now">
 								<input type="hidden" value=@book.id name="bookId">
 								</form>
 					</div>
@@ -182,12 +197,7 @@
 			</div>
 		</div>
 	</div>
-	<script>
-		document.getElementsByClassName('.selectpicker').selectpicker('val', '0');
-	</script>
-
-
-	            if (counter % 5 == 0)
+	        if (counter % 5 == 0)
             {
                 @:</div><div class="row">
             counter = 0;
@@ -197,4 +207,28 @@
 </div>
 </div>
 </div>
+
+<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<!-- Bootstrap 4 JS -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<!-- Bootstrap Datepicker JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script type="text/javascript">
+		$.ajax({
+            url: '@Url.Action("ActionName", "ControllerName")',
+            type: "POST",
+            async: true,
+            dataType: "json",
+            data: $('#form').serialize(),                    
+            success: function (data) {
+               // process result
+            },
+            error: function (request, status, error) {
+               // process error message
+            }
+        });
+	</script>
 </html>

@@ -371,3 +371,9 @@ body {
 .breadcrumb-font {
     font-weight: bolder;
 }
+
+.bookInfo {
+    font-weight: normal;
+    color: red;
+    font-size: 12px;
+}

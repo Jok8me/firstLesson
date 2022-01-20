@@ -128,7 +128,7 @@ namespace DatabaseConnection.TableService
                         reader.GetString(6),
                         reader.GetString(7),
                         reader.GetByte(8),
-                        (double)reader.GetDouble(9),
+                        (double)reader.GetDecimal(9),
                         (double)reader.GetDecimal(10),
                         reader.GetString(11)));
                 }
@@ -164,9 +164,11 @@ namespace DatabaseConnection.TableService
 
             List<BookInCard> booksInCartList = new List<BookInCard>();
 
-            System.Text.StringBuilder oStringBuilder = new System.Text.StringBuilder($"SELECT Books.id, Books.title, Authors.name, Authors.surname, Books.book_status_id, Books.discount_on_book_id, Books.price" +
-                $" FROM(Books INNER JOIN Authors_Of_Publications ON Authors_Of_Publications.item_id = Books.id)" +
-                $" INNER JOIN Authors ON Authors_Of_Publications.author_id = Authors.id");
+            System.Text.StringBuilder oStringBuilder = new System.Text.StringBuilder("SELECT Books.id, Books.title, Authors.name, Authors.surname, " +
+                "Books.book_status_id, Discounts.type, Discounts.ammount, Books.price " +
+                "FROM((Books INNER JOIN Authors_Of_Publications ON Authors_Of_Publications.item_id = Books.id) " +
+                "INNER JOIN Authors ON Authors_Of_Publications.author_id = Authors.id) " +
+                "JOIN Discounts ON Discounts.id = Books.discount_on_book_id");
 
             if (booksId.Count > 0)
             {
@@ -176,23 +178,26 @@ namespace DatabaseConnection.TableService
                     oStringBuilder.Append($" Books.id = {id} OR");
                 }
                 oStringBuilder.Remove(oStringBuilder.Length - 2, 2);
-            }
-            oStringBuilder.Append(";");
-            string oString = oStringBuilder.ToString();
-            SqlCommand command = new SqlCommand(oString, conn);
-            using (SqlDataReader reader = command.ExecuteReader())
-            {
-                while (reader.Read())
+
+                oStringBuilder.Append(";");
+                string oString = oStringBuilder.ToString();
+                SqlCommand command = new SqlCommand(oString, conn);
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    booksInCartList.Add(new BookInCard(
-                        reader.GetInt32(0),
-                        reader.GetString(1),
-                        reader.GetString(2) + " " + reader.GetString(3),
-                        reader.GetInt32(4),
-                        reader.GetInt32(5),
-                        (double)reader.GetDecimal(6)));
+                    while (reader.Read())
+                    {
+                        booksInCartList.Add(new BookInCard(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetString(2) + " " + reader.GetString(3),
+                            reader.GetInt32(4),
+                            reader.GetByte(5),
+                            (double)reader.GetDecimal(6),
+                            (double)reader.GetDecimal(7)));
+                    }
                 }
             }
+            
             closeDBConnection();
             return booksInCartList;
         }

@@ -21,8 +21,8 @@ namespace DatabaseConnection.TableService
 
             using (SqlCommand cmd = new SqlCommand(insStmt, conn))
             {
-                cmd.Parameters.Add("@bookId", SqlDbType.TinyInt).Value = book._Id;
-                cmd.Parameters.Add("@userId", SqlDbType.TinyInt).Value = userId;
+                cmd.Parameters.Add("@bookId", SqlDbType.Int).Value = book._Id;
+                cmd.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
                 cmd.Parameters.Add("@currentDate", SqlDbType.Date).Value = book._BorrowStartDate;
                 cmd.Parameters.Add("@returnDate", SqlDbType.Date).Value = book._BorrowEndDate;
                 cmd.ExecuteNonQuery();
@@ -164,7 +164,7 @@ namespace DatabaseConnection.TableService
                 "WHERE borrow_end_date < CAST(GETDATE() AS Date) AND returned = 0 AND b.user_id = @userID; ");
 
             SqlCommand command = new SqlCommand(oString.ToString(), conn);
-            command.Parameters.Add("@userID", SqlDbType.TinyInt).Value = userId;
+            command.Parameters.Add("@userID", SqlDbType.Int).Value = userId;
 
             using (SqlDataReader reader = command.ExecuteReader())
             {

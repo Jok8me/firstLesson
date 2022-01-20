@@ -1,7 +1,11 @@
-﻿using DatabaseConnection.TableService;
+﻿using DatabaseConnection.Models;
+using DatabaseConnection.TableService;
+using firstLesson.resources;
 using LibraryWebApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Web.Helpers;
 
 namespace LibraryWebApp.Controllers
 {
@@ -20,6 +24,8 @@ namespace LibraryWebApp.Controllers
 
         public IActionResult SearchBookByCategoriesAndInput(int bookType, List<int> bookCategory, string searchInput)
         {
+            SessionExtensions.SetString("bookType", JsonConvert.SerializeObject(bookType));
+
             BorrowDBService borrowDBService = new BorrowDBService();
             ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             BookDBController bookDBController = new BookDBController();
@@ -29,7 +35,7 @@ namespace LibraryWebApp.Controllers
 
             bookList = bookDBController.GetBooksByTypeAndCategoryAndSearchInput(bookType, bookCategory, searchInput);
             ViewBag.Books = bookList;
-            return View("/Views/BooksSearching/Index.html");
+            return View("/Views/BooksSearching/Index.cshtml");
         }
 
         public IActionResult AddToCart(int bookId)
@@ -100,9 +106,56 @@ namespace LibraryWebApp.Controllers
                 }
             }
 
+
+            //To Method
+            if (!String.IsNullOrEmpty(cart))
+            {
+                List<int> booksId = HttpContext.Session.GetString("Cart").Split(';').Select(Int32.Parse).ToList();
+                List<DatabaseConnection.Models.BookInCard> booksList = bookDBService.getBookByBookIdInIntList(booksId);
+                HashSet<BorrowedBook> borrowedBooks = bookDBController.GetBorrowedBooksByBooksID(booksId);
+                HashSet<BookQueue> booksInQueue = bookDBController.GetBookQueueByBooksID(booksId);
+
+                foreach (BookInCard book in booksList)
+                {
+                    book._BorrowStartDate = DateTime.Now;
+                    book._BorrowEndDate = DateTime.Now.AddMonths(AppConfig.MaxBorrowTimeMonths);
+
+                    foreach (BorrowedBook borrowedBook in borrowedBooks)
+                    {
+                        if (borrowedBook.id == book._Id)
+                        {
+                            book._BorrowStartDate = borrowedBook.borrowEndDate;
+                            book._BorrowEndDate = book._BorrowStartDate.AddMonths(AppConfig.MaxBorrowTimeMonths);
+                            borrowedBooks.Remove(borrowedBook);
+                        }
+                    }
+
+                    foreach (BookQueue bookInQueue in booksInQueue)
+                    {
+                        if (bookInQueue._bookId == book._Id)
+                        {
+                            book._BorrowStartDate = bookInQueue._borrowTo;
+                            book._BorrowEndDate = book._BorrowStartDate.AddMonths(AppConfig.MaxBorrowTimeMonths);
+                            booksInQueue.Remove(bookInQueue);
+                        }
+                    }
+
+                }
+
+
+                ViewBag.BooksInCart = booksList;
+                foreach (var book in booksList)
+                {
+                    subtotal += book._Price;
+                    if (book._PriceAfterDiscount > 0)
+                        discount += book._Price - book._PriceAfterDiscount;
+                }
+            }
+
+
             double total = subtotal - discount + cashPenalty;
             ViewBag.Discount = discount;
-            ViewBag.CashPenalty = cashPenalty * (-1);
+            ViewBag.CashPenalty = cashPenalty;
             ViewBag.Subtotal = subtotal;
             ViewBag.Total = total;
 

@@ -35,7 +35,7 @@ namespace LibraryWebApp.Controllers
                     {
                         if (borrowedBook.id == book._Id)
                         {
-                            book._BorrowStartDate = borrowedBook.borrowEndDate.AddDays(1);
+                            book._BorrowStartDate = borrowedBook.borrowEndDate;
                             book._BorrowEndDate = book._BorrowStartDate.AddMonths(AppConfig.MaxBorrowTimeMonths);
                             borrowedBooks.Remove(borrowedBook);
                         }
@@ -45,7 +45,7 @@ namespace LibraryWebApp.Controllers
                     {
                         if (bookInQueue._bookId == book._Id)
                         {
-                            book._BorrowStartDate = bookInQueue._borrowTo.AddDays(1);
+                            book._BorrowStartDate = bookInQueue._borrowTo;
                             book._BorrowEndDate = book._BorrowStartDate.AddMonths(AppConfig.MaxBorrowTimeMonths);
                             booksInQueue.Remove(bookInQueue);
                         }
@@ -58,12 +58,14 @@ namespace LibraryWebApp.Controllers
                 foreach (var book in booksList)
                 {
                     subtotal += book._Price;
+                    if(book._PriceAfterDiscount > 0)
+                        discount += book._Price-book._PriceAfterDiscount;
                 }
             }
 
             double total = subtotal - discount + cashPenalty;
             ViewBag.Discount = discount;
-            ViewBag.CashPenalty = cashPenalty *(-1);
+            ViewBag.CashPenalty = cashPenalty;
             ViewBag.Subtotal = subtotal;
             ViewBag.Total = total;
             return View();
@@ -101,7 +103,7 @@ namespace LibraryWebApp.Controllers
                     {
                         if (borrowedBook.id == book._Id)
                         {
-                            book._BorrowStartDate = borrowedBook.borrowEndDate.AddDays(1);
+                            book._BorrowStartDate = borrowedBook.borrowEndDate;
                             book._BorrowEndDate = book._BorrowStartDate.AddMonths(AppConfig.MaxBorrowTimeMonths);
                             borrowedBooks.Remove(borrowedBook);
                         }
@@ -111,7 +113,7 @@ namespace LibraryWebApp.Controllers
                     {
                         if (bookInQueue._bookId == book._Id)
                         {
-                            book._BorrowStartDate = bookInQueue._borrowTo.AddDays(1);
+                            book._BorrowStartDate = bookInQueue._borrowTo;
                             book._BorrowEndDate = book._BorrowStartDate.AddMonths(AppConfig.MaxBorrowTimeMonths);
                             booksInQueue.Remove(bookInQueue);
                         }
@@ -128,7 +130,10 @@ namespace LibraryWebApp.Controllers
                     foreach (var book in booksList)
                     {
                         subtotal += book._Price;
+                        if (book._PriceAfterDiscount > 0)
+                            discount += book._Price - book._PriceAfterDiscount;
                     }
+
                     cart = string.Join(";", booksId);
                 }
                 else
@@ -141,7 +146,7 @@ namespace LibraryWebApp.Controllers
             HttpContext.Session.SetInt32("CartCount", itemInCart);
             double total = subtotal - discount + cashPenalty;
             ViewBag.Discount = discount;
-            ViewBag.CashPenalty = cashPenalty * (-1);
+            ViewBag.CashPenalty = cashPenalty;
             ViewBag.Subtotal = subtotal;
             ViewBag.Total = total;
             return View("Index");
@@ -170,6 +175,7 @@ namespace LibraryWebApp.Controllers
         [HttpPost]
         public IActionResult Checkout(List<string> startDate, List<string> endDate)
         {
+            BorrowDBService borrowDBService = new BorrowDBService();
             BookDBController bookDBController = new BookDBController();
             BookDBService bookDBService = new BookDBService();
             bool checkoutAvailable = true;
@@ -191,15 +197,6 @@ namespace LibraryWebApp.Controllers
                     booksList[i]._BorrowStartDate = DateTime.Parse(startDate[i]);
                     booksList[i]._BorrowEndDate = DateTime.Parse(endDate[i]);
                     TimeSpan interval = booksList[i]._BorrowEndDate - booksList[i]._BorrowStartDate;
-                    if(interval.TotalDays > (AppConfig.MaxBorrowTimeMonths * 31))
-                    {
-                        StringBuilder stringBuilder = new StringBuilder(booksList[i]._Info);
-                        stringBuilder.Append("<br>Max days for borrow: ");
-                        stringBuilder.Append(AppConfig.MaxBorrowTimeMonths * 31);
-                        stringBuilder.Append(" days</br>");
-                        booksList[i]._Info = stringBuilder.ToString();
-                        checkoutAvailable = false;
-                    }
                 }
 
 
@@ -218,13 +215,12 @@ namespace LibraryWebApp.Controllers
                     foreach(BookQueue bookQueue in queueBooks)
                     {
                         if(bookQueue._bookId == book._Id)
-                            _booksInQueue.Append(bookQueue);
-
+                            _booksInQueue.Add(bookQueue);
                     }
 
                     if(borrowedBook == null && _booksInQueue.Count == 0)
                     {// It is not on loan or in line
-                        if (book.DateIsCorrect())
+                        if (book.DateIsCorrect() && book.DataIsCurrent())
                         {
                             booksToBorrow.Add(book);
                         }
@@ -250,13 +246,20 @@ namespace LibraryWebApp.Controllers
                     {  //It is not on loadn but is in queue less than 3 times.
                         if(book.DateIsCorrect() && book.DateIsCorrectWithQueueBooks(_booksInQueue))
                         {
-                            // Not implemented
+                            checkoutAvailable = false;
+                            book.NotImplemented();
                         }
                         else checkoutAvailable = false;
                     }
-                    else if (borrowedBook == null &&  _booksInQueue.Count < 3)
+                    else if (borrowedBook != null &&  _booksInQueue.Count == 3)
                     {
-                        // Not implemented
+                        checkoutAvailable = false;
+                        book.NoSpaceForBorrowOrQueue();
+                    }
+                    else if (borrowedBook != null && _booksInQueue.Count == 3)
+                    {
+                        checkoutAvailable = false;
+                        book.NotImplemented();
                     }
                 }
 
@@ -275,11 +278,13 @@ namespace LibraryWebApp.Controllers
                     foreach (var book in booksList)
                     {
                         subtotal += book._Price;
+                        if (book._PriceAfterDiscount > 0)
+                            discount += book._Price - book._PriceAfterDiscount;
                     }
 
                     double total = subtotal - discount + cashPenalty;
                     ViewBag.Discount = discount;
-                    ViewBag.CashPenalty = cashPenalty * (-1);
+                    ViewBag.CashPenalty = cashPenalty;
                     ViewBag.Subtotal = subtotal;
                     ViewBag.Total = total;
 
@@ -293,6 +298,7 @@ namespace LibraryWebApp.Controllers
             ViewBag.BooksInCart = "";
 
             List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
+            ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             ViewBag.Books = bookList;
             return View("/Views/BooksSearching/Index.cshtml");
         }

@@ -26,28 +26,35 @@
 	  <thead>
 	    <tr>
 	      <th scope="col">#</th>
-	      <th scope="col">bookId</th>
+	      <th scope="col">Title</th>
+	      <th scope="col">Author</th>
 	      <th scope="col">From</th>
 	      <th scope="col">To</th>
-		  <th scope="col">Borrow</th>
+		  <th scope="col">Action</th>
 	    </tr>
 	  </thead>
 	    <tbody>
-	  	@foreach (var book in ViewBag.BookInQueue)
-		{
-			<tr>
-			<th scope="row">1</th>
-			<td>@book._bookId</td>
-			<td>@book._borrowFrom.ToString("dd/MM/yyyy")</td>
-			<td>@book._borrowFrom.ToString("dd/MM/yyyy")</td>
-			<td>
-				<form class="boxButtons d-flex" method="post" action="@Url.Action("Borrow")">
-				<input type="hidden" value=@book._bookId name="bookId">
-				<input type="submit" class="btn btn-secondary btn-sm" value="Borrow">
-				</form>
-			</td>
-			</tr>
+	  	@{
+		int counter = 1;
+		foreach (var book in ViewBag.BookInQueue)
+			{
+				<tr>
+				<th scope="row">@counter</th>
+				<td>@book._title</td>
+				<td>@book._author</td>
+				<td>@book._borrowFrom.ToString("dd/MM/yyyy")</td>
+				<td>@book._borrowTo.ToString("dd/MM/yyyy")</td>
+				<td>
+					<form class="boxButtons d-flex" method="post" action="@Url.Action("Borrow")">
+					<input type="hidden" value=@book._bookId name="bookId">
+					<input type="submit" class="btn btn-secondary btn-sm" value="Borrow" disabled="@(!book._canBorrow)">
+					</form>
+				</td>
+				</tr>
+				counter = counter +1;
+			}
 		}
+		 
 	  </tbody>
 	</table>
 </div>

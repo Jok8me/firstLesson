@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMvc().AddSessionStateTempDataProvider();
 builder.Services.AddSession();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

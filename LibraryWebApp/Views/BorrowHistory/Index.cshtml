@@ -1,6 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+@model DatabaseConnection.Models.BookDetails
 @{
 }
 <!DOCTYPE html>
@@ -11,57 +12,7 @@
   </head>
   
   <body>
-<div class="card mb-3">
 
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb breadcrumb-font">
-	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item pl-2 fas fa-book fa-lg pt-2"> Home </a></li>
-	  <li><a asp-controller="BorrowHistory" asp-action="Index" class="breadcrumb-item active pl-2 h5 pt-1">> Borrow history </a></li>
-  </ol>
-</nav>
-</div>
-
-
-    <h1>Dynamically change number of allowed options</h1>
-    <h2>With bootstrap-select:</h2>
-     <select class="selectpicker" title="-- Select an event" id="eventType">
-      <option value="1">Appointment</option>
-      <option value="2">Videocall</option>
-      <option value="3">Multiconference</option>
-    </select>
-    
-    <select class="selectpicker" title="-- Select a user" id="userList" multiple>
-      <option value="1">User 1</option>
-      <option value="2">User 2</option>
-      <option value="3">User 3</option>
-      <option value="4">User 4</option>
-      <option value="5">User 5</option>
-      <option value="6">User 6</option>
-      <option value="7">User 7</option>
-    </select>
-    
- 
-
-    <script type="text/javascript">
-          $('#eventType').change(function () {
-            var $userList = $('#userList');
-            if (this.value == 3) {
-              // If type 3 is selected enable multiselect
-              $userList
-                .data('max-options', 5)
-                .val(null);
-              $userList.selectpicker({title: '-- Select a max of 5 users'})
-            }
-            else {
-              // Single select
-              $userList
-                .data('max-options', 1)
-                .val(null);
-              $userList.selectpicker({title: '-- Select a user'})
-            }
-            $userList.selectpicker("refresh");
-      });
-      </script>
   </body>
   
 </html>

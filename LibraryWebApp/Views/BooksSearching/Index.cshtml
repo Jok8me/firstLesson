@@ -91,7 +91,7 @@
 		<i class="fas fa-book-open fa-2x"> Search book in library</i>
 	</div>
 	<div class = "card-body">
-		<form class="boxButtons row g-4" method="post" action="@Url.Action("SearchBookByCategoriesAndInput")">
+		<form class="boxButtons row g-4" method="post" action="@Url.Action("SearchBookByCategoriesAndInput", "BooksSearching")">
 		 <div class="col-auto">
 		<select class="selectpicker" title="--Select a type" id="bookType" name = "bookType">
 			<option value="0" selected>All (Type)</option>
@@ -103,7 +103,7 @@
 		 <div class="col-auto">
 		<select class="selectpicker" title="-- Select a category" id="bookCategory" name = "bookCategory" multiple>
 			<option value="0" selected>All (Category)</option>
-			<option value="1">Romance</option>
+			<option value="1" selected>Romance</option>
 			<option value="2">Thriller</option>
 			<option value="3">Fantasy</option>
 			<option value="4">Tutorials</option>
@@ -148,8 +148,8 @@
 								<div class="d-flex justify-content-between">
 									<span>Price</span><span><s>@book.price zł</s></span>
 								</div>
-								 <div class = "d-flex justify-content-between h6">
-									<span>New price</span><span>@book.priceAfterDiscount zł</span>
+								 <div class = "d-flex justify-content-between">
+									<span>Discounted</span><span>@book.priceAfterDiscount zł</span>
 								</div>
 								}
 								else 
@@ -157,8 +157,8 @@
 								<div class="d-flex justify-content-between">
 									<span>Price</span><span>@book.price zł</span>
 								</div>
-								 <div class = "d-flex justify-content-between">
-									<span></span><span></span>
+								 <div class = "d-flex justify-content-between disable">
+									<span>Discounted</span><span>@book.priceAfterDiscount zł</span>
 								</div>
 								}
 							</div>
@@ -188,7 +188,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-								<form class="boxButtons" method="post" action="@Url.Action("BorrowNow")">
+								<form class="boxButtons" method="post" action="@Url.Action("BorrowNow", "BooksSearching")">
 								<input @(@ViewBag.KeepedCount < 3 ? null : "disabled") type="submit" class="btn btn-secondary" value="Borrow now">
 								<input type="hidden" value=@book.id name="bookId">
 								</form>
@@ -207,28 +207,4 @@
 </div>
 </div>
 </div>
-
-<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<!-- Popper JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<!-- Bootstrap 4 JS -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<!-- Bootstrap Datepicker JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-	<script type="text/javascript">
-		$.ajax({
-            url: '@Url.Action("ActionName", "ControllerName")',
-            type: "POST",
-            async: true,
-            dataType: "json",
-            data: $('#form').serialize(),                    
-            success: function (data) {
-               // process result
-            },
-            error: function (request, status, error) {
-               // process error message
-            }
-        });
-	</script>
 </html>

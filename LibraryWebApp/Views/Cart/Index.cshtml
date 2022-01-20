@@ -43,17 +43,25 @@
 													<div class="col-lg-3">
 														<img class="img-card" src = "/Resources/cover_@(book._Id).jpg">
 													</div>
-													<div class=" product-name col-lg-4">
+													<div class=" product-name col-lg-3">
 														<div class="product-name">
 															<a>@book._Title</a>
 															<div class="product-info">
 																<div>Author: <span class="value">@book._Author</span></div>
-																<div>Price: <span class="value">@book._Price zł</span></div>
-																<div>Discount: <span class="value">0 zł</span></div>
+																@if(book._PriceAfterDiscount > 0)
+																{
+																	<div>Price: <span class="value"><s>@book._Price zł</s></span></div>
+																	<div>After discount: <span class="value h6">@book._PriceAfterDiscount zł</span></div>
+																}
+																else
+																{
+																	<div>Price: <span class="value">@book._Price zł</span></div>
+																	<div class="disable">After discount: <span class="value h6">@book._PriceAfterDiscount zł</span></div>
+																}
 															</div>
 														</div>
 													</div>
-													<div class = "product-name col-lg-3">
+													<div class = "product-name col-lg-4">
 														<div>
 															<div>
 																<a for="date">Start date</a>
@@ -64,7 +72,7 @@
 																<input type="text" class="form-control datepicker" id="endDatapicker_@(book._Id)" placeholder="Date" name="endDate" value=@book._BorrowEndDate>
 															</div>
 																@if(book._Info != ""){
-																	<div class="bookInfo">@Html.Raw(@book._Info)</div>
+																	<div class="bookInfo border border-3 border-danger">@Html.Raw(@book._Info)</div>
 																}
 														</div>
 													</div>
@@ -113,7 +121,7 @@
 		var datesForDisable = ["08-5-2021", "08-10-2021", "08-15-2021", "08-20-2021"]
 
 		$('.datepicker').datepicker({
-			format: 'dd-mm-yyyy',
+			format: 'dd.mm.yyyy',
 			autoclose: true,
 			todayHighlight: true,
 			datesDisabled: datesForDisable

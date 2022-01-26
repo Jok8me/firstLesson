@@ -23,6 +23,8 @@ namespace DatabaseConnection.Models
         public double price;
         public string description;
         public int rate;
+        public int typeId;
+        public int categoryId;
 
         public BookDetails(int id, string title, string name, string surname, DateTime publicationDate, string type, string category, string status, int discountType, double discountAmmount, double price, string description)
         {
@@ -39,6 +41,8 @@ namespace DatabaseConnection.Models
             this.price = price;
             this.description = description;
             this.rate = 0;
+            this.typeId = 0;
+            this.categoryId = 0;
 
 
             if (this.discountAmmount != 0)
@@ -60,6 +64,12 @@ namespace DatabaseConnection.Models
 
             }
             else this.priceAfterDiscount = 0;
+        }
+
+        public void SetTypeAndCategory(int v1, int v2)
+        {
+            this.typeId = v1;
+            this.categoryId = v2;
         }
     }
 }

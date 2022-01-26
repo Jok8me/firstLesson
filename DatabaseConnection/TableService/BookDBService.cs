@@ -250,7 +250,8 @@ namespace DatabaseConnection.TableService
             List<Models.BookDetails> bookDetailsList = new List<Models.BookDetails>();
 
             //string oString = "SELECT * FROM Books WHERE id=@userId";
-            string oString = "SELECT Books.id, Books.title, Authors.name, Authors.surname, Books.publication_date, BookType.book_type_name,Category.category_name ,BookStatus.book_status_name, Discounts.type, Discounts.ammount, Books.price, Books.description " +
+            string oString = "SELECT Books.id, Books.title, Authors.name, Authors.surname, Books.publication_date, BookType.book_type_name,Category.category_name ," +
+                "BookStatus.book_status_name, Discounts.type, Discounts.ammount, Books.price, Books.description, Books.book_type_id, Category.id " +
                 "FROM(((((((Books INNER JOIN Authors_Of_Publications ON Books.id = Authors_Of_Publications.item_id) " +
                 "JOIN Authors ON Authors.id = Authors_Of_Publications.author_id) " +
                 "JOIN BookType ON BookType.id = Books.book_type_id) " +
@@ -265,7 +266,7 @@ namespace DatabaseConnection.TableService
             {
                 while (reader.Read())
                 {
-                    bookDetailsList.Add(new Models.BookDetails(
+                    Models.BookDetails bookDetails = new Models.BookDetails(
                         reader.GetInt32(0),
                         reader.GetString(1),
                         reader.GetString(2),
@@ -277,7 +278,10 @@ namespace DatabaseConnection.TableService
                         reader.GetByte(8),
                         (double)reader.GetDecimal(9),
                         (double)reader.GetDecimal(10),
-                        reader.GetString(11)));
+                        reader.GetString(11));
+                    bookDetails.SetTypeAndCategory(reader.GetInt32(12), reader.GetInt32(13));
+
+                    bookDetailsList.Add(bookDetails);
                 }
             }
 

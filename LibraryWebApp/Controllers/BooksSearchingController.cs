@@ -26,22 +26,20 @@ namespace LibraryWebApp.Controllers
 
         public IActionResult SearchBookByCategoriesAndInput(int bookType, List<int> bookCategory, string searchInput)
         {
-
             BorrowDBService borrowDBService = new BorrowDBService();
-            ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             BookDBController bookDBController = new BookDBController();
-            List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
-            ViewBag.BOTD = bookDBController.GetBOTD();
+            List<DatabaseConnection.Models.BookDetails> bookList = BookService.DetailsBooksInViewBag();
 
-            if (searchInput == null)
-                searchInput = "";
-            //AddSearch
-            //bookList = bookDBController.GetBooksByTypeAndCategoryAndSearchInput(bookType, bookCategory, searchInput);
+
+            if (searchInput == null) searchInput = "";
+            bookList = SearchService.Search(bookList,bookType, bookCategory, searchInput);
 
             SessionStorageServices.Set<int>(HttpContext.Session, "bookType", bookType);
             SessionStorageServices.Set<List<int>>(HttpContext.Session, "bookCategory", bookCategory);
             SessionStorageServices.Set<string>(HttpContext.Session, "searchInput", searchInput);
-            ViewBag.Books = BookService.DetailsBooksInViewBag();
+            ViewBag.Books = bookList;
+            ViewBag.BOTD = bookDBController.GetBOTD();
+            ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             return View("/Views/BooksSearching/Index.cshtml");
         }
 

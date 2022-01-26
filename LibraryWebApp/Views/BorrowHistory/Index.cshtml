@@ -1,18 +1,97 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@model DatabaseConnection.Models.BookDetails
+﻿@page
+@using LibraryWebApp.Properties
 @{
 }
 <!DOCTYPE html>
 <html>
 
-  <head>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  
-  <body>
+<div class="card mb-3">
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-font">
+	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item pl-2 fas fa-book fa-lg pt-2"> Home </a></li>
+	  <li><a asp-controller="BorrowHistory" asp-action="Index" class="breadcrumb-item active pl-2 h5 pt-1">> Borrow history </a></li>
+  </ol>
+</nav>
+</div>
 
-  </body>
-  
-</html>
+
+<main class="page">
+			<section class="shopping-cart dark">
+				<div class="container">
+					<div class="block-heading">
+						<h2>Borrow history</h2>
+						<p>This is a borrow history. All the books you borrowed are here.</p>
+					</div>
+					<div class="content">
+						<div class="row mx-2 mt-2">
+							@if(Enumerable.Any(ViewBag.BookInHistory)){
+							<div class = "card">
+								<table class="table">
+								  <thead>
+								    <tr>
+								      <th scope="col">#</th>
+								      <th scope="col">Title</th>
+								      <th scope="col">Author</th>
+								      <th scope="col">Borrow date</th>
+								      <th scope="col">Return date</th>
+									  <th scope="col">Price</th>
+									  <th scope="col">Book details</th>
+								    </tr>
+								  </thead>
+								    <tbody>
+								  	@{
+									int counter = 1;
+									foreach (var book in ViewBag.BookInHistory)
+										{
+											<tr>
+											<th scope="row">@counter</th>
+											<td>@book._title</td>
+											<td>@book._author</td>
+											<td>@book._startDate.ToString("dd/MM/yyyy")</td>
+											<td>@book._returnDate.ToString("dd/MM/yyyy")</td>
+											<td>@book._price zł</td>
+											<td><button type="button" class="btn btn-secondary btn-sm mr-1" data-bs-toggle="modal" data-bs-target="#Modal@(book._bookId)">Details</button></td>
+											</tr>
+											counter = counter +1;
+											<div class="modal fade" id="Modal@(book._bookId)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="exampleModalLabel">@book._title</h5>
+														<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+													</div>
+													<div class="modal-body">
+														<p>Publication date: @book._publicationDate.ToString("dd/MM/yyyy")</p>
+														<p>Category: @book._bookType (@book._bookCategory)</p>
+														<p>@book._bookDescription</p>
+													</div>
+													<div class="modal-footer">
+														<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+													</div>
+												</div>
+											</div>
+										</div>
+										}
+									}
+									 
+								  </tbody>
+								</table>
+							</div>
+							}	
+							else 
+							{
+										<div class="block-heading pt-5">
+										<h2>Your borrow history is empty.</h2>
+										</div>
+							}
+							
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<script>
+
+		</script>
+		</html>

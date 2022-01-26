@@ -1,5 +1,8 @@
 ﻿@page
 @using LibraryWebApp.Properties
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHttpContextAccessor httpContextAccessor
 @{
 }
 <!DOCTYPE html>
@@ -23,69 +26,31 @@
 
 
 <div class = "card pl-3">
-			<h3>Most often borrowed</h3>
-			<div class="rounded">
-			<div class="container">
-				<div class="row">
-					<div id="carouselExampleControls" class="carousel slide py-3" data-ride="carousel">
-						<div class="carousel-inner" role="listbox">
-							<div class="carousel-item active">
-								<div class="row m-0 p-0">
-									<div class="col-2 col-md-2">
-										<div>
-											<img class="img-carousel" src = "/Resources/cover_0.jpg" alt="Biggest Stem Cells Conference">
-										</div>
-									</div>
-									<div class="col-10 col-md-10">
-										<h4 class="g-color-black mb-3">Lalka</h4>
-										<h5 class="g-color-black mb-3">Boleslaw Prus</h5>
-										<p>Warsaw under Russian rule in the late 1870s is the setting for Prus’s grand panorama of social conflict, political tension, and personal suffering. The middle-aged hero, Wokulski, successful in business, is being destroyed by his obsessive love for a frigid society doll, Izabela. Embattled aristocrats, the new men of finance, Dickensian tradesmen, and the urban poor all come vividly to life on the vast, superbly detailed canvas against which Wokulski’s personal tragedy is played out. Unlike his Western European counterparts, Prus had to work under official censorship. In this edition, most of the smaller cuts made by the Tsarist censor have been restored, and one longer fragment is included as an appendix.</p>
-									</div>
-								</div>
-							</div>
-							<div class="carousel-item">
-								<div class="row m-0 p-0">
-									<div class="col-2 col-md-2">
-										<div>
-											<img class="img-carousel" src = "/Resources/cover_1.jpg" alt="Biggest Stem Cells Conference">
-										</div>
-									</div>
-									<div class="col-10 col-md-10">
-										<h4 class="g-color-black mb-3">Nad Niemnem</h4>
-										<h3 class="g-color-black mb-3">Eliza Orzeszkowa</h3>
-										<p>In the early 1900s, Eliza Orzeszkowa was repeatedly a top contender, with Leo Tolstoy, for the Nobel Prize in literature. Neither won. Nevertheless, her novels have remained classics of Polish literature, and her most famous, On the Niemen, is not only an unusual love story, but is strikingly relevant today. Unhappy after being abandoned by her fiancé, Justyna, an impoverished young woman who lives in a manor house belonging to relatives, desires a life of greater usefulness. While being pursued by a wealthy aristocrat and by her former love – now married – she meets Jan, a man of lower social standing, who introduces her to a different world: one of closeness to nature, manual labor, and communal enjoyments.</p>
-									</div>
-								</div>
-							</div>
-							<div class="carousel-item">
-								<div class="row m-0 p-0">
-									<div class="col-2 col-md-2">
-										<div>
-										<img class="img-carousel" src = "/Resources/cover_2.jpg" alt="Biggest Stem Cells Conference">
-										</div>
-									</div>
-									<div class="col-10 col-md-10">
-										<h4 class="g-color-black mb-3">Nad Niemnem</h4>
-										<h3 class="g-color-black mb-3">Eliza Orzeszkowa</h3>
-										<p>In the early 1900s, Eliza Orzeszkowa was repeatedly a top contender, with Leo Tolstoy, for the Nobel Prize in literature. Neither won. Nevertheless, her novels have remained classics of Polish literature, and her most famous, On the Niemen, is not only an unusual love story, but is strikingly relevant today. Unhappy after being abandoned by her fiancé, Justyna, an impoverished young woman who lives in a manor house belonging to relatives, desires a life of greater usefulness. While being pursued by a wealthy aristocrat and by her former love – now married – she meets Jan, a man of lower social standing, who introduces her to a different world: one of closeness to nature, manual labor, and communal enjoyments.</p>
-									</div>
-								</div>
-							</div>
+	<h3>Book Of The Day</h3>
+	<div class="container">
+		<div class="row">
+			<div class="row m-0 p-0">
+				<div class="col-2 col-md-2">
+					<div class = "pb-4">
+						<div>
+							<img class="img-carousel" src = "/Resources/cover_@(@ViewBag.BOTD._id).jpg" alt="Biggest Stem Cells Conference">
 						</div>
-						<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-						<span class="sr-only">Previous</span>
-						</a>
-						<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-						<span class="carousel-control-next-icon" aria-hidden="true"></span>
-						<span class="sr-only">Next</span>
-						</a>
+						<form class="boxButtons d-flex justify-content-center pt-3" method="post" action="@Url.Action("AddToCart", "BooksSearching")">
+						<input type="hidden" value=@ViewBag.BOTD._id name="bookId">
+						<input @(@ViewBag.KeepedCount < 3 ? null : "disabled") type="submit" class="btn btn-secondary btn-lg" value="Add to cart">
+						</form>
 					</div>
+				</div>
+				<div class="col-10 col-md-10">
+					<h4 class="g-color-black mb-3">@ViewBag.BOTD._title - @ViewBag.BOTD._name @ViewBag.BOTD._surname</h4>
+					<h5 class="g-color-black mb-3"><s>Original _price: @ViewBag.BOTD._price zł</s></h5>
+					<h5 class="g-color-black mb-3 text-success">Price after discount: @ViewBag.BOTD._priceAfterDiscount zł</h5>
+					<p>@ViewBag.BOTD._description</p>
 				</div>
 			</div>
 		</div>
-		</div>
-
+	</div>
+</div>
 <div class="card py-3">
 	<div class="pl-4">
 		<i class="fas fa-book-open fa-2x"> Search book in library</i>
@@ -94,26 +59,26 @@
 		<form class="boxButtons row g-4" method="post" action="@Url.Action("SearchBookByCategoriesAndInput", "BooksSearching")">
 		 <div class="col-auto">
 		<select class="selectpicker" title="--Select a type" id="bookType" name = "bookType">
-			<option value="0" selected>All (Type)</option>
-			<option value="1">Books</option>
-			<option value="2">Comic books</option>
-			<option value="3">Magazine</option>
+			<!option value="0"  @(@HttpContextAccessor.HttpContext.Session.GetString("bookType").Contains("0") ? "selected" : null) >All (Type)</!option>
+			<!option value="1"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookType").Contains("1") ? "selected" : null) >Books</!option>
+			<!option value="2"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookType").Contains("2") ? "selected" : null) >Comic books</!option>
+			<!option value="3"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookType").Contains("3") ? "selected" : null) >Magazine</!option>
 		</select>
 		 </div>
 		 <div class="col-auto">
 		<select class="selectpicker" title="-- Select a category" id="bookCategory" name = "bookCategory" multiple>
-			<option value="0" selected>All (Category)</option>
-			<option value="1" selected>Romance</option>
-			<option value="2">Thriller</option>
-			<option value="3">Fantasy</option>
-			<option value="4">Tutorials</option>
-			<option value="5">Drama</option>
-			<option value="6">Novel</option>
-			<option value="7">Fiction</option>
+			<!option value="0"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookCategory").Contains("0") ? "selected" : null) >All (Category)</!option>
+			<!option value="1"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookCategory").Contains("1") ? "selected" : null) >Romance</!option>
+			<!option value="2"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookCategory").Contains("2") ? "selected" : null) >Thriller</!option>
+			<!option value="3"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookCategory").Contains("3") ? "selected" : null) >Fantasy</!option>
+			<!option value="4"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookCategory").Contains("4") ? "selected" : null) >Tutorials</!option>
+			<!option value="5"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookCategory").Contains("5") ? "selected" : null) >Drama</!option>
+			<!option value="6"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookCategory").Contains("6") ? "selected" : null) >Novel</!option>
+			<!option value="7"	@(@HttpContextAccessor.HttpContext.Session.GetString("bookCategory").Contains("7") ? "selected" : null) >Fiction</!option>
 		</select>
 		</div>
 		<div class="col-auto">
-			<input type="text" class="form-control fa fa-search" id="searchInput" name="searchInput" placeholder="Type title or author"> 
+			<input type="text" class="form-control fa fa-search" id="searchInput" name="searchInput" value = "@HttpContextAccessor.HttpContext.Session.GetString("searchInput").Substring(1,@HttpContextAccessor.HttpContext.Session.GetString("searchInput").Length-2)" placeholder="Type title or author"> 
 		</div>
 		<div class="col-auto">
 			<button class="btn btn-secondary" type="submit">Search</button>
@@ -134,6 +99,26 @@
 							<img class = "img-card" src = "/Resources/cover_@(book.id).jpg">
 						</div>
 						<div class="card-body">
+
+							<div class="text-center card-details inline-direction">
+								@if(@book.rate > 0)
+								{
+									<span class="fa fa-star  @(@book.rate < 1 ? null : "checked")"></span>
+									<span class="fa fa-star  @(@book.rate < 2 ? null : "checked")"></span>
+									<span class="fa fa-star  @(@book.rate < 3 ? null : "checked")"></span>
+									<span class="fa fa-star  @(@book.rate < 4 ? null : "checked")"></span>
+									<span class="fa fa-star  @(@book.rate < 5 ? null : "checked")"></span>
+								}
+								else
+								{
+									<span class="fa fa-star unchecked"></span>
+									<span class="fa fa-star unchecked"></span>
+									<span class="fa fa-star unchecked"></span>
+									<span class="fa fa-star unchecked"></span>
+									<span class="fa fa-star unchecked"></span>
+								}
+							</div>
+
 							<div class="text-center card-details">
 								<h5 class="card-title">@book.title</h5>
 								<p class="text-muted">@book.name @book.surname</p>
@@ -148,7 +133,7 @@
 								<div class="d-flex justify-content-between">
 									<span>Price</span><span><s>@book.price zł</s></span>
 								</div>
-								 <div class = "d-flex justify-content-between">
+								 <div class = "d-flex justify-content-between text-success font-weight-bold">
 									<span>Discounted</span><span>@book.priceAfterDiscount zł</span>
 								</div>
 								}

@@ -1,5 +1,5 @@
 ﻿using DatabaseConnection.UsersTableServices;
-using LibraryWebApp.Models;
+using DatabaseConnection.Models;
 
 namespace LibraryWebApp.Services
 {
@@ -20,6 +20,11 @@ namespace LibraryWebApp.Services
         public void UpdateUserSearchedById(int id, string login, string password, string name, string surname, string email, string phoneNumber)
         {
             userDBService.updateUserById(id, login, password, name, surname, email, phoneNumber);
+        }
+
+        public List<DatabaseConnection.Models.User> GetUsers()
+        {
+            return userDBService.GetUsers();
         }
 
     }

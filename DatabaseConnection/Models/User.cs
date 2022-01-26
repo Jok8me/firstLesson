@@ -40,5 +40,17 @@ namespace DatabaseConnection.Models
             this.email = email;
             role = 1;
         }
+
+        public User(int id, string login, int role)
+        {
+            this.Id = id;
+            this.login = login;
+            this.role=role;
+            this.password = "none";
+            this.name = "none";
+            this.surname = "none";
+            this.email = "none";
+            this.phoneNumber = "none";
+        }
     }
 }

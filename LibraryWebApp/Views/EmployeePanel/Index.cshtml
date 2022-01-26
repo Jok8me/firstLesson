@@ -1,0 +1,104 @@
+﻿@page
+@using LibraryWebApp.Properties
+@using Microsoft.AspNetCore.Http
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject IHttpContextAccessor httpContextAccessor
+@{
+}
+<!DOCTYPE html>
+<html>
+
+<div class="card mb-3">
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-font">
+	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item pl-2 fas fa-book fa-lg pt-2"> Home </a></li>
+	  <li><a asp-controller="EmployeePanel" asp-action="Index" class="breadcrumb-item active pl-2 h5 pt-1">> Employee Panel </a></li>
+  </ol>
+</nav>
+</div>
+
+
+<main class="page">
+			<section class="shopping-cart dark">
+				<div class="container">
+					<div class="block-heading">
+						<h2>Employee Panel</h2>
+						<p>This is a list of user books queues. All books that the selected user has reserved.</p>
+					</div>
+					<div class="content">
+						<div class="row mx-2 mt-2">
+							<div>
+							<span>Select user login:</span>
+								<form class="boxButtons row g-4" method="post" action="@Url.Action("GetBooksInQueueByUserId", "EmployeePanel")">
+									<select class="selectpicker" title="-- Select user" id="userLogin" name = "userId">
+								@{
+									foreach (var user in ViewBag.Users)
+									{
+										string userID = @user.Id.ToString();
+										<!option value=@user.Id @(@HttpContextAccessor.HttpContext.Session.GetString("userId").Contains(userID) ? "selected" : null) >@user.login</!option>
+									}
+									}
+									</select>
+									<div class="col-auto">
+									<button class="btn btn-secondary" type="submit">Submit</button>
+									</div>
+								</form>
+							</div>
+		
+							@if(Enumerable.Any(ViewBag.BookInQueue)){
+							<div class = "card pl-3">
+								<table class="table">
+								  <thead>
+								    <tr>
+								      <th scope="col">#</th>
+								      <th scope="col">Title</th>
+								      <th scope="col">Author</th>
+								      <th scope="col">From</th>
+								      <th scope="col">To</th>
+									  <th scope="col">Action</th>
+								    </tr>
+								  </thead>
+								    <tbody>
+								  	@{
+									int counter = 1;
+									foreach (var book in ViewBag.BookInQueue)
+										{
+											<tr>
+											<th scope="row">@counter</th>
+											<td>@book._title</td>
+											<td>@book._author</td>
+											<td>@book._borrowFrom.ToString("dd/MM/yyyy")</td>
+											<td>@book._borrowTo.ToString("dd/MM/yyyy")</td>
+											<td>
+												<form class="boxButtons d-flex" method="post" action="@Url.Action("Borrow", "EmployeePanel")">
+												<input type="hidden" value=@book._bookId name="bookId">
+												<input type="hidden" value=@ViewBag.UserId name="userId">
+												<input type="submit" class="btn btn-secondary btn-sm" value="Borrow" disabled="@(!book._canBorrow)">
+												</form>
+											</td>
+											</tr>
+											counter = counter +1;
+										}
+									}
+									 
+								  </tbody>
+								</table>
+							</div>
+							}	
+							else 
+							{
+										<div class="block-heading pt-5">
+										<h2>Book queue is empty.</h2>
+										</div>
+							}
+							
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<script>
+
+		</script>
+		</html>

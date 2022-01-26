@@ -57,6 +57,30 @@ namespace DatabaseConnection.UsersTableServices
             return matchingUser;
         }
 
+        public List<Models.User> GetUsers()
+        {
+            openDBConnectionIfNotOpen();
+
+            List<Models.User> usersList = new List<Models.User>();
+
+            System.Text.StringBuilder oStringBuilder = new System.Text.StringBuilder("SELECT id, login, role FROM Users");
+
+                SqlCommand command = new SqlCommand(oStringBuilder.ToString(), conn);
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                    usersList.Add(new Models.User(
+                            reader.GetInt32(0),
+                            reader.GetString(1),
+                            reader.GetByte(2)));
+                }
+                }
+
+            closeDBConnection();
+            return usersList;
+        }
+
         public User searchUserByLogin(string userLogin)
         {
             User matchingUser = new User("", "", 1);

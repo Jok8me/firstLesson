@@ -1,5 +1,6 @@
 ﻿using DatabaseConnection.Models;
 using DatabaseConnection.TableService;
+using DatabaseConnection.UsersTableServices;
 using firstLesson.resources;
 using LibraryWebApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -18,23 +19,29 @@ namespace LibraryWebApp.Controllers
             BorrowDBService borrowDBService = new BorrowDBService();
             List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
             ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
-            ViewBag.Books = bookList;
+            ViewBag.Books = BookService.DetailsBooksInViewBag();
+            ViewBag.BOTD = bookDBController.GetBOTD();
             return View("/Views/BooksSearching/Index.cshtml");
         }
 
         public IActionResult SearchBookByCategoriesAndInput(int bookType, List<int> bookCategory, string searchInput)
         {
-            SessionExtensions.SetString("bookType", JsonConvert.SerializeObject(bookType));
 
             BorrowDBService borrowDBService = new BorrowDBService();
             ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             BookDBController bookDBController = new BookDBController();
-            List<DatabaseConnection.Models.BookDetails> bookList;
+            List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
+            ViewBag.BOTD = bookDBController.GetBOTD();
+
             if (searchInput == null)
                 searchInput = "";
+            //AddSearch
+            //bookList = bookDBController.GetBooksByTypeAndCategoryAndSearchInput(bookType, bookCategory, searchInput);
 
-            bookList = bookDBController.GetBooksByTypeAndCategoryAndSearchInput(bookType, bookCategory, searchInput);
-            ViewBag.Books = bookList;
+            SessionStorageServices.Set<int>(HttpContext.Session, "bookType", bookType);
+            SessionStorageServices.Set<List<int>>(HttpContext.Session, "bookCategory", bookCategory);
+            SessionStorageServices.Set<string>(HttpContext.Session, "searchInput", searchInput);
+            ViewBag.Books = BookService.DetailsBooksInViewBag();
             return View("/Views/BooksSearching/Index.cshtml");
         }
 
@@ -60,12 +67,14 @@ namespace LibraryWebApp.Controllers
             }
             string cart = HttpContext.Session.GetString("Cart");
             List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
-            ViewBag.Books = bookList;
+            ViewBag.Books = BookService.DetailsBooksInViewBag();
+            ViewBag.BOTD = bookDBController.GetBOTD();
             return View("/Views/BooksSearching/Index.cshtml");
         }
 
         public IActionResult BorrowNow(int bookId)
         {
+            UserDBService userDBService = new UserDBService();
             BorrowDBService borrowDBService = new BorrowDBService();
             ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             BookDBController bookDBController = new BookDBController();
@@ -89,7 +98,8 @@ namespace LibraryWebApp.Controllers
             }
             string cart = HttpContext.Session.GetString("Cart");
             List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
-            ViewBag.Books = bookList;
+            ViewBag.Books = BookService.DetailsBooksInViewBag();
+            ViewBag.BOTD = bookDBController.GetBOTD();
 
             double subtotal = 0;
             double discount = 0;
@@ -143,6 +153,13 @@ namespace LibraryWebApp.Controllers
                 }
 
 
+                BookOfTheDay bookOfTheDay = bookDBController.GetBOTD();
+                if (bookOfTheDay != null)
+                {
+                    booksList.Where(book => book._Id == bookOfTheDay._id).Select(y => y._PriceAfterDiscount = bookOfTheDay._priceAfterDiscount).ToList();
+                }
+
+
                 ViewBag.BooksInCart = booksList;
                 foreach (var book in booksList)
                 {
@@ -152,7 +169,7 @@ namespace LibraryWebApp.Controllers
                 }
             }
 
-
+            ViewBag.Users = userDBService.GetUsers();
             double total = subtotal - discount + cashPenalty;
             ViewBag.Discount = discount;
             ViewBag.CashPenalty = cashPenalty;

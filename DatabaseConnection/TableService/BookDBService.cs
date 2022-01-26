@@ -32,6 +32,41 @@ namespace DatabaseConnection.TableService
             closeDBConnection();
         }
 
+        public Models.BookOfTheDay GetBOTD()
+        { 
+            openDBConnectionIfNotOpen();
+
+            //string oString = "SELECT * FROM Books WHERE id=@userId";
+            string oString = "SELECT b.id, a.name, a.surname, b.title, d.type, d.ammount , b.price, b.description, boft.botd_discount_ammount FROM BookOFTheDay boft " +
+                "JOIN Books b ON b.id = boft.bookid " +
+                "JOIN Authors_Of_Publications aop ON aop.item_id = b.id " +
+                "JOIN Authors a ON a.id = aop.author_id " +
+                "JOIN Discounts d ON b.discount_on_book_id = d.id " +
+                "WHERE bookDate = Convert(date, getdate()); ";
+            BookOfTheDay bookOfTheDay = new BookOfTheDay();
+            SqlCommand command = new SqlCommand(oString, conn);
+
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    bookOfTheDay = new Models.BookOfTheDay(
+                    reader.GetInt32(0),
+                    reader.GetString(1),
+                    reader.GetString(2),
+                    reader.GetString(3),
+                    reader.GetByte(4),
+                    (double)reader.GetDecimal(5),
+                    (double)reader.GetDecimal(6),
+                    reader.GetString(7),
+                    (double)reader.GetDecimal(8));
+                }
+            }
+
+            closeDBConnection();
+            return bookOfTheDay;
+        }
+
         public void ReturnBookById(int bookId)
         {
             //New
@@ -50,8 +85,9 @@ namespace DatabaseConnection.TableService
         public List<Models.BookDetails> GetBooksByTypeAndCategoryAndSearchInput(int bookType, List<int> bookCategory, string searchInput)
         {
             openDBConnectionIfNotOpen();
-
             List<Models.BookDetails> bookDetailsList = new List<Models.BookDetails>();
+            if (bookCategory.Count == 0)
+                bookCategory.Add(0);
 
             //string oString = "SELECT * FROM Books WHERE id=@userId";
             StringBuilder stringBuilder = new StringBuilder("SELECT Books.id, Books.title, Authors.name, Authors.surname, Books.publication_date, BookType.book_type_name,Category.category_name ,BookStatus.book_status_name, Discounts.type, Discounts.ammount, Books.price, Books.description " +
@@ -83,10 +119,10 @@ namespace DatabaseConnection.TableService
                     stringBuilder.Append(" ");
                 }
 
-                if (bookType > 0 && bookCategory.Count > 0 && bookCategory.ElementAt(0) > 0)
+                if ((bookType > 0 && bookCategory.Count > 0 && bookCategory.ElementAt(0) > 0) || (bookType !=0 && bookCategory.ElementAt(0) == 0))
                     stringBuilder.Append("AND ");
 
-                if (!(bookCategory.Count == 1 && bookCategory.ElementAt(0) == 0))
+                if (bookCategory.ElementAt(0) != 0)
                 {
                     stringBuilder.Append("(");
                     foreach (int category in bookCategory)
@@ -99,8 +135,13 @@ namespace DatabaseConnection.TableService
                     if (bookCategory.Count > 0)
                         stringBuilder.Append(")");
                 }
+                else
+                {
+                    stringBuilder.Remove(stringBuilder.Length - 4, 4);
+                }
 
-            } else if (!String.IsNullOrEmpty(searchInput))
+            } 
+            else if (!String.IsNullOrEmpty(searchInput))
             {
                 stringBuilder.Append(" WHERE ");
                 stringBuilder.Append("(Books.title LIKE '%");
@@ -239,6 +280,28 @@ namespace DatabaseConnection.TableService
                         reader.GetString(11)));
                 }
             }
+
+
+
+            oString = "SELECT book_id, AVG(rate) FROM BorrowBook GROUP BY book_id";
+            command = new SqlCommand(oString, conn);
+
+
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int bookId = reader.GetInt32(0);
+                    int rate = (!reader.IsDBNull(1) ? reader.GetInt32(1) : -1);
+
+                    if (rate > -1)
+                    {
+                        bookDetailsList.Where(x => x.id == bookId).Select(y => y.rate = rate).ToList();
+                    }
+                }
+            }
+
+
             closeDBConnection();
             return bookDetailsList;
         }

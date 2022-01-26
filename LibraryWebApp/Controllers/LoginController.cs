@@ -28,14 +28,20 @@ namespace LibraryWebApp.Controllers
 
             if (!(user.login.Equals("")))
             {
+                SessionStorageServices.Set<int>(HttpContext.Session, "bookType", 0);
+                SessionStorageServices.Set<List<int>>(HttpContext.Session, "bookCategory", new List<int>() {0});
+                SessionStorageServices.Set<string>(HttpContext.Session, "searchInput", "");
+
                 HttpContext.Session.SetInt32("userId", user.id);
                 HttpContext.Session.SetString("Login", user.login);
                 HttpContext.Session.SetString("Password", user.password);
+                HttpContext.Session.SetInt32("Role", user.role);
                 HttpContext.Session.SetInt32("CartCount", 0);
 
                 BookDBController bookDBController = new BookDBController();
                 List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
-                ViewBag.Books = bookList;
+                ViewBag.Books = BookService.DetailsBooksInViewBag();
+                ViewBag.BOTD = bookDBController.GetBOTD();
                 ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
                 return View("/Views/BooksSearching/Index.cshtml");
             }

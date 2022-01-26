@@ -18,7 +18,8 @@ namespace LibraryWebApp.Controllers
         {
             BookDBController bookDBController = new BookDBController();
             List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
-            ViewBag.Books = bookList;
+            ViewBag.Books = BookService.DetailsBooksInViewBag();
+            ViewBag.BOTD = bookDBController.GetBOTD();
             return View();
         }
 

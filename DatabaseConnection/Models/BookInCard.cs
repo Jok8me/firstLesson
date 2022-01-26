@@ -93,10 +93,8 @@ namespace DatabaseConnection.Models
             bool isCorrect = true;
 
             if (this._BorrowStartDate < borrowedBook.borrowEndDate)
-                isCorrect = false;
-
-            if (!isCorrect)
             {
+                isCorrect = false;
                 StringBuilder stringBuilder = new StringBuilder(this._Info);
                 stringBuilder.Append("<br>Start date must be higher than: ");
                 stringBuilder.Append(borrowedBook.borrowEndDate.ToString("dd.MM.yyyy"));
@@ -106,13 +104,31 @@ namespace DatabaseConnection.Models
             return isCorrect;
         }
 
+
+
+        public bool BookIsntBorrowedOrInQueueByUser(List<int> borrowedOrInQueueBooks)
+        {
+            bool isCorrect = true;
+
+            if (borrowedOrInQueueBooks.Contains(this._Id))
+            {
+                isCorrect = false;
+                StringBuilder stringBuilder = new StringBuilder(this._Info);
+                stringBuilder.Append("<br>Book is borrowed or in queue.</br>");
+                this._Info = stringBuilder.ToString();
+            }
+            return isCorrect;
+        }
+
+
         public bool DateIsCorrectWithQueueBooks(HashSet<BookQueue> booksInQueue)
         {
             bool isCorrect = true;
 
             foreach(BookQueue book in booksInQueue)
             {
-                if(this._BorrowStartDate < book._borrowTo)
+                // Start date is between queue dates 
+                if (book._borrowFrom < this._BorrowStartDate && this._BorrowStartDate < book._borrowTo)
                 {
                     isCorrect = false;
                     StringBuilder stringBuilder = new StringBuilder(this._Info);
@@ -120,7 +136,15 @@ namespace DatabaseConnection.Models
                     stringBuilder.Append(book._borrowTo.ToString("dd.MM.yyyy"));
                     stringBuilder.Append("</br>");
                     this._Info = stringBuilder.ToString();
-
+                }
+                if(book._borrowFrom < this._BorrowEndDate && this._BorrowEndDate < book._borrowTo)
+                {
+                    isCorrect = false;
+                    StringBuilder stringBuilder = new StringBuilder(this._Info);
+                    stringBuilder.Append("<br>End date must be higher than: ");
+                    stringBuilder.Append(book._borrowTo.ToString("dd.MM.yyyy"));
+                    stringBuilder.Append("</br>");
+                    this._Info = stringBuilder.ToString();
                 }
             }
             return isCorrect;

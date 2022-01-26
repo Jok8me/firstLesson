@@ -29,20 +29,21 @@ namespace DatabaseConnection.TableService
             }
             closeDBConnection();
         }
-
-        public void ReturnBookByBookIdAndUserId(int bookId, int userId)
+                                                             
+        public void ReturnBookByBookIdAndUserId(int bookId, int userId, int selectedRating)
         {
             //Borrow if book.status == 0
             //Book if book.status == 1
 
             openDBConnectionIfNotOpen();
-            string insStmt = "EXECUTE returnBookProcedure @userId, @bookId ,@cash;";
+            string insStmt = "EXECUTE returnBookProcedure @userId, @bookId ,@cash, @selectedRating;";
 
             using (SqlCommand cmd = new SqlCommand(insStmt, conn))
             {
-                cmd.Parameters.Add("@bookId", SqlDbType.TinyInt).Value = bookId;
-                cmd.Parameters.Add("@userId", SqlDbType.TinyInt).Value = userId;
+                cmd.Parameters.Add("@bookId", SqlDbType.Int).Value = bookId;
+                cmd.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
                 cmd.Parameters.Add("@cash", SqlDbType.Decimal).Value = 1.0;
+                cmd.Parameters.Add("@selectedRating", SqlDbType.Decimal).Value = selectedRating;
                 cmd.ExecuteNonQuery();
             }
             closeDBConnection();
@@ -93,6 +94,40 @@ namespace DatabaseConnection.TableService
 
             closeDBConnection();
             return borrowedBooks;
+        }
+
+        public List<int> CheckBooksBorrowOrQueueByUserId(int userId)
+        {
+            List<int> checkBorrowedAndQueueBooks = new List<int>();
+            StringBuilder oString = new StringBuilder("SELECT book_id FROM Borrows b JOIN BorrowBook bb ON b.id = bb.borrows_id WHERE bb.returned = 0 And b.user_id = @userId");
+            StringBuilder oString2 = new StringBuilder("SELECT book_id FROM BorrowBookQueue bbq WHERE bbq.user_id = @userId");
+
+            openDBConnectionIfNotOpen();
+
+            SqlCommand command = new SqlCommand(oString.ToString(), conn);
+            command.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    checkBorrowedAndQueueBooks.Add(reader.GetInt32(0));
+                }
+            }
+
+            SqlCommand command2 = new SqlCommand(oString2.ToString(), conn);
+            command2.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+            using (SqlDataReader reader = command2.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    checkBorrowedAndQueueBooks.Add(reader.GetInt32(0));
+                }
+            }
+
+
+
+            closeDBConnection();
+            return checkBorrowedAndQueueBooks;
         }
 
         public Dictionary<int, int> CountBookQueueByBookIDs()

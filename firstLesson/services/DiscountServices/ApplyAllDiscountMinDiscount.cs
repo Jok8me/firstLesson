@@ -1,5 +1,6 @@
 ﻿using DatabaseConnection.Models.DiscountStrategies;
 using firstLesson.models.Books;
+using DatabaseConnection.Models.DiscountStrategies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,12 @@ namespace firstLesson.services.DiscountServices
             if (book.GetDiscountStrategy() != null)
                 tempList.Add(book.GetDiscountStrategy());
             SortedMinDiscountList = tempList.OrderByDescending(o => o.calculate(book.price)).ToList();
+        }
+
+        public ApplyAllDiscountMinDiscount(List<IDiscountStrategy> list)
+        {
+            List<IDiscountStrategy> tempList = new List<IDiscountStrategy>(list);
+            SortedMinDiscountList = tempList;
         }
 
         public double calculate(double price)

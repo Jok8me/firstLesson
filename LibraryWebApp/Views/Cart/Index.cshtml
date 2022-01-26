@@ -22,13 +22,33 @@
 </div>
 
 
-		<form class="boxButtons" method="post" action="@Url.Action("Checkout")">
+		<form class="boxButtons" method="post" action="@Url.Action("Checkout","Cart")">
 		<main class="page">
 			<section class="shopping-cart dark">
 				<div class="container">
 					<div class="block-heading">
 						<h2>Library Cart</h2>
 						<p>It is a library basket. You can choose the period to borrow the book. If the book is unavailable, you can reserve it for the available date.</p>
+					
+
+					<div class="d-block content emploPanel" data-p = @HttpContextAccessor.HttpContext.Session.GetInt32("Role")>
+					<h4>Employee panel</h4>
+					<div class="d-inline ml-5 black-text">
+					<span>Choose user:</span>
+
+					<select class="selectpicker" title="-- Select user" id="userLogin" name = "otherUserId">
+					@{
+					foreach (var user in ViewBag.Users)
+					{
+						<option value=@user.Id>@user.login</option>
+					}
+					}
+					</select>
+
+					</div>
+					</div>
+
+
 					</div>
 					<div class="content">
 						<div class="row">
@@ -111,10 +131,6 @@
 	</body>
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<!-- Popper JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-	<!-- Bootstrap 4 JS -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<!-- Bootstrap Datepicker JS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 	<script type="text/javascript">
@@ -126,5 +142,15 @@
 			todayHighlight: true,
 			datesDisabled: datesForDisable
 		});
+
+		const emploPanel = document.querySelector(".emploPanel")
+		if(emploPanel.dataset.p != "2"){
+		    emploPanel.remove()
+		}
+
+		$('#inputID').bind("input", function(){
+		var value = $(this).val();
+		$('#datalistSelected').val(value);
+})
 	</script>
 </html>

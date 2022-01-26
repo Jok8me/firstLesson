@@ -8,15 +8,23 @@ namespace LibraryWebApp.Services
         BookDBService bookDBService;
         BorrowDBService borrowDBService;
         QueueDBService queueDBService;
+        BorrowHistoryDBService borrowHistoryDBService;
+
         public BookDBController() { 
             bookDBService = new BookDBService(); 
             borrowDBService = new BorrowDBService();
             queueDBService = new QueueDBService();
+            borrowHistoryDBService = new BorrowHistoryDBService();
         }
 
         public List<DatabaseConnection.Models.BookDetails> GetBooksByTypeAndCategoryAndSearchInput(int bookType, List<int> bookCategory, string searchInput)
         {
             return bookDBService.GetBooksByTypeAndCategoryAndSearchInput(bookType, bookCategory, searchInput);
+        }
+
+        public BookOfTheDay GetBOTD()
+        {
+            return bookDBService.GetBOTD();
         }
 
         public List<DatabaseConnection.Models.BorrowedBook> GetBooksCurrentBorrowedByUserId(int userId)
@@ -46,9 +54,9 @@ namespace LibraryWebApp.Services
         }
 
 
-        public void ReturnBookByBookIdAndUserId(int bookId, int userId)
+        public void ReturnBookByBookIdAndUserId(int bookId, int userId, int selected_rating)
         {
-            borrowDBService.ReturnBookByBookIdAndUserId(bookId, userId);
+            borrowDBService.ReturnBookByBookIdAndUserId(bookId, userId, selected_rating);
         }
 
         public HashSet<BorrowedBook> GetBorrowedBooksByBooksID(List<int> booksID)
@@ -74,6 +82,16 @@ namespace LibraryWebApp.Services
         public  void AddToQueue(BookInCard book, int userId)
         {
             queueDBService.AddBookToQueue(book, userId);
+        }
+
+        public List<BookInHistory> GetBooksHistoryByUserId(int userId)
+        {
+            return borrowHistoryDBService.GetBooksHistoryByUserId(userId);
+        }
+
+        public List<int> CheckBooksBorrowOrQueueByUserId(int userId)
+        {
+            return borrowDBService.CheckBooksBorrowOrQueueByUserId(userId);
         }
     }
 }

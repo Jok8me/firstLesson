@@ -16,8 +16,12 @@ namespace DatabaseConnection.Models
         public DateTime _borrowTo { get; set; }
         public int _bookStatus { get; set; }
         public bool _canBorrow { get; set; }
+        public List<BookDateRange> _bookDateRanges { get; set; }
+
         public BookQueue(int bookId, int userId, DateTime borrowFrom, DateTime borrowTo)
         {
+            _bookDateRanges = new List<BookDateRange>();
+
             _bookId = bookId;
             _userId = userId;
             _borrowFrom = borrowFrom;
@@ -36,6 +40,11 @@ namespace DatabaseConnection.Models
         {
             _title = title;
             _author = author;
+        }
+
+        public void addDatesToDateRanges(BookDateRange bookDateRange)
+        {
+            _bookDateRanges.Add(bookDateRange);
         }
     }
 }

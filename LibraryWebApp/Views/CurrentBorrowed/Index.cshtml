@@ -5,21 +5,31 @@
 <!DOCTYPE html>
 <html>
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+
+
+<head>
+	<title>Queue list</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+
 <div class="card mb-3">
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb breadcrumb-font">
 	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item pl-2 fas fa-book fa-lg pt-2"> Home </a></li>
-	  <li><a asp-controller="CurrentBorrowed" asp-action="Index" class="breadcrumb-item active pl-2 h5 pt-1">> Current borrowed </a></li>
+	  <li><a asp-controller="CurrentBorrowed" asp-action="Index" class="breadcrumb-item active pl-2 h5 pt-1">> Borrowed books</a></li>
   </ol>
 </nav>
 </div>
-
 
 <main class="page">
 			<section class="shopping-cart dark">
 				<div class="container">
 					<div class="block-heading">
-						<h2>Borrowed list</h2>
+						<h2>Borrowed book list</h2>
 						<p>This is a book borrowing list. All the books you have are available here.</p>
 					</div>
 					<div class="content">
@@ -50,15 +60,59 @@
 																		</div>
 																	</div>
 																	<div class="col text-center pt-1">
-																		<form class="boxButtons" method="post" action="@Url.Action("returnBookByBookIdAndUserId")">
-																		<input type="submit" class="btn btn-secondary" value="Return">
-																		<input type="hidden" value=@book.id name="bookId">
+																		<button type="button" class="btn btn-secondary btn-sm mr-1" data-bs-toggle="modal" data-bs-target="#Modal@(book.id)">Return</button>
 																		@if(@ViewBag.CurrentDate > @book.borrowEndDate)
 																		{
 																			<i class="fas fa-exclamation-triangle pt-1" style="font-size: 1.5em; color: red;" data-bs-toggle="tooltip" data-bs-placement="top" title="You have been holding the book too long."></i>
 																		}
-																		</form>
 																	</div>
+
+																	<form class="boxButtons" method="post" action="@Url.Action("returnBookByBookIdAndUserId")">
+																	<div class="modal fade" id="Modal@(book.id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+																		<div class="modal-dialog">
+																			<div class="modal-content">
+																				<div class="modal-header">
+																				<div class ="modal-title-author">
+																				</div>
+																					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+																				</div>
+																				<div class="modal-body row">
+																				<div class="form-group" id="rating-ability-wrapper">
+																				<label class="control-label" for="rating">
+																				<span class="field-label-header">How would you rate @book.title write by @book.author</span><br>
+																				<span class="field-label-info"></span>
+																				</label>
+																				<h2 class="bold rating-header" style="">
+																				<span class="selected-rating">0</span><small> / 5</small>
+																				</h2>
+																				<button type="submit" class="btnrating btn btn-default btn-lg"  name="selected_rating" value =1 data-attr="1" id="rating-star-1">
+																				    <i class="fa fa-star" aria-hidden="true"></i>
+																				</button>
+																				<button type="submit" class="btnrating btn btn-default btn-lg"  name="selected_rating"  value =2 data-attr="2" id="rating-star-2">
+																				    <i class="fa fa-star" aria-hidden="true"></i>
+																				</button>
+																				<button type="submit" class="btnrating btn btn-default btn-lg"  name="selected_rating" value =3 data-attr="3" id="rating-star-3">
+																				    <i class="fa fa-star" aria-hidden="true"></i>
+																				</button>
+																				<button type="submit" class="btnrating btn btn-default btn-lg"  name="selected_rating" value =4 data-attr="4" id="rating-star-4">
+																				    <i class="fa fa-star" aria-hidden="true"></i>
+																				</button>
+																				<button type="submit" class="btnrating btn btn-default btn-lg"  name="selected_rating" value =5 data-attr="5" id="rating-star-5">
+																				    <i class="fa fa-star" aria-hidden="true"></i>
+																				</button>
+																				</div>
+
+
+																				</div>
+																				<div class="modal-footer">
+																					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+																						<input type="hidden" value=@book.id name="bookId">
+																							
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</form>
 																</div>
 															</div>
 														</div>
@@ -84,8 +138,34 @@
 				</div>
 			</section>
 		</main>
-
 		<script>
+	jQuery(document).ready(function($){
+	    
+	$(".btnrating").on('click',(function(e) {
+	
+	var previous_value = $("#selected_rating").val();
+	
+	var selected_value = $(this).attr("data-attr");
+	$("#selected_rating").val(selected_value);
+	
+	$(".selected-rating").empty();
+	$(".selected-rating").html(selected_value);
+	
+	for (i = 1; i <= selected_value; ++i) {
+	$("#rating-star-"+i).toggleClass('btn-warning');
+	$("#rating-star-"+i).toggleClass('btn-default');
+	}
+	
+	for (ix = 1; ix <= previous_value; ++ix) {
+	$("#rating-star-"+ix).toggleClass('btn-warning');
+	$("#rating-star-"+ix).toggleClass('btn-default');
+	}
+	
+	}));
+});
+
+		
 
 		</script>
-		</html>
+
+</html>

@@ -22,6 +22,7 @@ namespace DatabaseConnection.Models
         public double priceAfterDiscount;
         public double price;
         public string description;
+        public int rate;
 
         public BookDetails(int id, string title, string name, string surname, DateTime publicationDate, string type, string category, string status, int discountType, double discountAmmount, double price, string description)
         {
@@ -37,6 +38,7 @@ namespace DatabaseConnection.Models
             this.discountAmmount = discountAmmount;
             this.price = price;
             this.description = description;
+            this.rate = 0;
 
 
             if (this.discountAmmount != 0)

@@ -365,7 +365,7 @@ body {
 }
 
 .best-height{
-    height: 456px !important;
+    height: 480px !important;
 }
 
 .breadcrumb-font {
@@ -376,4 +376,42 @@ body {
     font-weight: normal;
     color: red;
     font-size: 12px;
+}
+
+.datepicker {
+    width: 10em !important;
+}
+
+.errorBookInput {
+    font-size: 15px;
+    color: red;
+}
+
+.rating-header {
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+
+.checked {
+    color: orange;
+}
+
+.unchecked {
+    color:lightgray;
+}
+
+.inline-direction {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.emploPanel {
+    text-align: left;
+    color: #3b99e0;
+}
+
+.black-text {
+    color: black;
 }

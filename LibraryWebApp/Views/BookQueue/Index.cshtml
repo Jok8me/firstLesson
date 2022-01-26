@@ -5,58 +5,148 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-	<title>Queue list</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/style.css">
-</head>
-
 <div class="card mb-3">
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb breadcrumb-font">
 	  <li><a asp-controller="BooksSearching" asp-action="Index" class="breadcrumb-item pl-2 fas fa-book fa-lg pt-2"> Home </a></li>
-	  <li><a asp-controller="BookQueue" asp-action="Index" class="breadcrumb-item active pl-2 h5 pt-1">> Queue list </a></li>
+	  <li><a asp-controller="BookQueue" asp-action="Index" class="breadcrumb-item active pl-2 h5 pt-1">> Book queue </a></li>
   </ol>
 </nav>
 </div>
 
-<div class = "card pl-3">
-	<table class="table">
-	  <thead>
-	    <tr>
-	      <th scope="col">#</th>
-	      <th scope="col">Title</th>
-	      <th scope="col">Author</th>
-	      <th scope="col">From</th>
-	      <th scope="col">To</th>
-		  <th scope="col">Action</th>
-	    </tr>
-	  </thead>
-	    <tbody>
-	  	@{
-		int counter = 1;
-		foreach (var book in ViewBag.BookInQueue)
-			{
-				<tr>
-				<th scope="row">@counter</th>
-				<td>@book._title</td>
-				<td>@book._author</td>
-				<td>@book._borrowFrom.ToString("dd/MM/yyyy")</td>
-				<td>@book._borrowTo.ToString("dd/MM/yyyy")</td>
-				<td>
-					<form class="boxButtons d-flex" method="post" action="@Url.Action("Borrow")">
-					<input type="hidden" value=@book._bookId name="bookId">
-					<input type="submit" class="btn btn-secondary btn-sm" value="Borrow" disabled="@(!book._canBorrow)">
-					</form>
-				</td>
-				</tr>
-				counter = counter +1;
-			}
-		}
-		 
-	  </tbody>
-	</table>
-</div>
 
-</html>
+<main class="page">
+			<section class="shopping-cart dark">
+				<div class="container">
+					<div class="block-heading">
+						<h2>Book queue</h2>
+						<p>This is a list of book queues. All the books you want to borrow in the future are here.</p>
+					</div>
+					<div class="content">
+						<div class="row mx-2 mt-2">
+							@if(Enumerable.Any(ViewBag.BookInQueue)){
+							<div class = "card pl-3">
+								<table class="table">
+								  <thead>
+								    <tr>
+								      <th scope="col">#</th>
+								      <th scope="col">Title</th>
+								      <th scope="col">Author</th>
+								      <th scope="col">From</th>
+								      <th scope="col">To</th>
+									  <th scope="col">Action</th>
+								    </tr>
+								  </thead>
+								    <tbody>
+								  	@{
+									int counter = 1;
+									foreach (var book in ViewBag.BookInQueue)
+										{
+											<tr>
+											<th scope="row">@counter</th>
+											<td>@book._title</td>
+											<td>@book._author</td>
+											<td>@book._borrowFrom.ToString("dd/MM/yyyy")</td>
+											<td>@book._borrowTo.ToString("dd/MM/yyyy")</td>
+											<td>
+												<div class = "form-inline">
+													<form class="boxButtons d-flex pr-1" method="post" action="@Url.Action("Borrow", "BookQueue")">
+														<input type="hidden" value=@book._bookId name="bookId">
+														<input type="submit" class="btn btn-secondary btn-sm" value="Borrow" disabled="@(!book._canBorrow)">
+													</form>
+													<button type="button" class="btn btn-secondary btn-sm mr-1" data-bs-toggle="modal" data-bs-target="#Modal@(book._bookId)">Change</button>
+													<form class="boxButtons d-flex" method="post" action="@Url.Action("Remove", "BookQueue")">
+														<input type="hidden" value=@book._bookId name="bookId">
+														<input type="submit" class="btn btn-secondary btn-sm" value="Remove">
+													</form>
+												</div>
+												<div class = "errorBookInput">
+												@if(ViewBag.BookIdError == @book._bookId)
+												{
+													<span>@ViewBag.ErrorLog</span>
+												}
+												</div>
+											</td>
+											</tr>
+											counter = counter +1;
+										<form class="boxButtons" method="post" action="@Url.Action("Change", "BookQueue")">
+											<div class="modal fade" id="Modal@(book._bookId)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
+														<div class ="modal-title-author">
+															<h5 class="modal-title" id="exampleModalLabel">@book._title</h5>
+															<h6 class="modal-title">@book._author</h6>
+														</div>
+															<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+														</div>
+														<div class="modal-body row">
+															<div class = "date col-md-6">
+																<div>
+																	<a for="date">Start date</a>
+																	<input type="text" class="form-control datepicker" id="startDatapicker_@(book._bookId)" placeholder="Date" name="newStartDate" value=@book._borrowFrom>
+																</div>
+																<div>
+																	<a for="date">End date</a>
+																	<input type="text" class="form-control datepicker" id="endDatapicker_@(book._bookId)" placeholder="Date" name="newEndDate" value=@book._borrowTo>
+																</div>
+															</div>
+															<div class ="date-info col-md-6">
+															<span>Unavailable dates:</span>
+															@foreach(var dateRange in book._bookDateRanges)
+															{
+																<div>
+																	<span>@dateRange._startDate.ToString("dd.MM.yyyy") - @dateRange._endDate.ToString("dd.MM.yyyy")</span>
+																</div>
+															}
+															</div>
+														</div>
+														<div class="modal-footer">
+															<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+																	<input type="submit" class="btn btn-secondary" value="Change">
+																	<input type="hidden" value=@book._bookId name="bookId">
+																	
+														</div>
+													</div>
+												</div>
+											</div>
+										</form>
+										}
+									}
+									 
+								  </tbody>
+								</table>
+							</div>
+							}	
+							else 
+							{
+										<div class="block-heading pt-5">
+										<h2>Your book queue is empty.</h2>
+										</div>
+							}
+							
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<!-- Bootstrap 4 JS -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<!-- Bootstrap Datepicker JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+	<script type="text/javascript">
+		var datesForDisable = ["08-5-2021", "08-10-2021", "08-15-2021", "08-20-2021"]
+
+		$('.datepicker').datepicker({
+			format: 'dd.mm.yyyy',
+			autoclose: true,
+			todayHighlight: true,
+			datesDisabled: datesForDisable
+		});
+	</script>
+		</html>

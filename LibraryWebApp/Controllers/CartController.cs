@@ -1,5 +1,6 @@
 ﻿using DatabaseConnection.Models;
 using DatabaseConnection.TableService;
+using DatabaseConnection.UsersTableServices;
 using firstLesson.resources;
 using LibraryWebApp.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ namespace LibraryWebApp.Controllers
     {
         public IActionResult Index()
         {
+            UserDBService userDBService = new UserDBService();
             BookDBService bookDBService = new BookDBService();
             BookDBController bookDBController = new BookDBController();
 
@@ -43,7 +45,7 @@ namespace LibraryWebApp.Controllers
 
                     foreach (BookQueue bookInQueue in booksInQueue)
                     {
-                        if (bookInQueue._bookId == book._Id)
+                        if ((bookInQueue._bookId == book._Id) &&(book._StatusId != 0))
                         {
                             book._BorrowStartDate = bookInQueue._borrowTo;
                             book._BorrowEndDate = book._BorrowStartDate.AddMonths(AppConfig.MaxBorrowTimeMonths);
@@ -54,6 +56,12 @@ namespace LibraryWebApp.Controllers
                 }
 
 
+                BookOfTheDay bookOfTheDay = bookDBController.GetBOTD();
+                if(bookOfTheDay != null)
+                {
+                    booksList.Where(book => book._Id == bookOfTheDay._id).Select(y => y._PriceAfterDiscount = bookOfTheDay._priceAfterDiscount).ToList();
+                }
+
                 ViewBag.BooksInCart = booksList;
                 foreach (var book in booksList)
                 {
@@ -63,16 +71,18 @@ namespace LibraryWebApp.Controllers
                 }
             }
 
+            ViewBag.Users = userDBService.GetUsers();
             double total = subtotal - discount + cashPenalty;
             ViewBag.Discount = discount;
             ViewBag.CashPenalty = cashPenalty;
             ViewBag.Subtotal = subtotal;
             ViewBag.Total = total;
-            return View();
+            return View("/Views/Cart/Index.cshtml");
         }
 
         public IActionResult RemoveFromCart(int bookToDelete)
         {
+            UserDBService userDBService = new UserDBService();
             BookDBService bookDBService = new BookDBService();
             BookDBController bookDBController = new BookDBController();
 
@@ -122,6 +132,14 @@ namespace LibraryWebApp.Controllers
                 }
 
 
+
+
+                BookOfTheDay bookOfTheDay = bookDBController.GetBOTD();
+                if (bookOfTheDay != null)
+                {
+                    booksList.Where(book => book._Id == bookOfTheDay._id).Select(y => y._PriceAfterDiscount = bookOfTheDay._priceAfterDiscount).ToList();
+                }
+
                 ViewBag.BooksInCart = booksList;
 
 
@@ -142,6 +160,7 @@ namespace LibraryWebApp.Controllers
                 }
             }
 
+            ViewBag.Users = userDBService.GetUsers();
             HttpContext.Session.SetString("Cart", cart);
             HttpContext.Session.SetInt32("CartCount", itemInCart);
             double total = subtotal - discount + cashPenalty;
@@ -149,12 +168,13 @@ namespace LibraryWebApp.Controllers
             ViewBag.CashPenalty = cashPenalty;
             ViewBag.Subtotal = subtotal;
             ViewBag.Total = total;
-            return View("Index");
+            return View("/Views/Cart/Index.cshtml");
         }
 
 
         public IActionResult RemoveAllFromCart()
         {
+            UserDBService userDBService = new UserDBService();
             double subtotal = 0;
             double discount = 0;
             double cashPenalty = 0;
@@ -165,16 +185,18 @@ namespace LibraryWebApp.Controllers
             ViewBag.CashPenalty = cashPenalty;
             ViewBag.Subtotal = subtotal;
             ViewBag.Total = total;
+            ViewBag.Users = userDBService.GetUsers();
 
             HttpContext.Session.SetInt32("CartCount", 0);
             HttpContext.Session.Remove("Cart");
-            return View("Index");
+            return View("/Views/Cart/Index.cshtml");
         }
 
 
         [HttpPost]
-        public IActionResult Checkout(List<string> startDate, List<string> endDate)
+        public IActionResult Checkout(List<string> startDate, List<string> endDate, int otherUserId)
         {
+            UserDBService userDBService=new UserDBService();
             BorrowDBService borrowDBService = new BorrowDBService();
             BookDBController bookDBController = new BookDBController();
             BookDBService bookDBService = new BookDBService();
@@ -186,6 +208,10 @@ namespace LibraryWebApp.Controllers
 
             string cart = HttpContext.Session.GetString("Cart");
             int userId = (int)HttpContext.Session.GetInt32("userId");
+
+            if (otherUserId != 0)
+                userId = otherUserId;
+
 
             if(!String.IsNullOrEmpty(cart))
             {
@@ -203,6 +229,7 @@ namespace LibraryWebApp.Controllers
                 HashSet<BorrowedBook> borrowedBooks = bookDBController.GetBorrowedBooksByBooksID(booksId);
                 HashSet<BookQueue> queueBooks = bookDBController.GetBookQueueByBooksID(booksId);
                 Dictionary<int, int> booksInQueue = bookDBController.CountBookQueueByBookIDs();
+                List<int> bookIsBorrowedOrInQueue = bookDBController.CheckBooksBorrowOrQueueByUserId(userId);
 
                 HashSet<BookInCard> booksToBorrow = new HashSet<BookInCard>();
                 HashSet<BookInCard> booksToQueue = new HashSet<BookInCard>();
@@ -218,48 +245,54 @@ namespace LibraryWebApp.Controllers
                             _booksInQueue.Add(bookQueue);
                     }
 
-                    if(borrowedBook == null && _booksInQueue.Count == 0)
-                    {// It is not on loan or in line
+                    if (!book.BookIsntBorrowedOrInQueueByUser(bookIsBorrowedOrInQueue))
+                    {
+                        checkoutAvailable = false;
+                    }
+                    else if(borrowedBook == null && DateService.IsEmpty<BookQueue>(_booksInQueue))
+                    {
                         if (book.DateIsCorrect() && book.DataIsCurrent())
                         {
                             booksToBorrow.Add(book);
                         }
                         else checkoutAvailable = false;
                     }
-                    else if(borrowedBook != null && _booksInQueue.Count == 0)
-                    {// Is on loan but not in the queue
+                    else if(borrowedBook != null && DateService.IsEmpty<BookQueue>(_booksInQueue))
+                    {
                         if (book.DateIsCorrectWithBorrowedBook(borrowedBook) && book.DateIsCorrect())
                         {
                             booksToQueue.Add(book);
                         }
                         else checkoutAvailable = false;
                     }
-                    else if(borrowedBook != null && _booksInQueue.Count < 3)
-                    { // Is on loan and queue but less than 3 times.
+                    else if(borrowedBook != null && DateService.CountLowerThanMax<BookQueue>(_booksInQueue))
+                    {
                         if(book.DateIsCorrect() && book.DateIsCorrectWithBorrowedBook(borrowedBook) && book.DateIsCorrectWithQueueBooks(_booksInQueue))
                         {
                             booksToQueue.Add(book);
                         }
                         else checkoutAvailable = false;
                     }
-                    else if (borrowedBook == null &&  _booksInQueue.Count < 3)
-                    {  //It is not on loadn but is in queue less than 3 times.
-                        if(book.DateIsCorrect() && book.DateIsCorrectWithQueueBooks(_booksInQueue))
+                    else if (borrowedBook == null && DateService.CountLowerThanMax<BookQueue>(_booksInQueue))
+                    {
+                        if(book.DateIsCorrect() && book.DateIsCorrectWithQueueBooks(_booksInQueue) && book.DataIsCurrent())
                         {
-                            checkoutAvailable = false;
-                            book.NotImplemented();
+                            booksToBorrow.Add(book);
                         }
                         else checkoutAvailable = false;
                     }
-                    else if (borrowedBook != null &&  _booksInQueue.Count == 3)
+                    else if (borrowedBook == null &&  DateService.HashSetIsFull<BookQueue>(_booksInQueue))
+                    {
+                        if(book.DateIsCorrect() && book.DataIsCurrent() && book.DateIsCorrectWithQueueBooks(_booksInQueue))
+                        {
+                            booksToBorrow.Add(book);
+                        }
+                        else checkoutAvailable = false;
+                    }
+                    else if (borrowedBook != null && DateService.HashSetIsFull<BookQueue>(_booksInQueue))
                     {
                         checkoutAvailable = false;
                         book.NoSpaceForBorrowOrQueue();
-                    }
-                    else if (borrowedBook != null && _booksInQueue.Count == 3)
-                    {
-                        checkoutAvailable = false;
-                        book.NotImplemented();
                     }
                 }
 
@@ -274,6 +307,13 @@ namespace LibraryWebApp.Controllers
                 }
                 else
                 {
+
+                    BookOfTheDay bookOfTheDay = bookDBController.GetBOTD();
+                    if (bookOfTheDay != null)
+                    {
+                        booksList.Where(book => book._Id == bookOfTheDay._id).Select(y => y._PriceAfterDiscount = bookOfTheDay._priceAfterDiscount).ToList();
+                    }
+
                     ViewBag.BooksInCart = booksList;
                     foreach (var book in booksList)
                     {
@@ -287,6 +327,7 @@ namespace LibraryWebApp.Controllers
                     ViewBag.CashPenalty = cashPenalty;
                     ViewBag.Subtotal = subtotal;
                     ViewBag.Total = total;
+                    ViewBag.Users = userDBService.GetUsers();
 
                     return View("Index");
                 }
@@ -299,7 +340,8 @@ namespace LibraryWebApp.Controllers
 
             List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
             ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
-            ViewBag.Books = bookList;
+            ViewBag.Books = BookService.DetailsBooksInViewBag();
+            ViewBag.BOTD = bookDBController.GetBOTD();
             return View("/Views/BooksSearching/Index.cshtml");
         }
     }

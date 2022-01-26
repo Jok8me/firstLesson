@@ -23,16 +23,16 @@ namespace firstLesson.services.BookServices
             _listStandardUserDiscount = listStandardUserDiscount;
         }
 
-        public void Borrow()
-        {
-            Console.WriteLine("(Min)User: " + _user.getLogin()
-                            + " Book: " + _book.title
-                            + " price: " + new ApplyAllDiscountMinDiscount(_listStandardUserDiscount, _book).calculate(_book.price));
-                Console.WriteLine("(Max)User: " + _user.getLogin()
-                                + " Book: " + _book.title
-                                + " price: " + new ApplyAllDiscountMaxDiscount(_listStandardUserDiscount, _book).calculate(_book.price));
-
-
-        }
+       // public void Borrow()
+       // {
+       //     Console.WriteLine("(Min)User: " + _user.getLogin()
+       //                     + " Book: " + _book.title
+       //                     + " price: " + new ApplyAllDiscountMinDiscount(_listStandardUserDiscount, _book).calculate(_book.price));
+       //         Console.WriteLine("(Max)User: " + _user.getLogin()
+       //                         + " Book: " + _book.title
+       //                         + " price: " + new ApplyAllDiscountMaxDiscount(_listStandardUserDiscount, _book).calculate(_book.price));
+       //
+       //
+       // }
     }
 }

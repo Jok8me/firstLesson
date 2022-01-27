@@ -14,10 +14,9 @@ namespace LibraryWebApp.Controllers
     {
         public IActionResult Index()
         {
-
             BookDBController bookDBController = new BookDBController();
             BorrowDBService borrowDBService = new BorrowDBService();
-            List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
+            //List<DatabaseConnection.Models.BookDetails> bookList = bookDBController.GetBooks();
             ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
             ViewBag.Books = BookService.DetailsBooksInViewBag();
             ViewBag.BOTD = bookDBController.GetBOTD();
@@ -26,6 +25,8 @@ namespace LibraryWebApp.Controllers
 
         public IActionResult PartialSearch(string searchInput, int bookType, string bookCategory)
         {
+            List<DatabaseConnection.Models.BookDetails> bookList = BookService.DetailsBooksInViewBag();
+
             if (searchInput == null) searchInput = "";
             if (bookType == null) bookType = 0;
             if (bookCategory == null) bookCategory = "0";
@@ -33,9 +34,9 @@ namespace LibraryWebApp.Controllers
             List<int> _bookCategory = new List<int>(Array.ConvertAll(bookCategory.Split(','), int.Parse));
             BorrowDBService borrowDBService = new BorrowDBService();
             BookDBController bookDBController = new BookDBController();
-            List<DatabaseConnection.Models.BookDetails> bookList = BookService.DetailsBooksInViewBag();
 
-            bookList = SearchService.Search(bookList, bookType, _bookCategory, searchInput);
+
+            List<DatabaseConnection.Models.BookDetails> result = SearchService.Search(bookList, bookType, _bookCategory, searchInput);
             
             SessionStorageServices.Set<int>(HttpContext.Session, "bookType", bookType);
             SessionStorageServices.Set<List<int>>(HttpContext.Session, "bookCategory", _bookCategory);
@@ -43,7 +44,7 @@ namespace LibraryWebApp.Controllers
 
             ViewBag.BOTD = bookDBController.GetBOTD();
             ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
-            return PartialView("SearchPartial", bookList);
+            return PartialView("SearchPartial", result);
         }
 
         public IActionResult AddToCart(int bookId)

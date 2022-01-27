@@ -14,8 +14,16 @@ namespace DatabaseConnection
         public DBConnection()
         {
             conn = new SqlConnection(constr);
-            adapter = new SqlDataAdapter();
-            conn.Open();
+
+            try
+            {
+                conn.Open();
+                adapter = new SqlDataAdapter();
+            }
+            finally
+            {
+                conn.Close();
+            }
         }
 
         protected void openDBConnection()

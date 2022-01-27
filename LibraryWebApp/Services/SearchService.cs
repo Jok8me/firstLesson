@@ -23,9 +23,9 @@ namespace LibraryWebApp.Services
 
             if(searchInput != "")
             {
-                result = result.Where(x => x.title.Contains(searchInput) ||
-                                           x.name.Contains(searchInput) ||
-                                           x.surname.Contains(searchInput)).ToList();
+                result = result.Where(x => x.title.ToLower().Contains(searchInput.ToLower()) ||
+                                           x.name.ToLower().Contains(searchInput.ToLower()) ||
+                                           x.surname.ToLower().Contains(searchInput.ToLower())).ToList();
             }
             return result;
         }

@@ -24,23 +24,26 @@ namespace LibraryWebApp.Controllers
             return View("/Views/BooksSearching/Index.cshtml");
         }
 
-        public IActionResult SearchBookByCategoriesAndInput(int bookType, List<int> bookCategory, string searchInput)
+        public IActionResult PartialSearch(string searchInput, int bookType, string bookCategory)
         {
+            if (searchInput == null) searchInput = "";
+            if (bookType == null) bookType = 0;
+            if (bookCategory == null) bookCategory = "0";
+
+            List<int> _bookCategory = new List<int>(Array.ConvertAll(bookCategory.Split(','), int.Parse));
             BorrowDBService borrowDBService = new BorrowDBService();
             BookDBController bookDBController = new BookDBController();
             List<DatabaseConnection.Models.BookDetails> bookList = BookService.DetailsBooksInViewBag();
 
-
-            if (searchInput == null) searchInput = "";
-            bookList = SearchService.Search(bookList,bookType, bookCategory, searchInput);
-
+            bookList = SearchService.Search(bookList, bookType, _bookCategory, searchInput);
+            
             SessionStorageServices.Set<int>(HttpContext.Session, "bookType", bookType);
-            SessionStorageServices.Set<List<int>>(HttpContext.Session, "bookCategory", bookCategory);
+            SessionStorageServices.Set<List<int>>(HttpContext.Session, "bookCategory", _bookCategory);
             SessionStorageServices.Set<string>(HttpContext.Session, "searchInput", searchInput);
-            ViewBag.Books = bookList;
+
             ViewBag.BOTD = bookDBController.GetBOTD();
             ViewBag.KeepedCount = borrowDBService.GetNumberOfNotReturnedBooks((int)HttpContext.Session.GetInt32("userId"));
-            return View("/Views/BooksSearching/Index.cshtml");
+            return PartialView("SearchPartial", bookList);
         }
 
         public IActionResult AddToCart(int bookId)

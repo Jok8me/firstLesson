@@ -1,6 +1,7 @@
 ﻿@page
 @using LibraryWebApp.Properties
 @using Microsoft.AspNetCore.Http
+@model DatabaseConnection.Models.BookDetails
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 @inject IHttpContextAccessor httpContextAccessor
 @{
@@ -81,115 +82,39 @@
 			<input type="text" class="form-control fa fa-search" id="searchInput" name="searchInput" value = "@HttpContextAccessor.HttpContext.Session.GetString("searchInput").Substring(1,@HttpContextAccessor.HttpContext.Session.GetString("searchInput").Length-2)" placeholder="Type title or author"> 
 		</div>
 		<div class="col-auto">
-			<button class="btn btn-secondary" type="submit">Search</button>
 		</div>
 		</form>
 	</div>
 </div>
+ <div class="row" id= "booksRow">
 
- <div class="row">
-    @{ var counter = 1; }
-	@foreach (var book in ViewBag.Books)
-	{
-	<div class = "boxElement">
-		<div class="container">
-			<div class="row justify-content-center">
-					<div class="card text-black best-height">
-						<div class = "text-center pt-1">
-							<img class = "img-card" src = "/Resources/cover_@(book.id).jpg">
-						</div>
-						<div class="card-body">
-
-							<div class="text-center card-details inline-direction">
-								@if(@book.rate > 0)
-								{
-									<span class="fa fa-star  @(@book.rate < 1 ? null : "checked")"></span>
-									<span class="fa fa-star  @(@book.rate < 2 ? null : "checked")"></span>
-									<span class="fa fa-star  @(@book.rate < 3 ? null : "checked")"></span>
-									<span class="fa fa-star  @(@book.rate < 4 ? null : "checked")"></span>
-									<span class="fa fa-star  @(@book.rate < 5 ? null : "checked")"></span>
-								}
-								else
-								{
-									<span class="fa fa-star unchecked"></span>
-									<span class="fa fa-star unchecked"></span>
-									<span class="fa fa-star unchecked"></span>
-									<span class="fa fa-star unchecked"></span>
-									<span class="fa fa-star unchecked"></span>
-								}
-							</div>
-
-							<div class="text-center card-details">
-								<h5 class="card-title">@book.title</h5>
-								<p class="text-muted">@book.name @book.surname</p>
-							</div>
-							<div>
-								<div class="d-flex justify-content-between">
-									<span>Status</span><span>@book.status</span>
-								</div>
-
-								@if(book.priceAfterDiscount > 0)
-								{
-								<div class="d-flex justify-content-between">
-									<span>Price</span><span><s>@book.price zł</s></span>
-								</div>
-								 <div class = "d-flex justify-content-between text-success font-weight-bold">
-									<span>Discounted</span><span>@book.priceAfterDiscount zł</span>
-								</div>
-								}
-								else 
-								{
-								<div class="d-flex justify-content-between">
-									<span>Price</span><span>@book.price zł</span>
-								</div>
-								 <div class = "d-flex justify-content-between disable">
-									<span>Discounted</span><span>@book.priceAfterDiscount zł</span>
-								</div>
-								}
-							</div>
-							<div class="">
-								<form class="boxButtons d-flex" method="post" action="@Url.Action("AddToCart", "BooksSearching")">
-								<button type="button" class="btn btn-secondary btn-sm mr-1" data-bs-toggle="modal" data-bs-target="#Modal@(book.id)">Details</button>
-								<input type="hidden" value=@book.id name="bookId">
-								<input @(@ViewBag.KeepedCount < 3 ? null : "disabled") type="submit" class="btn btn-secondary btn-sm" value="Add to cart">
-								</form>
-							</div>
-						</div>
-					</div>
-			</div>
-		</div>
-		<div class="modal fade" id="Modal@(book.id)" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">@book.title</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<p>Publication date: @book.publicationDate.ToString("dd/MM/yyyy")</p>
-						<p>Category: @book.type (@book.category)</p>
-						<p>Status: @book.status</p>
-						<p>@book.description</p>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-								<form class="boxButtons" method="post" action="@Url.Action("BorrowNow", "BooksSearching")">
-								<input @(@ViewBag.KeepedCount < 3 ? null : "disabled") type="submit" class="btn btn-secondary" value="Borrow now">
-								<input type="hidden" value=@book.id name="bookId">
-								</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	        if (counter % 5 == 0)
-            {
-                @:</div><div class="row">
-            counter = 0;
-            }
-            counter++;
-	}
 </div>
 </div>
 </div>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+<script>
+	$(document).ready(function(){
+		const query =()=> {
+			var searchInput = $("#searchInput").val();
+			var bookType = $("#bookType").val();
+			var bookCategory = $("#bookCategory").val();
+			console.log(searchInput);
+			$.ajax({
+				type:"Post",
+				url: "/BooksSearching/PartialSearch?searchInput=" + searchInput + '&bookType=' + bookType + '&bookCategory=' + bookCategory,
+				contentType: "html",
+				success: function (response) {
+					$("#booksRow").html(response);
+				}
+			})
+		}
+		query();
+		document.querySelectorAll(".selectpicker").forEach((element)=> {element.addEventListener("change",query)});
+		document.querySelector("#searchInput").addEventListener('input', query);
+	})
+</script>
+
 </html>

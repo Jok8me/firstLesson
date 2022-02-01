@@ -49,7 +49,7 @@
 											<td>@book._author</td>
 											<td>@book._startDate.ToString("dd/MM/yyyy")</td>
 											<td>@book._returnDate.ToString("dd/MM/yyyy")</td>
-											<td>@book._price zł</td>
+											<td> @string.Format("{0:C}", @book._price)</td>
 											<td><button type="button" class="btn btn-secondary btn-sm mr-1" data-bs-toggle="modal" data-bs-target="#Modal@(book._bookId)">Details</button></td>
 											</tr>
 											counter = counter +1;

@@ -317,7 +317,7 @@ namespace DatabaseConnection.TableService
             List<Models.BorrowedBook> borrowedBook = new List<Models.BorrowedBook>();
 
             //string oString = "SELECT * FROM Books WHERE id=@userId";
-            string oString = "SELECT Books.id, Books.title, Authors.name, Authors.surname, BorrowBook.borrow_start_date, BorrowBook.borrow_end_date, BookType.book_type_name, Books.discount_on_book_id, Books.price" +
+            string oString = "SELECT Books.id, Books.title, Authors.name, Authors.surname, BorrowBook.borrow_start_date, BorrowBook.borrow_end_date, BookType.book_type_name, Books.discount_on_book_id, BorrowBook.initial_price" +
                 " FROM((((((BorrowBook INNER JOIN Borrows ON BorrowBook.borrows_id = Borrows.id)" +
                 " INNER JOIN Users ON Users.id = Borrows.user_id) INNER JOIN Books ON BorrowBook.book_id = Books.id)" +
                 " INNER JOIN Authors_Of_Publications ON Authors_Of_Publications.item_id = Books.id)" +

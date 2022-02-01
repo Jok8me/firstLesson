@@ -56,17 +56,17 @@ namespace DatabaseConnection.Models
 
         public bool DateIsCorrect()
         {
+            StringBuilder stringBuilder = new StringBuilder(this._Info);
             bool isCorrect = true;
 
             if(this._BorrowStartDate > this._BorrowEndDate)
+            {
                 isCorrect = false;
-            if (!((this._BorrowEndDate - this._BorrowStartDate).TotalDays <= (1 * 31)))
-                isCorrect = false; // Cant acces to AppConfig.MaxBorrowTimeMonths
+            }   
 
             if (!isCorrect)
             {
-                StringBuilder stringBuilder = new StringBuilder(this._Info);
-                stringBuilder.Append("<br>Incorret date range.</br>");
+                stringBuilder.Append("<span>Return date must be higher than start.</span>");
                 this._Info = stringBuilder.ToString();
             }
             return isCorrect;
@@ -82,7 +82,7 @@ namespace DatabaseConnection.Models
             if (!isCorrect)
             {
                 StringBuilder stringBuilder = new StringBuilder(this._Info);
-                stringBuilder.Append("<br>Borrow date cannot be greater than 31 days</br>");
+                stringBuilder.Append("<span>Borrow date cannot be greater than 31 days</span>");
                 this._Info = stringBuilder.ToString();
             }
             return isCorrect;
@@ -96,9 +96,9 @@ namespace DatabaseConnection.Models
             {
                 isCorrect = false;
                 StringBuilder stringBuilder = new StringBuilder(this._Info);
-                stringBuilder.Append("<br>Start date must be higher than: ");
+                stringBuilder.Append("<span>Start date must be higher than: ");
                 stringBuilder.Append(borrowedBook.borrowEndDate.ToString("dd.MM.yyyy"));
-                stringBuilder.Append("</br>");
+                stringBuilder.Append("</span>");
                 this._Info = stringBuilder.ToString();
             }
             return isCorrect;
@@ -114,7 +114,7 @@ namespace DatabaseConnection.Models
             {
                 isCorrect = false;
                 StringBuilder stringBuilder = new StringBuilder(this._Info);
-                stringBuilder.Append("<br>Book is borrowed or in queue.</br>");
+                stringBuilder.Append("<span>Book is borrowed or in queue.</span>");
                 this._Info = stringBuilder.ToString();
             }
             return isCorrect;
@@ -132,18 +132,22 @@ namespace DatabaseConnection.Models
                 {
                     isCorrect = false;
                     StringBuilder stringBuilder = new StringBuilder(this._Info);
-                    stringBuilder.Append("<br>Start date must be higher than: ");
+                    stringBuilder.Append("<span>Start date cant be between: ");
+                    stringBuilder.Append(book._borrowFrom.ToString("dd.MM.yyyy"));
+                    stringBuilder.Append(" and ");
                     stringBuilder.Append(book._borrowTo.ToString("dd.MM.yyyy"));
-                    stringBuilder.Append("</br>");
+                    stringBuilder.Append("</span>");
                     this._Info = stringBuilder.ToString();
                 }
                 if(book._borrowFrom < this._BorrowEndDate && this._BorrowEndDate < book._borrowTo)
                 {
                     isCorrect = false;
                     StringBuilder stringBuilder = new StringBuilder(this._Info);
-                    stringBuilder.Append("<br>End date must be higher than: ");
+                    stringBuilder.Append("<span>End date cant be between: ");
+                    stringBuilder.Append(book._borrowFrom.ToString("dd.MM.yyyy"));
+                    stringBuilder.Append(" and ");
                     stringBuilder.Append(book._borrowTo.ToString("dd.MM.yyyy"));
-                    stringBuilder.Append("</br>");
+                    stringBuilder.Append("</span>");
                     this._Info = stringBuilder.ToString();
                 }
             }
@@ -164,7 +168,7 @@ namespace DatabaseConnection.Models
             if (!isCorrect)
             {
                 StringBuilder stringBuilder = new StringBuilder(this._Info);
-                stringBuilder.Append("<br>Borrow date must be current date.</br>");
+                stringBuilder.Append("<span>Borrow date must be current date.</span>");
                 this._Info = stringBuilder.ToString();
             }
             return isCorrect;
@@ -173,14 +177,14 @@ namespace DatabaseConnection.Models
         public void NoSpaceForBorrowOrQueue()
         {
             StringBuilder stringBuilder = new StringBuilder(this._Info);
-            stringBuilder.Append("<br>Queue is full.</br>");
+            stringBuilder.Append("<span>Queue is full.</span>");
             this._Info = stringBuilder.ToString();
         }
 
         public void NotImplemented()
         {
             StringBuilder stringBuilder = new StringBuilder(this._Info);
-            stringBuilder.Append("<br>Exception not implemented.</br>");
+            stringBuilder.Append("<span>Exception not implemented.</span>");
             this._Info = stringBuilder.ToString();
         }
     }

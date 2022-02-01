@@ -48,7 +48,7 @@ namespace LibraryWebApp.Controllers
             else
             {
                 ViewBag.login = "";
-                ViewBag.error = "Invalid Account";
+                ViewBag.error = "Invalid login or password";
                 return View("Index");
             }
         }

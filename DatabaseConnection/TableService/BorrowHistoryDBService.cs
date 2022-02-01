@@ -16,7 +16,7 @@ namespace DatabaseConnection.TableService
 
             List<Models.BookInHistory> bookHistoryList = new List<Models.BookInHistory>();
 
-            string oString = "SELECT b.id, b.title, a.name, a.surname, b.publication_date, bType.book_type_name, c.category_name, b.description, bb.borrow_start_date, bb.borrow_end_date, b.price, bb.return_date" +
+            string oString = "SELECT b.id, b.title, a.name, a.surname, b.publication_date, bType.book_type_name, c.category_name, b.description, bb.borrow_start_date, bb.borrow_end_date, bb.initial_price, bb.return_date" +
                 " FROM Books b" +
                 " JOIN BorrowBook bb ON bb.book_id = b.id" +
                 " JOIN Borrows ON borrows.id = bb.borrows_id" +

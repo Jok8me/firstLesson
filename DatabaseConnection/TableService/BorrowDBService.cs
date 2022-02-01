@@ -13,18 +13,22 @@ namespace DatabaseConnection.TableService
     {
         public void borrowBook(BookInCard book, int userId)
         {
-            //Borrow if book.status == 0
-            //Book if book.status == 1
-
             openDBConnectionIfNotOpen();
-            string insStmt = "EXECUTE borrowBookProcedure @userId, @bookId ,@currentDate ,@returnDate;";
+            string insStmt = "EXECUTE borrowBookProcedure @userId, @bookId ,@StartDate ,@EndDate ,@priceAfterDiscount;";
+
+            double price;
+            if (book._PriceAfterDiscount == 0)
+            {
+                price = book._Price;
+            } else price = book._PriceAfterDiscount;
 
             using (SqlCommand cmd = new SqlCommand(insStmt, conn))
             {
                 cmd.Parameters.Add("@bookId", SqlDbType.Int).Value = book._Id;
                 cmd.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
-                cmd.Parameters.Add("@currentDate", SqlDbType.Date).Value = book._BorrowStartDate;
-                cmd.Parameters.Add("@returnDate", SqlDbType.Date).Value = book._BorrowEndDate;
+                cmd.Parameters.Add("@StartDate", SqlDbType.Date).Value = book._BorrowStartDate;
+                cmd.Parameters.Add("@EndDate", SqlDbType.Date).Value = book._BorrowEndDate;
+                cmd.Parameters.Add("@priceAfterDiscount", SqlDbType.Decimal).Value = price;
                 cmd.ExecuteNonQuery();
             }
             closeDBConnection();
@@ -55,7 +59,7 @@ namespace DatabaseConnection.TableService
             HashSet<BorrowedBook> borrowedBooks = new HashSet<BorrowedBook>();
 
 
-            StringBuilder oString = new StringBuilder("SELECT Books.id, Books.title, Authors.name, Authors.surname, BorrowBook.borrow_start_date, BorrowBook.borrow_end_date, BookType.book_type_name, Books.discount_on_book_id, Books.price" +
+            StringBuilder oString = new StringBuilder("SELECT Books.id, Books.title, Authors.name, Authors.surname, BorrowBook.borrow_start_date, BorrowBook.borrow_end_date, BookType.book_type_name, Books.discount_on_book_id, BorrowBook.initial_price" +
                 " FROM((((((BorrowBook INNER JOIN Borrows ON BorrowBook.borrows_id = Borrows.id)" +
                 " INNER JOIN Users ON Users.id = Borrows.user_id) INNER JOIN Books ON BorrowBook.book_id = Books.id)" +
                 " INNER JOIN Authors_Of_Publications ON Authors_Of_Publications.item_id = Books.id)" +

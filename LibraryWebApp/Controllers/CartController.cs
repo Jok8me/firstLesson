@@ -217,8 +217,14 @@ namespace LibraryWebApp.Controllers
             {
                 List<int> booksId = HttpContext.Session.GetString("Cart").Split(';').Select(Int32.Parse).ToList();
                 List<DatabaseConnection.Models.BookInCard> booksList = bookDBService.getBookByBookIdInIntList(booksId);
+                BookOfTheDay bookOfTheDay = bookDBController.GetBOTD();
+                if (bookOfTheDay != null)
+                {
+                    booksList.Where(book => book._Id == bookOfTheDay._id).Select(y => y._PriceAfterDiscount = bookOfTheDay._priceAfterDiscount).ToList();
+                }
 
-                for(int i = 0; i < booksList.Count; i++)
+
+                for (int i = 0; i < booksList.Count; i++)
                 {
                     booksList[i]._BorrowStartDate = DateTime.Parse(startDate[i]);
                     booksList[i]._BorrowEndDate = DateTime.Parse(endDate[i]);
@@ -307,13 +313,6 @@ namespace LibraryWebApp.Controllers
                 }
                 else
                 {
-
-                    BookOfTheDay bookOfTheDay = bookDBController.GetBOTD();
-                    if (bookOfTheDay != null)
-                    {
-                        booksList.Where(book => book._Id == bookOfTheDay._id).Select(y => y._PriceAfterDiscount = bookOfTheDay._priceAfterDiscount).ToList();
-                    }
-
                     ViewBag.BooksInCart = booksList;
                     foreach (var book in booksList)
                     {

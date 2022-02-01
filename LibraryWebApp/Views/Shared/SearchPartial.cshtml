@@ -46,19 +46,19 @@
 								@if(book.priceAfterDiscount > 0)
 								{
 								<div class="d-flex justify-content-between">
-									<span>Price</span><span><s>@book.price zł</s></span>
+									<span>Price</span><span><s> @string.Format("{0:C}", @book.price)</s></span>
 								</div>
 								 <div class = "d-flex justify-content-between text-success">
-									<span>Discounted</span><span>@book.priceAfterDiscount zł</span>
+									<span>Discount</span><span> @string.Format("{0:C}", @book.priceAfterDiscount)</span>
 								</div>
 								}
 								else 
 								{
 								<div class="d-flex justify-content-between">
-									<span>Price</span><span>@book.price zł</span>
+									<span>Price</span><span>@string.Format("{0:C}", @book.price)</span>
 								</div>
 								 <div class = "d-flex justify-content-between disable">
-									<span>Discounted</span><span>@book.priceAfterDiscount zł</span>
+									<span>Discount</span><span>@string.Format("{0:C}", @book.priceAfterDiscount)</span>
 								</div>
 								}
 							</div>

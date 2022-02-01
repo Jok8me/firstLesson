@@ -70,13 +70,13 @@
 																<div>Author: <span class="value">@book._Author</span></div>
 																@if(book._PriceAfterDiscount > 0)
 																{
-																	<div>Price: <span class="value"><s>@book._Price zł</s></span></div>
-																	<div>After discount: <span class="value h6">@book._PriceAfterDiscount zł</span></div>
+																	<div>Price: <span class="value"><s> @string.Format("{0:C}", @book._Price)</s></span></div>
+																	<div>After discount: <span class="value h6">  @string.Format("{0:C}", @book._PriceAfterDiscount)</span></div>
 																}
 																else
 																{
-																	<div>Price: <span class="value">@book._Price zł</span></div>
-																	<div class="disable">After discount: <span class="value h6">@book._PriceAfterDiscount zł</span></div>
+																	<div>Price: <span class="value">@string.Format("{0:C}", @book._Price)</span></div>
+																	<div class="disable">After discount: <span class="value h6">@string.Format("{0:C}", @book._PriceAfterDiscount)</span></div>
 																}
 															</div>
 														</div>
@@ -92,7 +92,9 @@
 																<input type="text" class="form-control datepicker" id="endDatapicker_@(book._Id)" placeholder="Date" name="endDate" value=@book._BorrowEndDate>
 															</div>
 																@if(book._Info != ""){
-																	<div class="bookInfo border border-3 border-danger">@Html.Raw(@book._Info)</div>
+																	<div class="alert alert-danger h6" role="alert">
+																	 @Html.Raw(@book._Info)
+																	</div>
 																}
 														</div>
 													</div>
@@ -114,10 +116,10 @@
 							<div class="col-md-12 col-lg-4">
 								<div class="summary">
 									<h3>Summary</h3>
-									<div class="summary-item"><span class="text">Subtotal</span><span class="price">@ViewBag.Subtotal zł</span></div>
-									<div class="summary-item"><span class="text">Discount</span><span class="price">@ViewBag.Discount zł</span></div>
-									<div class="summary-item"><span class="text">Cash penalty</span><span class="price">@ViewBag.CashPenalty zł</span></div>
-									<div class="summary-item"><span class="text">Total</span><span class="price">@ViewBag.Total zł</span></div>
+									<div class="summary-item"><span class="text">Subtotal</span><span class="price"> @string.Format("{0:C}", @ViewBag.Subtotal)</span></div>
+									<div class="summary-item"><span class="text">Discount</span><span class="price"> @string.Format("{0:C}",@ViewBag.Discount)</span></div>
+									<div class="summary-item"><span class="text">Cash penalty</span><span class="price"> @string.Format("{0:C}", @ViewBag.CashPenalty)</span></div>
+									<div class="summary-item"><span class="text">Total</span><span class="price"> @string.Format("{0:C}", @ViewBag.Total)</span></div>
 									<button class="btn btn-secondary btn-lg btn-block" type="submit">Checkout</button>
 									<a asp-controller="Cart" asp-action="RemoveAllFromCart" class="btn btn-secondary btn-lg btn-block my-5">Clear cart</a>
 								</div>
